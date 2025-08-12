@@ -1,0 +1,12 @@
+# Git Workflow
+
+## Convención de commits
+- `feat:` nueva funcionalidad.
+- `fix:` corrección de errores.
+- `docs:` cambios en documentación.
+- `style:` cambios de formato sin afectar el código.
+- `refactor:` reestructuración de código sin cambiar funcionalidad.
+- `test:` añadir o modificar pruebas.
+- `chore:` tareas varias como actualización de dependencias.
+
+**Ejemplo:**
