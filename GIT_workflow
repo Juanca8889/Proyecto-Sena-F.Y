@@ -10,3 +10,14 @@
 - `chore:` tareas varias como actualización de dependencias.
 
 **Ejemplo:**
+
+
+## Frecuencia de push/pull
+- **Push**: después de completar una tarea o al final de la jornada.
+- **Pull**: antes de iniciar trabajo y antes de abrir un PR.
+
+## Política de Pull Requests
+1. Todo cambio se hace en rama `feature/*`.
+2. Al terminar la tarea, abrir PR hacia `develop`.
+3. Revisión por al menos 1 compañero antes de merge.
+4. No hacer commit directo a `main`.
