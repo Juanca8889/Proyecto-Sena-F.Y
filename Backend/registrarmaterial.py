@@ -2,8 +2,9 @@ class Inventario:
     def __init__(self):
         self.materiales = []
 
-    def registrar_material(self, nombre, cantidad, tipo, proveedor, fecha):
+    def registrar_material(self,codigo, nombre, cantidad, tipo, proveedor, fecha):
         material = {
+            "codigo" : codigo,
             "nombre": nombre,
             "cantidad": cantidad,
             "tipo": tipo,
