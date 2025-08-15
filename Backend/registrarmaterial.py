@@ -22,7 +22,7 @@ class Inventario:
                     cantidad = int(input("ingrese la cantidad: "))
                     break
                 except ValueError:
-                    print("ingrese un número válido.")
+                    print("ingrese un numero valido.")
             
             tipo = input("ingrese el tipo de material: ")
             proveedor = input("ingrese el proveedor: ")
