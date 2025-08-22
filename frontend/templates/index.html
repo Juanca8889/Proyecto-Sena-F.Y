@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Montallantas.F.Y</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+</head>
+<body>
+  <div class="contenedor">
+    <aside class="sidebar">
+      <h2>🚗 Montallantas.F.Y</h2>
+      <nav>
+        <ul>
+          <li><button><img src="camion.png" alt="Domicilio" class="icono-img">Domicilios</button></li>
+          <li><button><img src="inventario.png" alt="Inventario" class="icono-img">Inventario</button></li>
+          <li><button><img src="estadística.png" alt="Reportes" class="icono-img">Reportes</button></li>
+          <li><button><img src="clientess.png" alt="Fidelización" class="icono-img">Fidelización de clientes</button></li>
+          <li><button><img src="empleados.png" alt="Empleados" class="icono-img">Empleados</button></li>
+          <li><button><img src="administrador.png" alt="Ajustes" class="icono-img">Ajustes/Administrador</button></li>
+          <li><button><img src="herramientas.png" alt="Herramientas" class="icono-img">Herramientas</button></li>
+          <li><button><img src="confi.png" alt="Configuración" class="icono-img">Configuración</button></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="contenido">
+      <header class="barra-superior">
+        <div class="nav-iconos">
+          <span><img src="casa.png" alt="Inicio" class="icono-barra">Inicio</span>
+          <span><img src="agenda.png" alt="Agenda" class="icono-barra">Agenda</span>
+          <span><img src="reporte.png" alt="Reportes" class="icono-barra">Reportes</span>
+          <span><img src="noti.png" alt="Notificaciones" class="icono-barra">Notificaciones</span>
+          <span><img src="ventas.png" alt="Ventas" class="icono-barra">Ventas</span>
+          <span><img src="pedidos.png" alt="Pedidos" class="icono-barra">Pedidos</span>
+          <span><img src="info.png" alt="Info" class="icono-barra">Info</span>
+        </div>
+        <div class="buscar">
+          <input type="search" placeholder="Buscar..." class="buscador"/>
+          <img src="usuario.png" alt="Buscar" class="icono-barra">
+        </div>
+      </header>
+
+      <section class="mensaje">
+        <div class="caja-bienvenida">¡Bienvenido Administrador!</div>
+      </section>
+
+      <footer class="cerrar-sesion">
+        <span>⎋</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

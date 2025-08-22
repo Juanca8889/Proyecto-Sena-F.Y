@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="login-container">
+        
+        <form action="/register" method="post">
+            <h2>Login</h2><br>
+            <div class="primero">
+            <label for="username">Usuario:</label><br>
+            <input type="text" id="username" name="username" required><br>
+            </div>
+            <div class="segundo">
+            <label for="mail">Correo:</label><br>
+            <input type="text" id="email" name="email" required><br>
+            </div>
+            <div class="tercero">
+            <label for="password">Contraseña:</label><br>
+            <input type="password" id="password" name="password" required><br>
+            <a href="/login">¿Ya estas registrado?</a>
+            </div>
+            <div class="ingresar">
+            <button   type="submit">Registrarse</button>
+            </div>
+            
+        </form>
+</body>
+</html>

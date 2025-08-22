@@ -1,45 +1,16 @@
 import mysql.connector
-'''
-#prueba de conexion a la base de datos jcgs
 
-datos de conexion
-conexion = mysql.connector.connect(
-    host="localhost",
-    user= "root",
-    database="bd",
-)
+def conectar():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        database="bd",
+        charset="utf8mb4"
+    )
 
-Verificar si la conexión fue exitosa
-cursor=conexion.cursor()
-
-Ejecutar una consulta en la base de datos
-cursor.execute("select * from Usuarios")
-
-
-Imprimir los resultados o que salgan los datos
-for fila in cursor.fetchall():
-print(fila)
-
-insertar datos a la base de datos
-cursor.execute("insert into Usuarios (Nombre, contraseña,correo) values ('Juan', '124','juan@gmail.com')")
-
-cursor.execute("select * from Usuarios")
-for fila in cursor.fetchall():
-    print(fila)
-
-cerrar la conexión
-cursor.close()
-conexion.close()
-
-'''
 class ConexionUsuario:
     def __init__(self, nombre, contrasena, correo):
-        self.conexion = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            database="bd",
-            charset="utf8mb4"
-        )
+        self.conexion = conectar()
         self.nombre = nombre
         self.contrasena = contrasena
         self.correo = correo
@@ -58,7 +29,7 @@ class ConexionUsuario:
     def buscar_usuario(self, nombre):
         query = "SELECT * FROM Usuarios WHERE Nombre = %s"
         self.cursor.execute(query, (nombre,))
-        return print(self.cursor.fetchall())
+        return self.cursor.fetchall()
 
     def actualizar_usuario(self, nombre, nueva_contrasena, nuevo_correo):
         query = "UPDATE Usuarios SET `contraseña` = %s, correo = %s WHERE Nombre = %s"
@@ -76,7 +47,11 @@ class ConexionUsuario:
         self.conexion.close()
 
 
-# Ejemplo de uso
-persona = ConexionUsuario("Juan", "1234", "juanito@gmail.com")
-persona.insertar_usuario()
-usuarios = persona.obtener_usuarios()
+# --- Función independiente para verificar login ---
+def verificar_usuario(username, password):
+    conexion = conectar()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM Usuarios WHERE Nombre=%s AND `contraseña`=%s", (username, password))
+    usuario = cursor.fetchone()
+    conexion.close()
+    return usuario
