@@ -1,30 +1,41 @@
+import mysql.connector
+
 class Inventario:
     def __init__(self):
-        self.materiales = []
+        self.conexion = mysql.connector.connect(
+            host="localhost",
+            user="root",        # cambia por tu usuario
+            password="",        # cambia por tu contraseña
+            database="montallantasfy"
+        )
+        self.cursor = self.conexion.cursor(dictionary=True)
 
-    def registrar_material(self,codigo, nombre, cantidad, tipo, proveedor, fecha):
-        material = {
-            "codigo" : codigo,
-            "nombre": nombre,
-            "cantidad": cantidad,
-            "tipo": tipo,
-            "proveedor": proveedor,
-            "fecha": fecha
-        }
-        self.materiales.append(material)
-        
-    def mostrar_materiales(self):
-        return self.materiales
+    def registrar_producto(self, nombre, descripcion, cantidad, categoria_id, precio):
+        query = """
+        INSERT INTO Producto (nombre, descripcion, cantidad, categoria_id, precio)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+        valores = (nombre, descripcion, cantidad, categoria_id, precio)
+        self.cursor.execute(query, valores)
+        self.conexion.commit()
+        print("✅ Producto registrado con éxito.")
 
+    def registrar_inventario(self, producto_id, cantidad, categoria_id, rol_id=None):
+        query = """
+        INSERT INTO InventarioProductos (producto_id, cantidad, categoria_id, rol_id)
+        VALUES (%s, %s, %s, %s)
+        """
+        valores = (producto_id, cantidad, categoria_id, rol_id)
+        self.cursor.execute(query, valores)
+        self.conexion.commit()
+        print("✅ Inventario actualizado.")
 
-# Ejemplo
-inventario = Inventario()
-inventario.registrar_material("Parche", 100, "Caucho", "Proveedor A", "14/08/2025")
-inventario.registrar_material("Neumatico", 10, "Cp661 165/70r13", "Proveedor B", "15/08/2025")
+    
+# Crear objeto Inventario
+inv = Inventario()
 
-materiales_guardados =inventario.mostrar_materiales()
-print("Lista de materiales registrados:")
-for material in materiales_guardados:
-    print(material)
+# Registrar un producto
+inv.registrar_producto("Llanta 185/65 R15", "Llanta para automóvil", 20, 1, 350000)
 
-
+# Registrar inventario
+inv.registrar_inventario(1, 20, 1, 2)
