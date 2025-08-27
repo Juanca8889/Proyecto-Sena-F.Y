@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
-    <title>Document</title>
+    <title>Login</title>
 </head>
 <body>
     <div class="login-container">
         
         <form action="http://localhost:5000/login" method="post">
-            <h2>Login</h2><br>
+            <h2>Login</h2>
+            <div class="icono-login">
+            <img src="./static/img/usuario.png" alt="Buscar"  />
+            </div>
             <div class="primero">
+            
             <label for="username">Usuario:</label><br>
             <input type="text" id="username" name="username" required><br>
             </div>

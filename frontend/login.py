@@ -1,13 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import sys
 import os
 
 # Agrega la carpeta raíz del proyecto al path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from BD.conexion import verificar_usuario, ConexionUsuario
+from BD.conexion import  ConexionUsuario, verificar_usuario
 
 app = Flask(__name__)
+app.secret_key = 'wjson'
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -15,12 +16,25 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        if verificar_usuario(username, password):
-            return redirect(url_for('home'))
+
+        usuario = verificar_usuario(username, password)  
+
+
+        if usuario:
+            session['usuario'] = usuario['Nombre']
+            session['rol'] = usuario['id_rol']
+
+            if usuario['id_rol'] == 1:
+                return redirect(url_for('home'))
+            else:
+                return redirect(url_for('home'))
         else:
             return "Usuario o contraseña incorrectos"
 
     return render_template('login.html')
+
+
+
 
 @app.route('/home')
 def home():

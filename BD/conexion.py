@@ -9,7 +9,7 @@ def conectar():
     )
 
 class ConexionUsuario:
-    def __init__(self, nombre, contrasena, correo):
+    def __init__(self, nombre, contrasena, correo, ):
         self.conexion = conectar()
         self.nombre = nombre
         self.contrasena = contrasena
@@ -17,8 +17,8 @@ class ConexionUsuario:
         self.cursor = self.conexion.cursor()
 
     def insertar_usuario(self):
-        query = "INSERT INTO Usuarios (Nombre, `contraseña`, correo) VALUES (%s, %s, %s)"
-        values = (self.nombre, self.contrasena, self.correo)
+        query = "INSERT INTO Usuarios (Nombre, `contraseña`, correo)VALUES (%s, UNHEX(SHA2(%s, 512)), %s)"
+        values = (self.nombre, self.contrasena, self.correo, )
         self.cursor.execute(query, values)
         self.conexion.commit()
 
@@ -41,17 +41,25 @@ class ConexionUsuario:
         query = "DELETE FROM Usuarios WHERE Nombre = %s"
         self.cursor.execute(query, (nombre,))
         self.conexion.commit()
-
+        
+        
+    
     def cerrar(self):
         self.cursor.close()
         self.conexion.close()
 
 
-# --- Función independiente para verificar login ---
+
 def verificar_usuario(username, password):
-    conexion = conectar()
-    cursor = conexion.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Usuarios WHERE Nombre=%s AND `contraseña`=%s", (username, password))
-    usuario = cursor.fetchone()
-    conexion.close()
-    return usuario
+        conexion = conectar()
+        cursor = conexion.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT u.idusua, u.Nombre, u.correo, u.id_rol, r.Nombre as rol
+            FROM Usuarios u
+            JOIN rol r ON u.id_rol = r.idrol
+            WHERE u.Nombre=%s AND u.contraseña=UNHEX(SHA2(%s, 512))
+            LIMIT 1
+        """, (username, password))
+        usuario = cursor.fetchone()
+        conexion.close()
+        return usuario

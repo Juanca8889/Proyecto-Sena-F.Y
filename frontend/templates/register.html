@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
-    <title>Document</title>
+    <title>Registro</title>
 </head>
 <body>
     <div class="login-container">
         
         <form action="/register" method="post">
-            <h2>Login</h2><br>
+            <h2>REGISTER</h2><br>
+            <div class="icono-login">
+            <img src="./static/img/usuario.png" alt="Buscar"  />
+            </div>
             <div class="primero">
             <label for="username">Usuario:</label><br>
             <input type="text" id="username" name="username" required><br>
@@ -19,6 +22,7 @@
             <label for="mail">Correo:</label><br>
             <input type="text" id="email" name="email" required><br>
             </div>
+            <br>
             <div class="tercero">
             <label for="password">Contraseña:</label><br>
             <input type="password" id="password" name="password" required><br>
