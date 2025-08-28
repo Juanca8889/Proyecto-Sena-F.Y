@@ -19,6 +19,8 @@ class Servicios :
         self.conexion.commit()
         print("✅ Servicio registrado con éxito.")
 
+#ejemplo de uso 
+
 serv = Servicios ()
 
 serv.registrarorden("cambio de aceite","taller","2025-01-03","cliente1","usuario1")  
