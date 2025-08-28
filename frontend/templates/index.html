@@ -2,12 +2,10 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Montallantas.F.Y</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
+    <link rel="stylesheet" href="./static/style.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
   </head>
   <body>
     <div class="contenedor">
@@ -16,76 +14,32 @@
         <nav>
           <ul>
             <li>
-              <button>
-                <img
-                  src="./static/img/camion.png"
-                  alt="Domicilio"
-                  class="icono-img"
-                />Domicilios
-              </button>
+              <button><i data-feather="truck"></i> Domicilios</button>
+            </li>
+            <li>
+              <button><i data-feather="file-text"></i> Inventario</button>
+            </li>
+            <li>
+              <button><i data-feather="bar-chart-2"></i> Reportes</button>
             </li>
             <li>
               <button>
-                <img
-                  src="./static/img/inventario.png"
-                  alt="Inventario"
-                  class="icono-img"
-                />Inventario
+                <i data-feather="users"></i> Fidelización Clientes
               </button>
             </li>
             <li>
-              <button>
-                <img
-                  src="./static/img/estadística.png"
-                  alt="Reportes"
-                  class="icono-img"
-                />Reportes
-              </button>
+              <button><i data-feather="file-text"></i> Empleados</button>
             </li>
             <li>
               <button>
-                <img
-                  src="./static/img/clientess.png"
-                  alt="Fidelización"
-                  class="icono-img"
-                />Fidelización de clientes
+                <i data-feather="user-check"></i> Ajustes/Administrador
               </button>
             </li>
             <li>
-              <button>
-                <img
-                  src="./static/img/empleados.png"
-                  alt="Empleados"
-                  class="icono-img"
-                />Empleados
-              </button>
+              <button><i data-feather="tool"></i> Herramientas</button>
             </li>
             <li>
-              <button>
-                <img
-                  src="./static/img/administrador.png"
-                  alt="Ajustes"
-                  class="icono-img"
-                />Ajustes/Administrador
-              </button>
-            </li>
-            <li>
-              <button>
-                <img
-                  src="./static/img/herramientas.png"
-                  alt="Herramientas"
-                  class="icono-img"
-                />Herramientas
-              </button>
-            </li>
-            <li>
-              <button>
-                <img
-                  src="./static/img/confi.png"
-                  alt="Configuración"
-                  class="icono-img"
-                />Configuración
-              </button>
+              <button><i data-feather="settings"></i> Configuración</button>
             </li>
           </ul>
         </nav>
@@ -94,66 +48,35 @@
       <main class="contenido">
         <header class="barra-superior">
           <div class="nav-iconos">
-            <span
-              ><img
-                src="./static/img/casa.png"
-                alt="Inicio"
-                class="icono-barra"
-              />Inicio</span
-            >
-            <span
-              ><img
-                src="./static/img/agenda.png"
-                alt="Agenda"
-                class="icono-barra"
-              />Agenda</span
-            >
-            <span
-              ><img
-                src="./static/img/reporte.png"
-                alt="Reportes"
-                class="icono-barra"
-              />Reportes</span
-            >
-            <span
-              ><img
-                src="./static/img/noti.png"
-                alt="Notificaciones"
-                class="icono-barra"
-              />Notificaciones</span
-            >
-            <span
-              ><img
-                src="./static/img/ventas.png"
-                alt="Ventas"
-                class="icono-barra"
-              />Ventas</span
-            >
-            <span
-              ><img
-                src="./static/img/pedidos.png"
-                alt="Pedidos"
-                class="icono-barra"
-              />Pedidos</span
-            >
-            <span
-              ><img src="./static/img/info.png" alt="Info" class="icono-barra" />Info</span
-            >
+            <span><i data-feather="home"></i> Inicio</span>
+            <span><i data-feather="calendar"></i> Agenda</span>
+            <span><i data-feather="file-text"></i> Reportes</span>
+            <span><i data-feather="bell"></i> Notificaciones</span>
+            <span><i data-feather="shopping-cart"></i> Ventas</span>
+            <span><i data-feather="clipboard"></i> Pedidos</span>
+            <span><i data-feather="info"></i> Info</span>
           </div>
           <div class="buscar">
             <input type="search" placeholder="Buscar..." class="buscador" />
-            <img src="./static/img/usuario.png" alt="Buscar" class="icono-barra" />
+            <i data-feather="search" class="icono-busqueda"></i>
+            <i data-feather="user" class="icono-usuario"></i>
           </div>
         </header>
 
         <section class="mensaje">
-          <div class="caja-bienvenida">¡Bienvenido Administrador!</div>
+          <div class="caja-bienvenida">
+            <strong> ¡Bienvenido Administrador! </strong>
+          </div>
         </section>
 
         <footer class="cerrar-sesion">
-          <span>⎋</span>
+          <a href="login"><i data-feather="arrow-right"></i></a>
         </footer>
       </main>
     </div>
+
+    <script>
+      feather.replace();
+    </script>
   </body>
 </html>
