@@ -2,13 +2,15 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import sys
 import os
 
-# Agrega la carpeta raíz del proyecto al path
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from BD.conexion import  ConexionUsuario, verificar_usuario
 
 app = Flask(__name__)
 app.secret_key = 'wjson'
+
+@app.route
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -31,7 +33,7 @@ def login():
         else:
             return "Usuario o contraseña incorrectos"
 
-    return render_template('login.html')
+    return print("")
 
 
 @app.route('/Admin')
@@ -56,6 +58,7 @@ def register():
         usuario = ConexionUsuario(nombre, apellido,celular,correo,username,contrasena)
         usuario.insertar_usuario()
         usuario.cerrar()
+        return 
 
         return redirect(url_for('login'))
 
