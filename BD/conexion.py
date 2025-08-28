@@ -4,22 +4,26 @@ def conectar():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        database="bd",
+        database="montallantasfy",
         charset="utf8mb4"
     )
 
 class ConexionUsuario:
-    def __init__(self, nombre, contrasena, correo, ):
+    def __init__(self,  nombre, apellido, celular, correo, usuario, clave ):
         self.conexion = conectar()
         self.nombre = nombre
-        self.contrasena = contrasena
+        self.apellido = apellido
+        self.celular = celular
+        self.usuario = usuario
+        self.clave =  clave
         self.correo = correo
         self.cursor = self.conexion.cursor()
 
     def insertar_usuario(self):
-        query = "INSERT INTO Usuarios (Nombre, `contraseña`, correo)VALUES (%s, UNHEX(SHA2(%s, 512)), %s)"
-        values = (self.nombre, self.contrasena, self.correo, )
-        self.cursor.execute(query, values)
+        query2 = "INSERT INTO Usuario (nombre, apellido, celular, correo, usuario, clave) VALUES (%s,%s,%s,%s,%s, UNHEX(SHA2(%s, 512)));"
+        # query = "INSERT INTO Usuario (Nombre, `contraseña`, correo)VALUES (%s, UNHEX(SHA2(%s, 512)), %s)"
+        values = (self.nombre, self.apellido, self.celular,self.correo, self.usuario, self.clave)
+        self.cursor.execute(query2, values)
         self.conexion.commit()
 
     def obtener_usuarios(self):
@@ -49,17 +53,21 @@ class ConexionUsuario:
         self.conexion.close()
 
 
-
 def verificar_usuario(username, password):
-        conexion = conectar()
+    conexion = conectar()
+    try:
         cursor = conexion.cursor(dictionary=True)
-        cursor.execute("""
-            SELECT u.idusua, u.Nombre, u.correo, u.id_rol, r.Nombre as rol
-            FROM Usuarios u
-            JOIN rol r ON u.id_rol = r.idrol
-            WHERE u.Nombre=%s AND u.contraseña=UNHEX(SHA2(%s, 512))
+        query = """
+            SELECT u.id_usuario, u.nombre, u.correo, u.rol_id, r.nombre AS rol_nombre
+            FROM `Usuario` AS u
+            JOIN `Rol` AS r ON u.rol_id = r.id_rol
+            WHERE u.usuario = %s AND u.clave = UNHEX(SHA2(%s, 512))
             LIMIT 1
-        """, (username, password))
+        """
+        cursor.execute(query, (username, password))
         usuario = cursor.fetchone()
-        conexion.close()
         return usuario
+    finally:
+        if cursor:
+            cursor.close()
+        conexion.close()
