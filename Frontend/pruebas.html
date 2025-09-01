@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Materiales</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+    }
+
+    header {
+      background: #ddd;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      padding: 10px;
+    }
+
+    /* Sección izquierda */
+    .historial {
+      flex: 2;
+      margin-right: 10px;
+    }
+
+    .historial h2 {
+      text-align: center;
+      font-size: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table th, table td {
+      border: 1px solid #999;
+      padding: 6px;
+      text-align: center;
+    }
+
+    table th {
+      background: #eee;
+    }
+
+    /* Sección derecha */
+    .registro {
+      flex: 1;
+      border: 1px solid #999;
+      padding: 10px;
+      background: #fafafa;
+    }
+
+    .registro h3 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .registro label {
+      display: block;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    .registro input {
+      width: 95%;
+      padding: 5px;
+      margin-top: 3px;
+      border: 1px solid #999;
+    }
+
+    .registro .small-input {
+      width: 50px;
+      text-align: center;
+    }
+
+    .registro button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px;
+      background: #ddd;
+      border: 1px solid #999;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .registro button:hover {
+      background: #bbb;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <span>&larr;</span>
+    <h1>Registro de Materiales</h1>
+    <span>&times;</span>
+  </header>
+
+  <div class="container">
+    <!-- Vista Historial -->
+    <div class="historial">
+      <h2>Vista de Historial</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Código</th>
+            <th>Tipo</th>
+            <th>Precio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Aquí se agregarán los registros -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Registro -->
+    <div class="registro">
+      <h3>Registro</h3>
+      
+      <label>Ingrese el Nombre</label>
+      <input type="text" placeholder="Parche">
+
+      <label>Cantidad</label>
+      <input type="number" class="small-input" value="5">
+
+      <label>Código</label>
+      <input type="text" placeholder="#0000">
+
+      <label>Tipo</label>
+      <input type="text" placeholder="Material">
+
+      <label>Precio</label>
+      <input type="text" placeholder="$0000">
+
+      <label>Fecha de ingreso</label>
+      <input type="date" value="2025-08-02">
+
+      <button>Registrar</button>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+ body {
+      font-family:  'Segoe UI', sans-serif;;
+      margin: 0;
+      padding: 0;
+ }
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0A0F1C; /* Azul oscuro */
+  color: #FFD700; /* Amarillo para el texto */
+  height: 150px;
+  width: 100%;
+  position: fixed; /* Se queda arriba */
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.btn-orden {
+    background-color: #FFD700;
+    color: #0A0F1C;
+    border: none;
+    padding: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 1600px;
+    font-size: 25px ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    h1 {
+      text-align: center;
+      margin: 10px 0;
+    }
+    .top-bar {
+      justify-content: left;
+      padding: 10px;
+    }
+    select {
+      margin-top: 200px;
+      padding: 10px;
+      font-size: 25px;
+    }
+    
+    .ordenes {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 10px;
+      gap: 10px;
+    }
+    .servicio {
+      border: 3px solid #FFD700;
+      padding: 60px;
+      width: 180px;
+      background-color: #0A0F1C;
+      margin-top: 50px;
+      color: #FFD700;
+      font-size: 20px;
+    }
+
+
+
+
+    
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+    .modal-content {
+      background: #0A0F1C;
+      padding: 20px;
+      border: 1px solid #FFD700;
+      width: 400px;
+      max-width: 90%;
+    }
+    .modal-content h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #FFD700;
+    }
+    .modal-content label {
+      display: block;
+      margin-top: 10px;
+    }
+    .modal-content input, 
+    .modal-content textarea {
+      width: 95%;
+      padding: 5px;
+      margin-top: 5px;
+      border: 1px solid #FFD700;
+    }
+    .modal-content button {
+      display: block;
+      margin: 15px auto 0;
+      padding: 10px 20px;
+      background-color: #FFD700;
+      color: #0A0F1C;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      
+    }
+    .close {
+      float: right;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+
+
+
+
+
+
+
+    @media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    .container {
+        padding: 10px;
+    }
+}

@@ -35,21 +35,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 select {
   background: #FFD700;
   color: #0A0F1C;
@@ -71,36 +56,57 @@ input[type="text1"] {
   border-radius: 5px;
 }
 
-
-
-
-
-
-/* -------------------------
-   Barra superior (header)
--------------------------- */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #0A0F1C; /* Azul oscuro */
-  color: #FFD700; /* Amarillo para el texto */
+  background-color: #0A0F1C; 
+  color: #FFD700; 
   height: 70px;
   width: 100%;
-  position: fixed; /* Se queda arriba */
+  position: fixed; 
   top: 0;
   left: 0;
   z-index: 1000;
 }
 
-.header h2 {
-  margin: 0;
-  font-size: 22px;
+.header2 {
+  align-items: center;
+  justify-content: center;
+  background-color: #0A0F1C; 
+  color: #FFD700; 
+  height: 50px;
+  width: 99.3%; 
 }
 
-/* -------------------------
-   Layout principal
--------------------------- */
+.historial {
+      flex: 2;
+      margin-right: 10px;
+    }
+
+    .historial h2 {
+      text-align: center;
+      font-size: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table th, table td {
+      border: 1px solid #999;
+      padding: 6px;
+      text-align: center;
+    }
+
+    table th {
+      background: #eee;
+    }
+.header2 h2 {
+  margin: 0;
+  font-size: 20px;
+}
 .container {
   display: flex;
   margin-top: 70px; /* Empuje para que no se tape con el header */
@@ -116,52 +122,10 @@ input[type="text1"] {
   background: #fff;
 }
 
-.search-sort {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.search-sort input, 
-.search-sort select {
-  padding: 6px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-/* Tarjetas */
-.references {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
-
-.reference-card {
-  border: 1px solid #ccc;
-  padding: 10px;
-  background: #fff;
-  display: flex;
-  gap: 10px;
-  border-radius: 5px;
-}
-
-.reference-card .img {
-  width: 70px;
-  height: 70px;
-  background: #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-}
-
-.reference-card .info {
-  font-size: 14px;
-}
 
 /* Panel derecho */
 .right-panel {
+  justify-content: left;
   width: 35%;
   height: 100%;
   padding: 20px;
