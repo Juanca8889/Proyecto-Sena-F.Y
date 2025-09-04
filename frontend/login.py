@@ -6,11 +6,13 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from BD.conexion import  ConexionUsuario, verificar_usuario
+from BD.Clientes import  ConexionClientes
+
 
 app = Flask(__name__)
 app.secret_key = 'wjson'
 
-@app.route
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -18,9 +20,7 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         
-
         usuario = verificar_usuario(username, password)  
-
 
         if usuario:
             session['usuario'] = usuario['nombre']
@@ -63,6 +63,18 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('register.html')
+
+
+
+
+@app.route("/clientes")
+def mostrar_clientes():
+    conexion = ConexionClientes()
+    clientes = conexion.mostrar_clientes()
+    conexion.cerrar()
+
+    return render_template("Gestion_clientes.html", usuarios=clientes)
+
 
 
 if __name__ == '__main__':

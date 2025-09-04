@@ -21,7 +21,8 @@
             </div>
             <div class="segundo">
             <label for="password">Contraseña:</label><br>
-            <input type="password" id="password" name="password" required><br>
+            <input type="password" name="password" name="password" required pattern="^(?=.*[A-Z])(?=(?:.*\d){3})(?!.*(\d).*\1).{8,}$"
+            title="Debe tener mínimo 8 caracteres, al menos una mayúscula y 3 números no repetidos"><br>
             <a href="/register">¿No tienes usuario?</a>
             </div>
             <div class="ingresar">
