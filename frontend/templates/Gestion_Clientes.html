@@ -71,11 +71,11 @@
               contactos y transaccion
             </p>
             <div class="clientes-actions">
-              <select>
-                <option>Buscar clientes…</option>
-                <option>A-Z</option>
-                <option>Recientes</option>
-                <option>Antiguos</option>
+              <select onchange="location.href='/clientes?orden=' + this.value">
+                <option value="">Buscar clientes…</option>
+                <option value="az">A-Z</option>
+                <option value="recientes">Recientes</option>
+                <option value="antiguos">Antiguos</option>
               </select>
             </div>
             <div class="tabla-contenedor">
@@ -88,6 +88,7 @@
                     <th>Modelo</th>
                     <th>Placa</th>
                     <th>ID</th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -99,20 +100,21 @@
                     <td>{{ usuario.modelo }}</td>
                     <td>{{ usuario.placa }}</td>
                     <td>{{ usuario.id_cliente }}</td>
+                    <td>
+                      <button><i data-feather="edit"></i></button>
+                      <button><i data-feather="trash"></i></button>
+                    </td>
                   </tr>
                   {% endfor %}
                 </tbody>
               </table>
             </div>
-            <div class="actions-icons">
-              <span>&#9998;</span>
-              <span>&#128465;</span>
-            </div>
+            <div class="actions-icons"></div>
           </main>
         </div>
 
         <footer class="cerrar-sesion">
-          <a href="login"><i data-feather="arrow-right"></i></a>
+          <a href="./login"><i data-feather="arrow-right"></i></a>
         </footer>
       </main>
     </div>
