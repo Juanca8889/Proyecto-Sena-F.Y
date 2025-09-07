@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Búsqueda y filtrado de material</title>
+  <link rel="stylesheet" href="Filtro.css">
+  
+</head>
+<body>
+  <header>
+    <div class="left">
+      <button>&larr;</button>
+      <input type="text" placeholder="Buscar material">
+      <h2>Búsqueda y filtrado de material</h2>
+    </div>
+    <div class="right">
+      <button class="btn-orden" id="abrirModal">Crear</button>
+      <button>&#128276;</button>
+    </div>
+  </header>
+
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Precio</th>
+          <th>Proveedor</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filas de ejemplo -->
+        <tr>
+          <td>001</td>
+          <td>Material A</td>
+          <td>Tipo 1</td>
+          <td>$100</td>
+          <td>Proveedor X</td>
+          <td>Activo</td>
+        </tr>
+        <tr>
+          <td>002</td>
+          <td>Material B</td>
+          <td>Tipo 2</td>
+          <td>$150</td>
+          <td>Proveedor Y</td>
+          <td>Inactivo</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      <button>&laquo;</button>
+      <span class="active">1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>4</span>
+      <span>5</span>
+      <button>&laquo;</button>
+    </div>
+  </main>
+
+
+
+
+
+<!-- MODALl -->
+  <div class="modal" id="miModal">
+    <div class="modal-content">
+      <span class="close" id="cerrarModal">&times;</span>
+      <h2>Crear Material</h2>
+      <form>
+        <label>Codigo:</label>
+        <input type="text">
+
+        <label>Nombre:</label>
+        <input type="text">
+
+        <label>Tipo:</label>
+        <input type="datetime-local">
+
+        <label>Precio:</label>
+        <input type="text">
+
+        <label>Proveedor:</label>
+        <textarea></textarea>
+
+        
+        <label>Estado:</label>
+        <select>
+            <option>Activo</option>
+            <option>Inactivo</option>
+        </select>
+        <button type="submit">Crear Material</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Abrir modal
+    document.getElementById("abrirModal").addEventListener("click", function() {
+      document.getElementById("miModal").style.display = "flex";
+    });
+    // Cerrar modal
+    document.getElementById("cerrarModal").addEventListener("click", function() {
+      document.getElementById("miModal").style.display = "none";
+    });
+    // Cerrar si clickea fuera
+    window.addEventListener("click", function(e) {
+      if (e.target == document.getElementById("miModal")) {
+        document.getElementById("miModal").style.display = "none";
+      }
+    });
+  </script>
+
+
+
+
+
+</body>
+</html>
