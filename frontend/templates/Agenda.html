@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gestión de Clientes</title>
+    <link rel="stylesheet" href="./static/style.css" />
+    <link rel="stylesheet" href="./static/Agenda.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+  </head>
+  <body>
+    <div class="contenedor">
+      <aside class="sidebar">
+        <h2>🚗 Montallantas.F.Y</h2>
+        <nav>
+          <ul>
+            <li>
+              <button><i data-feather="truck"></i> Domicilios</button>
+            </li>
+            <li>
+              <button><i data-feather="file-text"></i> Inventario</button>
+            </li>
+            <li>
+              <button><i data-feather="bar-chart-2"></i> Garantias</button>
+            </li>
+            <li>
+              <button>
+                <i data-feather="users"></i> Fidelización Clientes
+              </button>
+            </li>
+            <li>
+              <button><i data-feather="file-text"></i> Empleados</button>
+            </li>
+            <li>
+              <button><i data-feather="tool"></i> Herramientas</button>
+            </li>
+            <li>
+              <button><i data-feather="settings"></i> Configuración</button>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="contenido">
+        <header class="barra-superior">
+          <div class="nav-iconos">
+            <span><i data-feather="home"></i> Inicio</span>
+            <span><i data-feather="calendar"></i> Agenda</span>
+            <span><i data-feather="file-text"></i> Reportes</span>
+            <span><i data-feather="bell"></i> Notificaciones</span>
+            <span><i data-feather="shopping-cart"></i> Ventas</span>
+            <span><i data-feather="clipboard"></i> Pedidos</span>
+            <span><i data-feather="info"></i> Info</span>
+          </div>
+          <div class="buscar">
+            <input type="search" placeholder="Buscar..." class="buscador" />
+            <i data-feather="search" class="icono-busqueda"></i>
+            <i data-feather="user" class="icono-usuario"></i>
+          </div>
+        </header>
+        <!-- Contenido de la agenda-->
+        <div class="general_agenda">
+          <a class="salir" href="./Agenda"><i data-feather="arrow-left"></i></a>
+          <h2 class="titulo_agenda">Agenda de mantenimiento</h2>
+
+          <!-- Selector de vista -->
+          <div class="selector">
+            <form method="get" action="{{ url_for('agenda') }}">
+              <button
+                class="boton-seleccionado"
+                type="submit"
+                name="vista"
+                value="mensual"
+              >
+                Mensual
+              </button>
+              <button
+                class="boton-seleccionado"
+                type="submit"
+                name="vista"
+                value="semanal"
+              >
+                Semanal
+              </button>
+            </form>
+          </div>
+
+          {% if vista == 'mensual' %}
+          <!-- Vista Mensual -->
+          <div id="mensual-vista">
+            <div class="calendario">
+              {% for dia in dias %}
+              <div class="dia">
+                {{ dia }}
+                <!-- botón que abre el formulario pasando el día por GET -->
+                <form method="get" action="{{ url_for('agenda') }}">
+                  <input type="hidden" name="vista" value="{{ vista }}" />
+                  <button
+                    class="boton-agregar"
+                    type="submit"
+                    name="dia"
+                    value="{{ dia }}"
+                  >
+                    +
+                  </button>
+                </form>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% else %}
+          <!-- Vista Semanal -->
+          <div id="semanal-vista">
+            <div class="calendario">
+              {% for dia in dias %}
+              <div class="dia">
+                {{ dia }}
+                <form method="get" action="{{ url_for('agenda') }}">
+                  <input type="hidden" name="vista" value="{{ vista }}" />
+                  <button
+                    class="boton-agregar"
+                    type="submit"
+                    name="dia"
+                    value="{{ dia }}"
+                  >
+                    +
+                  </button>
+                </form>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Formulario de actividad (solo aparece si se seleccionó un día) -->
+          {% if dia_seleccionado %}
+          <div id="form-actividad" class="form-actividad mostrar">
+            <form method="post" action="{{ url_for('agregar') }}">
+              <input type="hidden" name="dia" value="{{ dia_seleccionado }}" />
+              <label>Máquina <input type="text" name="maquina" /></label>
+              <label>Personal <input type="text" name="personal" /></label>
+              <label>Hora <input type="text" name="hora" /></label>
+              <label
+                >Descripción <textarea name="descripcion"></textarea>
+              </label>
+              <button class="boton-modal" type="submit">Guardar</button>
+              <!-- Botón para cerrar: vuelve a la agenda sin parámetro "dia" -->
+              <a class="boton-modal" href="{{ url_for('agenda', vista=vista) }}"
+                >Cerrar</a
+              >
+            </form>
+          </div>
+          {% endif %}
+        </div>
+
+        <footer class="cerrar-sesion">
+          <a href="./login"><i data-feather="arrow-right"></i></a>
+        </footer>
+      </main>
+    </div>
+    <script>
+      feather.replace();
+    </script>
+  </body>
+</html>

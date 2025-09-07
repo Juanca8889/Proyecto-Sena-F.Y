@@ -65,7 +65,7 @@ def home():
 def Empleado():
     return render_template('empleado.html')
 
-#rutas de gestion de clientes
+#RUTAS DE GESTION DE CLIENTES
 
 @app.route("/clientes")
 def mostrar_clientes():
@@ -98,6 +98,27 @@ def editar_cliente(id_cliente):
         cliente = conexion.obtener_usuario(id_cliente)
         conexion.cerrar()
         return render_template("editar_cliente.html", cliente=cliente)
+
+
+#RUTAS PARA LA ANGENDA DE  MANTINIMETO
+
+@app.route('/agenda', methods=['GET'])
+def agenda():
+    vista = request.args.get('vista', 'mensual')  # mensual por defecto
+    dia_seleccionado = request.args.get('dia')    # None si no hay
+    dias = range(1, 32) if vista == 'mensual' else range(1, 8)
+    return render_template('agenda.html', dias=dias, vista=vista, dia_seleccionado=dia_seleccionado)
+
+@app.route('/agregar', methods=['POST'])
+def agregar():
+    dia = request.form.get('dia')
+    maquina = request.form.get('maquina')
+    personal = request.form.get('personal')
+    hora = request.form.get('hora')
+    descripcion = request.form.get('descripcion')
+    # 👉 aquí guardarías en BD con tu lógica
+
+    return redirect(url_for('agenda', vista='mensual'))
 
 
 
