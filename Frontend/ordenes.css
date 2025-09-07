@@ -1,88 +1,106 @@
  body {
-      font-family:  'Segoe UI', sans-serif;;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      padding: 0;
- }
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #0A0F1C; /* Azul oscuro */
-  color: #FFD700; /* Amarillo para el texto */
-  height: 150px;
-  width: 100%;
-  position: fixed; /* Se queda arriba */
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  
-}
-
-.header h2 {
-  margin: 0;
-  font-size: 30px;
-}
-
-.btn-orden {
-    background-color: #FFD700;
-    color: #0A0F1C;
-    border: none;
-    padding: 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-left: 1600px;
-    font-size: 25px ;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    h1 {
-      text-align: center;
-      margin: 10px 0;
+      background: #f9f9f9;
     }
-    .top-bar {
-      justify-content: left;
-      padding: 10px;
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background: #0A0F1C;
+      COLOR: #FFD700;
     }
+
+    header h2 {
+      margin: 0;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin: 20px;
+    }
+
     select {
-      margin-top: 200px;
-      padding: 10px;
-      font-size: 25px;
+        margin-top: 20px;
+      padding: 6px;
+      font-size: 14px;
+      background-color: #0A0F1C;
+      color: #eee;
+    }
+    select:hover{
+        background-color: #FFD700;
+        color:#0A0F1C
+    }
+
+    .create-order {
+      display: flex;
+      justify-content: flex-end;
+      margin: 20px;
+    }
+
+    .create-order button {
+      padding: 10px 20px;
+      background: #0A0F1C;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: #FFD700;  
+      color: black;             
     }
     
-    .ordenes {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 10px;
-      gap: 10px;
-    }
-    .servicio {
-      border: 3px solid #FFD700;
-      padding: 60px;
-      width: 180px;
-      background-color: #0A0F1C;
-      margin-top: 50px;
-      color: #FFD700;
-      font-size: 20px;
+
+    .section-title {
+      margin: 20px;
+      font-weight: bold;
     }
 
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 0 20px 30px;
+    }
+
+    .card {
+      border: 1px solid #FFD700;
+      width: 180px;
+      padding: 10px;
+      background: #fff;
+    }
+
+    .card h4 {
+      margin: 0 0 10px;
+    }
+
+    .card p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .garantia {
+      margin-top: 10px;
+      padding: 5px 10px;
+      border: 1px solid #000;
+      font-size: 12px;
+      display: inline-block;
+      background: #eee;
+      border-radius: 3px;
+    }
+
+    /* Hover para resaltar tarjetas */
+    .card:hover {
+      background: #FFD700;
+      transform: scale(1.02);
+      transition: 0.2s;
+      cursor: pointer;
+    }
 
 
 
@@ -148,7 +166,47 @@
 
 
 
-    @media (max-width: 768px) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       @media (max-width: 768px) {
     body {
         font-size: 14px;
     }
