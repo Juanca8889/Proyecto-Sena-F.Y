@@ -3,62 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="ordenes.css">
   <title>Órdenes de Servicio</title>
+  <link rel="stylesheet" href="ordenes.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h2>Ordenes de servicio</h2>
-        </div>
-    </div>
-    <div class="top-bar">
+  <header>
     <div>
-      <select>
-        <option>Hoy</option>
-        <option>Ayer</option>
-        <option>Últimos 7 días</option>
-        <option>Último mes</option>
-        <option>DD/MM/AA</option>
-      </select>
-      <select>
-        <option>Filtrar</option>
-        <option>Instalación</option>
-        <option>Reparación</option>
-        <option>Revisiones</option>
-      </select> <button class="btn-orden" id="abrirModal">Crear Orden</button>
+      <button>&larr;</button>
+      <h2>Órdenes de Servicio</h2>
     </div>
-  </div>
-  
+    <div>
+      <button>&#8635;</button>
+    </div>
+  </header>
 
-  <div class="ordenes">
-    <div class="servicio">
-      <strong>Servicio</strong><br>
-      Modelo:<br>
-      Servicio:<br>
-      Fecha y hora:<br>
-      Responsable:<br>
-      Detalles:
-    </div>
-    <div class="servicio">
-      <strong>Servicio</strong><br><BR>
-      Modelo:<br>
-      Servicio:<br>
-      Fecha y hora:<br>
-      Responsable:<br>
-      Detalles:
-    </div>
-    <div class="servicio">
-      <strong>Servicio</strong><br>
-      Modelo:<br>
-      Servicio:<br>
-      Fecha y hora:<br>
-      Responsable:<br>
-      Detalles:
-    </div>
+  <div class="filters">
+    <select>
+      <option>Hoy</option>
+      <option>Ayer</option>
+      <option>Últimos 7 días</option>
+      <option>Último mes</option>
+      <option>DD/MM/AA</option>
+    </select>
+    <select>
+      <option>Filtrar</option>
+      <option>Instalaciones</option>
+      <option>Reparaciones</option>
+      <option>Revisiones</option>
+    </select>
   </div>
 
-  <!-- MODALl -->
+  <div class="create-order">
+    </select> <button class="btn-orden" id="abrirModal">Crear Orden</button>
+  </div>
+
+   <div class="section-title">Hoy</div>
+  <div class="cards">
+    <div class="card">
+      <h4>Servicio</h4>
+      <p><b>Modelo:</b></p>
+      <p><b>Servicio:</b></p>
+      <p><b>Fecha y hora:</b></p>
+      <p><b>Responsable:</b></p>
+      <p><b>Detalles:</b></p>
+      <span class="garantia">Garantía</span>
+    </div>
+    <div class="card">
+      <h4>Servicio</h4>
+      <p><b>Modelo:</b></p>
+      <p><b>Servicio:</b></p>
+      <p><b>Fecha y hora:</b></p>
+      <p><b>Responsable:</b></p>
+      <p><b>Detalles:</b></p>
+      <span class="garantia">Garantía</span>
+    </div>
+    <div class="card">
+      <h4>Servicio</h4>
+      <p><b>Modelo:</b></p>
+      <p><b>Servicio:</b></p>
+      <p><b>Fecha y hora:</b></p>
+      <p><b>Responsable:</b></p>
+      <p><b>Detalles:</b></p>
+      <span class="garantia">Garantía</span>
+    </div>
+  </div>
+
+  <div class="section-title">15 de mayo</div>
+  <div class="cards">
+    <div class="card">
+      <h4>Servicio</h4>
+      <p><b>Modelo:</b></p>
+      <p><b>Servicio:</b></p>
+      <p><b>Fecha y hora:</b></p>
+      <p><b>Responsable:</b></p>
+      <p><b>Detalles:</b></p>
+      <span class="garantia">Garantía</span>
+    </div>
+    <div class="card">
+      <h4>Servicio</h4>
+      <p><b>Modelo:</b></p>
+      <p><b>Servicio:</b></p>
+      <p><b>Fecha y hora:</b></p>
+      <p><b>Responsable:</b></p>
+      <p><b>Detalles:</b></p>
+      <span class="garantia">Garantía</span>
+    </div>
+    <div class="card">
+      <h4>Servicio</h4>
+      <p><b>Modelo:</b></p>
+      <p><b>Servicio:</b></p>
+      <p><b>Fecha y hora:</b></p>
+      <p><b>Responsable:</b></p>
+      <p><b>Detalles:</b></p>
+      <span class="garantia">Garantía</span>
+    </div>
+  </div>
+
+<!-- MODALl -->
   <div class="modal" id="miModal">
     <div class="modal-content">
       <span class="close" id="cerrarModal">&times;</span>
@@ -107,6 +148,7 @@
       }
     });
   </script>
+
 
 </body>
 </html>
