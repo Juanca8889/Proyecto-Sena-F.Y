@@ -85,7 +85,7 @@
     }
     button:hover {
       background-color: #FFD700;  
-      color: #0000;             
+      color: black;             
     }
 
 
@@ -99,7 +99,7 @@
 
 
 
-    /* MODALl */
+    /* MODAL*/
     .modal {
       display: none;
       position: fixed;

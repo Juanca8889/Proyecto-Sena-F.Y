@@ -1,56 +1,45 @@
-import mysql.connector
+
+
+
+
 
 class Inventario:
-    def __init__(self):
-        self.conexion = mysql.connector.connect(
-            host="localhost",
-            user="root",        # cambia por tu usuario
-            password="",        # cambia por tu contraseña
-            database="montallantasfy"
-        )
-        self.cursor = self.conexion.cursor(dictionary=True)
-
-    def registrar_producto(self, nombre, descripcion, cantidad, categoria_id, precio):
-        query = """
-        INSERT INTO Producto (nombre, descripcion, cantidad, categoria_id, precio)
-        VALUES (%s, %s, %s, %s, %s)
+    def __init__(self, materiales):
         """
-        valores = (nombre, descripcion, cantidad, categoria_id, precio)
-        self.cursor.execute(query, valores)
-        self.conexion.commit()
-        print("✅ Producto registrado con éxito.")
-
-    def registrar_inventario(self, producto_id, cantidad, categoria_id, rol_id=None):
-        query = """
-        INSERT INTO InventarioProductos (producto_id, cantidad, categoria_id, rol_id)
-        VALUES (%s, %s, %s, %s)
+        Recibe una lista de materiales, donde cada material es un diccionario.
+        Ejemplo de un material:
+        {
+            "codigo": "001",
+            "nombre": "Tornillo",
+            "categoria": "Ferretería",
+            "proveedor": "ACME",
+            "modelo": "M4"
+        }
         """
-        valores = (producto_id, cantidad, categoria_id, rol_id)
-        self.cursor.execute(query, valores)
-        self.conexion.commit()
-        print("✅ Inventario actualizado.")
+        self.materiales = materiales
 
-    def mostrar_inventario(self):
-        query = """
-        SELECT p.nombre, p.descripcion, p.precio, ip.cantidad, c.nombre AS categoria, r.nombre AS rol
-        FROM InventarioProductos ip
-        INNER JOIN Producto p ON ip.producto_id = p.id
-        INNER JOIN categoriaProductos c ON ip.categoria_id = c.id
-        LEFT JOIN Rol r ON ip.rol_id = r.id
+    def buscar(self, **criterios):
         """
-        self.cursor.execute(query)
-        return self.cursor.fetchall()
-    
-    
-# Crear objeto Inventario
-inv = Inventario()
+        Busca materiales en el inventario según los criterios dados.
+        Ejemplo:
+            buscar(nombre="tornillo")
+            buscar(categoria="herramientas", proveedor="ACME")
+        """
+        resultados = self.materiales
+        for clave, valor in criterios.items():
+            resultados = [m for m in resultados if m[clave].lower() == valor.lower()]
+        return resultados
 
-# Registrar un producto
-inv.registrar_producto("Llanta 185/65 R15", "Llanta para automóvil", 20, 1, 350000)
 
-# Registrar inventario
-inv.registrar_inventario(1, 20, 1, 2)
+# Ejemplo de uso:
+if __name__ == "__main__":
+    materiales = [
+        {"codigo": "001", "nombre": "Tornillo", "categoria": "Ferretería", "proveedor": "ACME", "modelo": "M4"},
+        {"codigo": "002", "nombre": "Martillo", "categoria": "Herramientas", "proveedor": "ToolCo", "modelo": "Standard"},
+        {"codigo": "003", "nombre": "Taladro", "categoria": "Herramientas", "proveedor": "Bosch", "modelo": "X100"},
+    ]
 
-# Mostrar inventario
-for fila in inv.mostrar_inventario():
-    print(fila)
+    inv = Inventario(materiales)
+
+    print("🔎 Buscar por nombre:", inv.buscar(nombre="Martillo"))
+    print("🔎 Buscar por categoría y proveedor:", inv.buscar(categoria="Herramientas", proveedor="Bosch"))
