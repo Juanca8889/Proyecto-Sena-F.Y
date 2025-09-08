@@ -1,0 +1,167 @@
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0A0F1C;
+      padding: 10px 15px;
+      color: #FFD700;
+    }
+
+    header .left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    header input {
+      padding: 5px;
+      width: 200px;
+    }
+
+    header h2 {
+      margin: 0;
+    }
+
+    header .right {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      padding: 6px 12px;
+      background: #444;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+
+    table th, table td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: center;
+    }
+
+    table th {
+      background:#0A0F1C;
+      color: #FFD700;
+    }
+    table tbody tr:hover {
+      background-color: #d3d3d3;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin: 10px 0;
+      
+    }
+
+    .pagination span, .pagination button {
+      border: 1px solid #999;
+      padding: 5px 10px;
+      cursor: pointer;
+      background: #f9f9f9;
+    }
+
+    .pagination .active {
+      background: #333;
+      color: #fff;
+    }
+    button:hover {
+      background-color: #FFD700;  
+      color: black;             
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    /* MODAL*/
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+    .modal-content {
+      background: #0A0F1C;
+      padding: 20px;
+      border: 1px solid #FFD700;
+      width: 400px;
+      max-width: 90%;
+    }
+    .modal-content h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #FFD700;
+    }
+    .modal-content label {
+      display: block;
+      margin-top: 10px;
+    }
+    .modal-content input, 
+    .modal-content textarea {
+      width: 95%;
+      padding: 5px;
+      margin-top: 5px;
+      border: 1px solid #FFD700;
+    }
+    .modal-content button {
+      display: block;
+      margin: 15px auto 0;
+      padding: 10px 20px;
+      background-color: #FFD700;
+      color: #0A0F1C;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      
+    }
+    .close {
+      float: right;
+      cursor: pointer;
+      font-weight: bold;
+    }
+     select {
+      padding: 7px;
+      font-size: 15px;
+    }
+
+      @media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    .container {
+        padding: 10px;
+    }
+}
