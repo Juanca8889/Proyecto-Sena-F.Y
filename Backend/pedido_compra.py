@@ -1,14 +1,13 @@
 import sys
 import os
 
-# Asegura que BD esté en el path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'BD')))
 
-from conexion import ConexionCompra  # Importa desde BD/conexion.py
+from conexion import ConexionCompra  
 
 class GestorCompras:
     def __init__(self):
-        # Para consultas generales, instancia sin datos de compra
+        
         self.conexion_bd = ConexionCompra(
             id_proveedor=None,
             id_producto=None,
