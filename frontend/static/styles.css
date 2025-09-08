@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap');
+
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #ffffff;
+    color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #0A0F1C;
+    color: #FFD700;
+    padding: 5px 0; 
+    text-align: center;
+    font-size: 1.5em; 
+    font-weight: 700;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Merriweather', serif;
+    color: #FFD700;
+    margin-bottom: 0.5em;
+}
+
+main {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.filtros-sugerencias {
+    display: flex;
+    gap: 40px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.filtros {
+    flex: 1 1 200px;
+    background-color: #0D1B2A;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px #00000088;
+    height: fit-content;
+    color: #FFFFFF;
+}
+
+.filtros label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+    color: #FFD700;
+}
+
+.filtros select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #FFD700;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #0A0F1C;
+    color: #FFFFFF;
+}
+
+.contenedor-materiales {
+    flex: 3 1 600px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+    gap: 20px;
+}
+
+.material {
+    background-color: #0D1B2A;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #FFFFFF;
+}
+
+.nombre-material {
+    font-weight: 700;
+    font-size: 1.2em;
+    margin-bottom: 8px;
+    color: #FFD700;
+}
+
+.material p {
+    margin: 4px 0;
+    font-size: 0.95em;
+    color: #CCCCCC;
+}
+
+.material form {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.material label {
+    font-weight: 600;
+    font-size: 0.9em;
+    color: #FFD700;
+}
+
+.material input[type="number"],
+.material select,
+.material input[type="date"] {
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #FFD700;
+    font-size: 1em;
+    width: 100%;
+    background-color: #0A0F1C;
+    color: #FFFFFF;
+}
+
+.material button {
+    background-color: #FFD700;
+    border: none;
+    color: #0A0F1C;
+    padding: 10px;
+    font-weight: 700;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+.material button:hover {
+    background-color: #FFFFFF;
+}
+
+.sugerencias {
+    flex: 1 1 250px;
+    background-color: #0D1B2A;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px #00000088;
+    height: fit-content;
+    color: #FFFFFF;
+}
+
+.sugerencias h3 {
+    margin-top: 0;
+    color: #FFD700;
+    font-weight: 700;
+}
+
+.sugerencia-item {
+    background-color: #0F1525;
+    margin-bottom: 12px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(255, 215, 0, 0.15);
+    color: #FFFFFF;
+}
+
+.botones-principales {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.botones-principales button {
+    background-color: #FFD700;
+    border: none;
+    color: #0A0F1C;
+    padding: 12px 25px;
+    font-weight: 700;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+.botones-principales button:hover {
+    background-color: #FFFFFF;
+}
+
+.formulario-pedido, .ver-pedidos {
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: #0D1B2A;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 0.4);
+    color: #FFFFFF;
+}
+
+.formulario-pedido h2, .ver-pedidos h2 {
+    color: #FFD700;
+    margin-bottom: 25px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.formulario-pedido form label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #FFD700;
+}
+
+.formulario-pedido form input[type="text"],
+.formulario-pedido form input[type="number"],
+.formulario-pedido form select,
+.formulario-pedido form input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #FFD700;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: #0A0F1C;
+    color: #FFFFFF;
+}
+
+.formulario-pedido form button {
+    background-color: #FFD700;
+    color: #0A0F1C;
+    font-weight: 700;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.25s ease;
+}
+
+.formulario-pedido form button:hover {
+    background-color: #FFFFFF;
+}
+
+.formulario-pedido a button {
+    margin-top: 15px;
+    width: 100%;
+    background-color: #999999;
+    border: none;
+    color: white;
+    font-weight: 700;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.formulario-pedido a button:hover {
+    background-color: #666666;
+}
+
+.ver-pedidos ul {
+    list-style: none;
+    padding: 0;
+}
+
+.ver-pedidos ul li {
+    padding: 10px 15px;
+    margin-bottom: 12px;
+    background-color: #0F1525;
+    border-radius: 6px;
+    color: #FFD700;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(255, 215, 0, 0.3);
+}
+
+.boton-volver {
+    display: block;
+    width: 100%;
+    background-color: #999999;
+    color: white;
+    padding: 12px 0;
+    text-align: center;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.boton-volver i {
+    margin-right: 8px;
+}
+
+.boton-volver:hover {
+    background-color: #888888;
+}
+
+.alert {
+  padding: 15px;
+  margin: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
