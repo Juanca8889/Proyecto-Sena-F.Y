@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Inventario de herramientas</title>
+  <link rel="stylesheet" href="stylos.css" />
+</head>
+<body>
+  <div class="contenedor">
+    <!-- IZQUIERDA: Inventario -->
+    <section class="inventario">
+      <h2>Inventario de herramientas</h2>
+
+      <input type="text" id="busqueda" class="buscador" placeholder="search" />
+
+      <div class="filtros">
+        <label for="filtro">FILTRO</label>
+        <select id="filtro">
+          <option value="todos">Todos</option>
+          <option value="Disponible">Disponible</option>
+          <option value="En uso">En uso</option>
+          <option value="Dañado">Dañado</option>
+          <option value="Nuevo">Nuevo</option>
+        </select>
+      </div>
+
+      <div id="lista-herramientas" class="lista-herramientas">
+        <!-- Se llena dinámicamente -->
+      </div>
+    </section>
+
+    <!-- DERECHA: Formularios -->
+    <section class="panel">
+      <!-- Registro -->
+      <h2>Registro de herramientas</h2>
+      <form id="form-registro" autocomplete="off">
+        <label>Nombre</label>
+        <input type="text" id="reg-nombre" placeholder="Ingrese el nombre" required />
+
+        <label>Descripción</label>
+        <input type="text" id="reg-descripcion" placeholder="Descripción" />
+
+        <label>Código</label>
+        <input type="text" id="reg-codigo" placeholder="COD-000" required />
+
+        <label>Cantidad</label>
+        <input type="number" id="reg-cantidad" min="1" value="1" required />
+
+        <button type="submit">Registrar</button>
+      </form>
+
+      <!-- Retiro -->
+      <h3>Retiro de herramientas</h3>
+      <form id="form-retiro" autocomplete="off">
+        <label>Herramienta (código)</label>
+        <input type="text" id="ret-codigo" placeholder="Ej: COD-000" required />
+
+        <label>Cantidad</label>
+        <input type="number" id="ret-cantidad" min="1" value="1" required />
+
+        <label>Fecha</label>
+        <input type="date" id="ret-fecha" required />
+
+        <label>Nombre/usuario</label>
+        <input type="text" id="ret-usuario" placeholder="Ingrese su nombre/usuario" required />
+
+        <button type="submit">Retirar</button>
+      </form>
+
+      <!-- Reintegro -->
+      <h3>Reintegro de herramientas</h3>
+      <form id="form-reintegro" autocomplete="off">
+        <label>Herramienta (código)</label>
+        <input type="text" id="rein-codigo" placeholder="Ej: COD-000" required />
+
+        <label>Cantidad</label>
+        <input type="number" id="rein-cantidad" min="1" value="1" required />
+
+        <label>Fecha</label>
+        <input type="date" id="rein-fecha" required />
+
+        <label>Nombre/usuario</label>
+        <input type="text" id="rein-usuario" placeholder="Ingrese su nombre/usuario" required />
+
+        <button type="submit">Ingresar</button>
+      </form>
+    </section>
+  </div>
+
+  <!-- MODAL DE CONFIRMACIÓN -->
+  <div class="alerta" id="modal-confirm">
+    <p id="modal-texto">¿Confirmar acción?</p>
+    <div class="botones-alerta">
+      <button id="btn-no">No</button>
+      <button id="btn-si">Sí</button>
+    </div>
+  </div>
+
+  <!-- MENSAJE (éxito / error) -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
