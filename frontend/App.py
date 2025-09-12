@@ -4,8 +4,9 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 #Imports de base de datso y backend
-from BD.conexion import  ConexionUsuario, verificar_usuario
+from BD.conexion import  verificar_usuario
 from Backend.Clientes import  ConexionClientes
+from Backend.Usuario import ConexionUsuario
 
 
 app = Flask(__name__)
@@ -102,7 +103,7 @@ def editar_cliente(id_cliente):
 
 #RUTAS PARA LA ANGENDA DE  MANTINIMETO
 
-@app.route('/agenda', methods=['GET'])
+@app.route('/Agenda', methods=['GET'])
 def agenda():
     vista = request.args.get('vista', 'mensual')  # mensual por defecto
     dia_seleccionado = request.args.get('dia')    # None si no hay
@@ -120,6 +121,11 @@ def agregar():
 
     return redirect(url_for('agenda', vista='mensual'))
 
+
+
+@app.route('/gestion_tickets')
+def gestion_tickets():
+    return render_template('gestion_tickets.html')
 
 
 #para correr la app

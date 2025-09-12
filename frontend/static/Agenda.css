@@ -5,12 +5,12 @@
     box-shadow: 5px 5px 5px 5px #0A0F1C;
     border-radius: 12px;
     margin:80px auto;
-    max-width: 900px;
+    max-width: 1200px;
     
 
 }
 .titulo_agenda {
-    margin-top: 20px;
+    margin-top: 120px;
     font-family: 'Merriweather', serif;
 }
 .boton-seleccionado {
@@ -26,11 +26,11 @@
 
 .calendario {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 columnas iguales */
+    grid-template-columns: repeat(7, 1fr); 
     gap: 10px; /* espacio entre días */
     padding: 20px;
 
-    justify-items: center; /* centra cada día en su celda */
+    justify-items: center; 
 }
 .dia {
     border: 1px solid #0A0F1C;
@@ -43,7 +43,7 @@
     justify-content: center;
 }
 .boton-agregar {
-    background: #eee;
+    background: #e4ce00;
     border: none;
     border-radius: 50%;
     font-size: 20px;
