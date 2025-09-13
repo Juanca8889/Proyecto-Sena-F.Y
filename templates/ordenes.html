@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Órdenes de Servicio</title>
   <link rel="stylesheet" href="../static/ordenes.css">
+
 </head>
 <body>
   <header>
@@ -13,7 +14,7 @@
       <h2>Órdenes de Servicio</h2>
     </div>
     <div>
-      <button>&#8635;</button>
+      <button onclick="window.location.reload()">&#8635;</button>
     </div>
   </header>
 
@@ -34,98 +35,47 @@
   </div>
 
   <div class="create-order">
-    </select> <button class="btn-orden" id="abrirModal">Crear Orden</button>
+    <button class="btn-orden" id="abrirModal">Crear Orden</button>
   </div>
 
-   <div class="section-title">Hoy</div>
+  <div class="section-title">Órdenes</div>
   <div class="cards">
+    {% for orden in ordenes %}
     <div class="card">
       <h4>Servicio</h4>
-      <p><b>Modelo:</b></p>
-      <p><b>Servicio:</b></p>
-      <p><b>Fecha y hora:</b></p>
-      <p><b>Responsable:</b></p>
-      <p><b>Detalles:</b></p>
-      <span class="garantia">Garantía</span>
+      <p><b>Modelo:</b> {{ orden.modelo }}</p>
+      <p><b>Servicio:</b> {{ orden.servicio }}</p>
+      <p><b>Fecha y hora:</b> {{ orden.fecha_hora }}</p>
+      <p><b>Responsable:</b> {{ orden.responsable }}</p>
+      <p><b>Detalles:</b> {{ orden.detalles }}</p>
+      <span class="garantia">{{ orden.garantia }}</span>
     </div>
-    <div class="card">
-      <h4>Servicio</h4>
-      <p><b>Modelo:</b></p>
-      <p><b>Servicio:</b></p>
-      <p><b>Fecha y hora:</b></p>
-      <p><b>Responsable:</b></p>
-      <p><b>Detalles:</b></p>
-      <span class="garantia">Garantía</span>
-    </div>
-    <div class="card">
-      <h4>Servicio</h4>
-      <p><b>Modelo:</b></p>
-      <p><b>Servicio:</b></p>
-      <p><b>Fecha y hora:</b></p>
-      <p><b>Responsable:</b></p>
-      <p><b>Detalles:</b></p>
-      <span class="garantia">Garantía</span>
-    </div>
+    {% endfor %}
   </div>
 
-  <div class="section-title">15 de mayo</div>
-  <div class="cards">
-    <div class="card">
-      <h4>Servicio</h4>
-      <p><b>Modelo:</b></p>
-      <p><b>Servicio:</b></p>
-      <p><b>Fecha y hora:</b></p>
-      <p><b>Responsable:</b></p>
-      <p><b>Detalles:</b></p>
-      <span class="garantia">Garantía</span>
-    </div>
-    <div class="card">
-      <h4>Servicio</h4>
-      <p><b>Modelo:</b></p>
-      <p><b>Servicio:</b></p>
-      <p><b>Fecha y hora:</b></p>
-      <p><b>Responsable:</b></p>
-      <p><b>Detalles:</b></p>
-      <span class="garantia">Garantía</span>
-    </div>
-    <div class="card">
-      <h4>Servicio</h4>
-      <p><b>Modelo:</b></p>
-      <p><b>Servicio:</b></p>
-      <p><b>Fecha y hora:</b></p>
-      <p><b>Responsable:</b></p>
-      <p><b>Detalles:</b></p>
-      <span class="garantia">Garantía</span>
-    </div>
-  </div>
-
-<!-- MODALl -->
+  <!-- MODAL -->
   <div class="modal" id="miModal">
     <div class="modal-content">
       <span class="close" id="cerrarModal">&times;</span>
       <h2>Crear Orden</h2>
-      <form>
+      <form method="POST" action="{{ url_for('ordenesdeservicio') }}">
         <label>Modelo:</label>
-        <input type="text">
+        <input type="text" name="modelo" required>
 
         <label>Servicio:</label>
-        <input type="text">
+        <input type="text" name="servicio" required>
 
         <label>Fecha y hora:</label>
-        <input type="datetime-local">
+        <input type="datetime-local" name="fecha_hora" required>
 
         <label>Responsable:</label>
-        <input type="text">
+        <input type="text" name="responsable" required>
 
         <label>Detalles:</label>
-        <textarea></textarea>
+        <textarea name="detalles" required></textarea>
 
-        <h3>Garantía</h3>
-        <label>Tipo de garantía:</label>
-        <input type="text">
-
-        <label>Fecha límite:</label>
-        <input type="date">
+        <label>Garantía:</label>
+        <input type="text" name="garantia">
 
         <button type="submit">Crear Orden</button>
       </form>
@@ -148,7 +98,5 @@
       }
     });
   </script>
-
-
 </body>
 </html>
