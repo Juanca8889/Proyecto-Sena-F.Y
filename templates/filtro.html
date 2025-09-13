@@ -4,13 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Búsqueda y filtrado de material</title>
-  <link rel="stylesheet" href="../static/filtro.css">
-  
+  <link rel="stylesheet" href="/static/filtro.css">
 </head>
 <body>
   <header>
     <div class="left">
-      <button>&larr;</button>
+      <a href="/"><button>&larr;</button></a>
       <input type="text" placeholder="Buscar material">
       <h2>Búsqueda y filtrado de material</h2>
     </div>
@@ -33,70 +32,67 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Filas de ejemplo -->
+        {% for material in materiales %}
         <tr>
-          <td>001</td>
-          <td>Material A</td>
-          <td>Tipo 1</td>
-          <td>$100</td>
-          <td>Proveedor X</td>
-          <td>Activo</td>
+          <td>{{ material.codigo }}</td>
+          <td>{{ material.nombre }}</td>
+          <td>{{ material.tipo }}</td>
+          <td>{{ material.precio }}</td>
+          <td>{{ material.proveedor }}</td>
+          <td>{{ material.estado }}</td>
         </tr>
-        <tr>
-          <td>002</td>
-          <td>Material B</td>
-          <td>Tipo 2</td>
-          <td>$150</td>
-          <td>Proveedor Y</td>
-          <td>Inactivo</td>
-        </tr>
+        {% endfor %}
       </tbody>
     </table>
-
-    <div class="pagination">
-      <button>&laquo;</button>
-      <span class="active">1</span>
-      <span>2</span>
-      <span>3</span>
-      <span>4</span>
-      <span>5</span>
-      <button>&laquo;</button>
-    </div>
   </main>
 
-
-
-
-
-<!-- MODALl -->
+  <!-- MODAL -->
   <div class="modal" id="miModal">
     <div class="modal-content">
       <span class="close" id="cerrarModal">&times;</span>
       <h2>Crear Material</h2>
-      <form>
-        <label>Codigo:</label>
-        <input type="text">
+      <form action="/crear" method="POST">
+  <label>Código:</label>
+  <input type="text" name="codigo" required>
 
-        <label>Nombre:</label>
-        <input type="text">
+  <label>Nombre:</label>
+  <input type="text" name="nombre" required>
 
-        <label>Tipo:</label>
-        <input type="datetime-local">
+  <label>Tipo:</label>
+  <input type="text" name="tipo" required>
 
-        <label>Precio:</label>
-        <input type="text">
+  <label>Precio:</label>
+  <input type="number" name="precio" required>
 
-        <label>Proveedor:</label>
-        <textarea></textarea>
+  <label>Proveedor:</label>
+  <input type="text" name="proveedor" required>
 
-        
-        <label>Estado:</label>
-        <select>
-            <option>Activo</option>
-            <option>Inactivo</option>
-        </select>
-        <button type="submit">Crear Material</button>
-      </form>
+  <label>Estado:</label>
+  <select name="estado">
+      <option>Activo</option>
+      <option>Inactivo</option>
+  </select>
+
+  <label>Cantidad:</label>
+  <input type="number" name="cantidad" required>
+
+  <label>Categoría:</label>
+  <select name="categoria_id" required>
+   
+    <option value="1">Llantas</option>
+    <option value="2">Accesorios</option>
+  </select>
+
+  <label>Rol:</label>
+  <select name="rol_id">
+  
+    <option value="1">Administrador</option>
+    <option value="2">Operario</option>
+  </select>
+
+  <button type="submit">Crear Material</button>
+</form>
+
     </div>
   </div>
 
@@ -116,10 +112,5 @@
       }
     });
   </script>
-
-
-
-
-
 </body>
 </html>
