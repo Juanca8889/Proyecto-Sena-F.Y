@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Recuperar contraseña</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='olvidaste_contraseña.css') }}" />
+</head>
+<body>
+  <div class="login-container">
+    <form action="/olvidaste-contraseña" method="post">
+      <h2>Recuperar contraseña</h2>
+
+      <label for="email">Correo electrónico:</label><br />
+      <input type="email" id="email" name="email" required /><br />
+
+      <button type="submit">Enviar</button>
+
+      <a href="/login" class="volver-login">Volver al login</a>
+    </form>
+  </div>
+</body>
+</html>

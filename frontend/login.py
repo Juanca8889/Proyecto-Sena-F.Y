@@ -33,6 +33,14 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/olvidaste-contraseña', methods=['GET', 'POST'])
+def olvidaste_contraseña():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        # Aquí agregas la lógica para recuperación de contraseña
+        return "Se ha enviado un correo para restablecer la contraseña a " + email
+    return render_template('olvidaste_contraseña.html')
+
 
 @app.route('/Admin')
 def home():
