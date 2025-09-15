@@ -33,11 +33,13 @@ class ConexionClientes:
         
         clientes = self.cursor.fetchall()
         return clientes
-
         
-
-    def buscar_usuario(self, nombre):
-        pass
+        
+    def buscar_usuario(self, id_cliente):
+        query = "SELECT correo FROM Cliente where id_cliente = %s;"
+        values = (id_cliente)
+        self.cursor.execute(query, values)
+        self.conexion.commit()
 
     def actualizar_usuario(self, id_cliente, nombre, correo, celular):
         self.cursor.execute("""UPDATE Cliente SET nombre=%s, correo=%s, celular=%sWHERE id_cliente=%s""", (nombre, correo, celular, id_cliente))
