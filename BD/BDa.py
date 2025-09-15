@@ -96,6 +96,6 @@ print(producto.buscar_producto("#0001"))
 
 print(producto.filtrar_por_fecha("2025-08-21"))
 
-producto.actualizar_producto("#0001", "Parche Premium PP4", 10, "2025-08-22", "pp4_nuevo.png")
+producto.actualizar_producto("#0001", "Parche Premium asdadsPP4", 10, "2025-08-22", "pp4_nuevo.png")
 
 producto.cerrar()
