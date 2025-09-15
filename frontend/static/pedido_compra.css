@@ -1,0 +1,380 @@
+/* =========================================================
+   VARIABLES GLOBALES
+   Aquí definimos colores y fuentes que se usarán en todo
+   el sitio. Así, si queremos cambiar el color dorado, 
+   solo modificamos aquí y se actualiza en todo el CSS.
+   ========================================================= */
+:root {
+  --color-fondo: #0A0F1C;            /* Fondo principal (azul oscuro) */
+  --color-fondo-secundario: #0D1B2A; /* Fondo de tarjetas y bloques */
+  --color-dorado: #FFD700;           /* Color dorado para resaltar */
+  --color-blanco: #FFFFFF;           /* Blanco puro */
+  --color-gris: #666666;             /* Gris para botones secundarios */
+  --color-gris-hover: #555555;       /* Gris más oscuro en hover */
+  --color-texto: #222222;            /* Texto base (negro/gris oscuro) */
+  
+  --fuente-principal: 'Segoe UI', sans-serif;  /* Fuente para textos */
+  --fuente-titulos: 'Merriweather', serif;     /* Fuente elegante para títulos */
+}
+
+/* =========================================================
+   ESTILOS BASE
+   Configuración general para todo el cuerpo de la página.
+   ========================================================= */
+body {
+    font-family: var(--fuente-principal);
+    background-color: var(--color-blanco); /* Fondo blanco */
+    color: var(--color-texto);             /* Texto negro/gris oscuro */
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;                      /* Mejora la lectura del texto */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--fuente-titulos);
+    color: var(--color-dorado); /* Títulos en dorado */
+    margin-bottom: 0.5em;
+}
+
+/* =========================================================
+   ENCABEZADO
+   La franja superior que contiene el título principal.
+   ========================================================= */
+header {
+    background-color: var(--color-fondo);
+    color: var(--color-dorado);
+    padding: 5px 0; 
+    text-align: center;
+    font-size: 1.5em; 
+    font-weight: 700;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Efecto de sombra abajo */
+}
+
+/* =========================================================
+   LAYOUT GENERAL
+   Distribución de la página: filtros, materiales y sugerencias.
+   ========================================================= */
+main {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;       /* Si no cabe en fila, baja de línea */
+    gap: 20px;             /* Espacio entre secciones */
+    justify-content: space-between;
+}
+
+.filtros-sugerencias {
+    display: flex;
+    gap: 40px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+/* =========================================================
+   FILTROS
+   Cajita que contiene el menú desplegable para ordenar productos.
+   ========================================================= */
+.filtros {
+    flex: 1 1 200px;
+    background-color: var(--color-fondo-secundario);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px #00000088;
+    height: fit-content;
+    color: var(--color-blanco);
+}
+
+.filtros label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-dorado);
+}
+
+.filtros select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--color-dorado);
+    font-size: 1em;
+    cursor: pointer;
+    background-color: var(--color-fondo);
+    color: var(--color-blanco);
+}
+
+/* =========================================================
+   MATERIALES
+   Cada producto se muestra como una "tarjeta" con datos y formulario.
+   ========================================================= */
+.contenedor-materiales {
+    flex: 3 1 600px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.material {
+    background-color: var(--color-fondo-secundario);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: var(--color-blanco);
+}
+
+.nombre-material {
+    font-weight: 700;
+    font-size: 1.2em;
+    margin-bottom: 8px;
+    color: var(--color-dorado);
+}
+
+.material p {
+    margin: 4px 0;
+    font-size: 0.95em;
+    color: #CCCCCC;
+}
+
+.material form {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.material label {
+    font-weight: 600;
+    font-size: 0.9em;
+    color: var(--color-dorado);
+}
+
+/* Inputs dentro de cada tarjeta */
+.material input[type="number"],
+.material select,
+.material input[type="date"] {
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid var(--color-dorado);
+    font-size: 1em;
+    width: 100%;
+    background-color: var(--color-fondo);
+    color: var(--color-blanco);
+}
+
+/* Botón dentro de cada tarjeta de producto */
+.material button {
+    background-color: var(--color-dorado);
+    border: none;
+    color: var(--color-fondo);
+    padding: 10px;
+    font-weight: 700;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.material button:hover {
+    background-color: var(--color-blanco);
+    color: var(--color-dorado); /* Contraste al pasar el mouse */
+}
+
+/* =========================================================
+   SUGERENCIAS
+   Sección lateral con recomendaciones de compra.
+   ========================================================= */
+.sugerencias {
+    flex: 1 1 250px;
+    background-color: var(--color-fondo-secundario);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px #00000088;
+    height: fit-content;
+    color: var(--color-blanco);
+}
+
+.sugerencias h3 {
+    margin-top: 0;
+    color: var(--color-dorado);
+    font-weight: 700;
+}
+
+.sugerencia-item {
+    background-color: #0F1525;
+    margin-bottom: 12px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(255, 215, 0, 0.15);
+    color: var(--color-blanco);
+}
+
+/* =========================================================
+   BOTONES PRINCIPALES
+   Botones grandes debajo de los productos: "Realizar un pedido" y "Ver pedidos".
+   ========================================================= */
+.botones-principales {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.botones-principales button {
+    background-color: var(--color-dorado);
+    border: none;
+    color: var(--color-fondo);
+    padding: 12px 25px;
+    font-weight: 700;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.botones-principales button:hover {
+    background-color: var(--color-blanco);
+    color: var(--color-dorado); /* Mejor contraste en hover */
+}
+
+/* =========================================================
+   FORMULARIO DE PEDIDO Y LISTA DE PEDIDOS
+   Caja centrada donde se ingresan los datos de un pedido o se ven los pedidos realizados.
+   ========================================================= */
+.formulario-pedido, .ver-pedidos {
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: var(--color-fondo-secundario);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 0.4);
+    color: var(--color-blanco);
+}
+
+.formulario-pedido h2, .ver-pedidos h2 {
+    color: var(--color-dorado);
+    margin-bottom: 25px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.formulario-pedido form label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: var(--color-dorado);
+}
+
+/* Inputs dentro del formulario de pedido */
+.formulario-pedido form input[type="text"],
+.formulario-pedido form input[type="number"],
+.formulario-pedido form select,
+.formulario-pedido form input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid var(--color-dorado);
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: var(--color-fondo);
+    color: var(--color-blanco);
+}
+
+/* Botón principal dentro del formulario */
+.formulario-pedido form button {
+    background-color: var(--color-dorado);
+    color: var(--color-fondo);
+    font-weight: 700;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: all 0.25s ease;
+}
+.formulario-pedido form button:hover {
+    background-color: var(--color-blanco);
+    color: var(--color-dorado);
+}
+
+/* =========================================================
+   BOTÓN VOLVER
+   Botón gris que aparece en formularios y lista de pedidos.
+   ========================================================= */
+.btn-volver {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px 0;
+    background-color: var(--color-gris);
+    color: var(--color-blanco);
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+.btn-volver i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+.btn-volver:hover {
+    background-color: var(--color-gris-hover);
+}
+
+/* =========================================================
+   LISTA DE PEDIDOS
+   Cada pedido se muestra como un bloque con fondo oscuro y texto dorado.
+   ========================================================= */
+.ver-pedidos ul {
+    list-style: none;
+    padding: 0;
+}
+.ver-pedidos ul li {
+    padding: 10px 15px;
+    margin-bottom: 12px;
+    background-color: #0F1525;
+    border-radius: 6px;
+    color: var(--color-dorado);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(255, 215, 0, 0.3);
+}
+
+/* =========================================================
+   ALERTAS (MENSAJES FLASH)
+   Cuadros que muestran mensajes de éxito o error.
+   ========================================================= */
+.alert {
+  padding: 15px;
+  margin: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+.alert-success {
+  background-color: #d4edda; /* Verde claro */
+  color: #155724;           /* Verde oscuro */
+  border: 1px solid #c3e6cb;
+}
+.alert-danger {
+  background-color: #f8d7da; /* Rojo claro */
+  color: #721c24;           /* Rojo oscuro */
+  border: 1px solid #f5c6cb;
+}
+
+/* =========================================================
+   RESPONSIVIDAD
+   Reglas para pantallas pequeñas (tablets y móviles).
+   ========================================================= */
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;
+  }
+  .filtros-sugerencias {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .botones-principales {
+    flex-direction: column;
+  }
+}

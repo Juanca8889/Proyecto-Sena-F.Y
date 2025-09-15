@@ -1,0 +1,207 @@
+/* ====== GENERAL ====== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #ecf0f1;
+    margin: 0;
+    padding: 0;
+    color: #2c3e50;
+}
+
+/* ====== HEADER ====== */
+header {
+    background: #2c3e50;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+}
+
+header .titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header .titulo h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+header .acciones {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+header .acciones button {
+    padding: 10px 18px;
+    background: #27ae60;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+header .acciones button:hover {
+    background: #2ecc71;
+    transform: scale(1.05);
+}
+
+header .acciones .volver {
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+header .acciones .volver:hover {
+    color: #f1c40f;
+}
+
+/* ====== CONTENIDO ====== */
+main {
+    background: white;
+    margin: 20px auto;
+    padding: 20px;
+    width: 90%;
+    border-radius: 10px;
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.1);
+}
+
+/* ====== TABLA ====== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+thead {
+    background: #34495e;
+    color: white;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+tbody tr:hover {
+    background: #f1f1f1;
+    transition: 0.2s;
+}
+
+/* Bordes suaves */
+table th, table td {
+    border-bottom: 1px solid #ddd;
+}
+/* ====== GENERAL ====== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #ecf0f1;
+    margin: 0;
+    padding: 0;
+    color: #2c3e50;
+}
+
+/* ====== HEADER ====== */
+header {
+    background: #0D1B2A;;
+    color: #FFD700;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+header .volver {
+    font-size: 22px;
+    color: white;
+    text-decoration: none;
+    position: absolute;
+    left: 20px;
+}
+
+header .volver:hover {
+    color: #f1c40f;
+}
+
+header .titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 auto; /* centra */
+}
+
+header .titulo h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+header .acciones button {
+    padding: 10px 18px;
+    background: #fafafa;
+    border: none;
+    border-radius: 6px;
+    color: rgb(7, 7, 7);
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+header .acciones button:hover {
+    background: #FFD700;
+    transform: scale(1.05);
+}
+
+/* ====== CONTENIDO ====== */
+main {
+    background: rgb(255, 255, 255);
+    margin: 20px auto;
+    padding: 20px;
+    width: 90%;
+    border-radius: 10px;
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.1);
+}
+
+/* ====== TABLA ====== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+thead {
+    background: #0D1B2A;;
+    color: #FFD700;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+tbody tr:hover {
+    background: #9999998f;
+    transition: 0.2s;
+}
+
+/* Bordes suaves */
+table th, table td {
+    border-bottom: 1px solid #7e7d7d;
+}
