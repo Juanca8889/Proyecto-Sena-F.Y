@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+</head>
+<body>
+    <h1>Dashboard de Ventas y Stock</h1>
+
+    <h2>Ventas por Día (Últimos 7 días)</h2>
+    <img src="data:image/png;base64,{{ img_ventas_dia }}" alt="Ventas por Día" />
+
+    <h2>Ventas por Semana (Últimas 4 semanas)</h2>
+    <img src="data:image/png;base64,{{ img_ventas_semana }}" alt="Ventas por Semana" />
+
+    <h2>Ventas por Mes (Últimos 12 meses)</h2>
+    <img src="data:image/png;base64,{{ img_ventas_mes }}" alt="Ventas por Mes" />
+
+    <h2>Productos Bajo Stock (<=10 unidades)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Producto</th>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in bajo_stock %}
+            <tr>
+                <td>{{ p.id_producto }}</td>
+                <td>{{ p.nombre }}</td>
+                <td>{{ p.cantidad }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3">No hay productos bajo stock.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Pedidos Activos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Compra</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Estado</th>
+                <th>Fecha Pedido</th>
+                <th>Fecha Entrega</th>
+                <th>Proveedor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in pedidos %}
+            <tr>
+                <td>{{ pedido.id_compra }}</td>
+                <td>{{ pedido.descripcion }}</td>
+                <td>{{ pedido.cantidad }}</td>
+                <td>{{ pedido.estado }}</td>
+                <td>{{ pedido.fecha_pedido.strftime("%Y-%m-%d") }}</td>
+                <td>{{ pedido.fecha_entrega.strftime("%Y-%m-%d") }}</td>
+                <td>{{ pedido.proveedor_nombre }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7">No hay pedidos activos.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

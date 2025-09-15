@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notificaciones</title>
+
+    <!-- Font Awesome (CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- CSS externo -->
+     <link rel="stylesheet" href="{{ url_for('static', filename='notificaciones_stock.css') }}" />
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fa-regular fa-bell"></i> Notificaciones</h1>
+        <div class="actions">
+            <a href="{{ url_for('control_stock') }}" class="btn"><i class="fa-solid fa-table"></i> Ver stock</a>
+            <a href="{{ url_for('control_stock') }}" class="btn"><i class="fa-solid fa-house"></i> Inicio</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="card">
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> Alertas de stock bajo</h2>
+            <div class="list">
+                {% if sugerencias and sugerencias|length > 0 %}
+                    {% for s in sugerencias %}
+                        <div class="item">
+                            <div class="left">
+                                <i class="fa-solid fa-box-open warn-icon"></i>
+                                <div>
+                                    <div><strong>{{ s.nombre }}</strong></div>
+                                    <div class="small">Sugerido pedir: {{ s.cantidad_sugerida }}</div>
+                                </div>
+                            </div>
+                            <span class="badge warn"><i class="fa-solid fa-bell"></i> Bajo stock</span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty">No hay alertas de stock bajo.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fa-solid fa-clock-rotate-left"></i> Últimas actualizaciones</h2>
+            <div class="list">
+                {% if productos_recientes and productos_recientes|length > 0 %}
+                    {% for p in productos_recientes %}
+                        <div class="item">
+                            <div class="left">
+                                <i class="fa-solid fa-circle-check ok-icon"></i>
+                                <div>
+                                    <div>
+                                        <strong>{{ p.nombre }}</strong>
+                                        <span class="small">({{ p.tipo or 'Sin tipo' }})</span>
+                                    </div>
+                                    <div class="small">Stock: {{ p.stock }} · Precio: {{ p.precio }} · Fecha: {{ p.updated_at or '-' }}</div>
+                                </div>
+                            </div>
+                            <span class="badge ok"><i class="fa-solid fa-rotate"></i> Actualizado</span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty">No hay actualizaciones recientes.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
