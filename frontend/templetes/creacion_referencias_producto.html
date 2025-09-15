@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Creación de Referencias - Inventario</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>Creación de Referencias</h1>
+      <p class="subtitle">Busca, registra y administra las referencias de producto.</p>
+    </header>
+
+    <section class="controls">
+      <div class="search">
+        <label for="searchInput" class="visually-hidden">Buscar referencias</label>
+        <div class="search-inner">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 21l-4.35-4.35M10.5 19A8.5 8.5 0 1 1 10.5 2a8.5 8.5 0 0 1 0 17z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <input id="searchInput" placeholder="Buscar por código o nombre" />
+        </div>
+      </div>
+
+      <div class="sort-filter">
+        <label for="sortSelect">Ordenar:</label>
+        <select id="sortSelect">
+          <option value="az">A → Z</option>
+          <option value="za">Z → A</option>
+        </select>
+
+        <label for="filterDate">Filtrar desde (fecha):</label>
+        <input id="filterDate" type="date" />
+        <button id="clearFilter" class="btn small">Limpiar</button>
+      </div>
+    </section>
+
+    <section class="main-grid">
+      <div class="left">
+        <h2>Productos</h2>
+        <div id="grid" class="card-grid" aria-live="polite"></div>
+      </div>
+
+      <aside class="right">
+        <h2>Productos Nuevos</h2>
+        <form id="newProductForm" class="form">
+          <label>Nombre del producto (obligatorio)
+            <input id="prodName" type="text" placeholder="Parche PP4" required />
+          </label>
+
+          <label>Cantidad (obligatorio)
+            <input id="prodQty" type="number" min="1" value="1" required />
+          </label>
+
+          <label>Código (obligatorio)
+            <input id="prodCode" type="text" placeholder="#0000" required />
+          </label>
+
+          <label>Fecha de ingreso
+            <input id="prodDate" type="date" required />
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="btn">Registrar</button>
+          </div>
+        </form>
+
+        <div class="notes">
+          <h3>Controles y restricciones</h3>
+          <ol>
+            <li>El sistema muestra las referencias registradas (simulado con localStorage).</li>
+            <li>Registro inmediato: al crear, la cuadrícula se actualiza sin recargar.</li>
+            <li>Para persistencia real conectar el endpoint del backend (ver comentarios en el código).</li>
+          </ol>
+        </div>
+      </aside>
+    </section>
+
+    <footer class="footer">
+      <small>Demo: interfaz front-end — reemplaza la persistencia por tu API para integrarlo con la base de datos.</small>
+    </footer>
+  </main>
+
+  <script>
+   
+    const STORAGE_KEY = 'inventario_referencias_v1';
+
+    const sampleProducts = [
+      { nombre: 'Parche PP4', codigo: '#0001', cantidad: 3, fecha: '2025-08-02', thumbnail: '' },
+      { nombre: 'Llave Alemana', codigo: '#0002', cantidad: 5, fecha: '2025-09-01', thumbnail: '' },
+      { nombre: 'Filtro X', codigo: '#0003', cantidad: 2, fecha: '2025-07-25', thumbnail: '' }
+    ];
+
+    
+    function todayISODate() {
+      const d = new Date();
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function loadData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sampleProducts));
+        return sampleProducts.slice();
+      }
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        console.error('Error parseando localStorage, reseteando.', e);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sampleProducts));
+        return sampleProducts.slice();
+      }
+    }
+
+    function saveData(arr) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    const gridEl = document.getElementById('grid');
+    const searchInput = document.getElementById('searchInput');
+    const sortSelect = document.getElementById('sortSelect');
+    const filterDate = document.getElementById('filterDate');
+    const clearFilterBtn = document.getElementById('clearFilter');
+
+    let products = loadData();
+
+    function createCardHTML(prod) {
+      return `
+        <article class="card" data-codigo="${prod.codigo}" data-nombre="${prod.nombre}" data-fecha="${prod.fecha}">
+          <div class="thumb">${prod.thumbnail ? `<img src="${prod.thumbnail}" alt="${prod.nombre}">` : '<div class="thumb-placeholder">IMG</div>'}</div>
+          <div class="card-body">
+            <div class="card-title">${prod.codigo} — ${prod.nombre}</div>
+            <div class="meta">Cantidad: <strong>${prod.cantidad}</strong></div>
+            <div class="meta">Ingreso: <time datetime="${prod.fecha}">${formatDateDisplay(prod.fecha)}</time></div>
+          </div>
+        </article>
+      `;
+    }
+
+    function formatDateDisplay(iso) {
+      const d = new Date(iso + 'T00:00:00');
+      return d.toLocaleDateString('es-CO');
+    }
+
+    function renderGrid() {
+      const q = searchInput.value.trim().toLowerCase();
+      const sortMode = sortSelect.value;
+      const dateFilter = filterDate.value || null;
+
+      let list = products.slice();
+
+      if (q) {
+        list = list.filter(p => (p.codigo + ' ' + p.nombre).toLowerCase().includes(q));
+      }
+
+      if (dateFilter) {
+        list = list.filter(p => p.fecha >= dateFilter);
+      }
+
+      list.sort((a, b) => {
+        if (sortMode === 'az') return a.nombre.localeCompare(b.nombre, 'es');
+        return b.nombre.localeCompare(a.nombre, 'es');
+      });
+
+      gridEl.innerHTML = list.map(createCardHTML).join('') || '<p class="empty">No hay referencias que coincidan.</p>';
+    }
+
+    
+    const newProductForm = document.getElementById('newProductForm');
+    const prodName = document.getElementById('prodName');
+    const prodQty = document.getElementById('prodQty');
+    const prodCode = document.getElementById('prodCode');
+    const prodDate = document.getElementById('prodDate');
+
+   
+    prodDate.value = todayISODate();
+
+    function showSuccessAlert(unidades, nombre) {
+      
+      alert(`Se han registrado ${unidades} unidades de '${nombre}' en el inventario.`);
+    }
+
+    newProductForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nombre = prodName.value.trim();
+      const cantidad = Number(prodQty.value);
+      const codigo = prodCode.value.trim() || '#0000';
+      const fecha = prodDate.value;
+
+      if (!nombre || !cantidad || !codigo || !fecha) {
+        alert('Por favor completa todos los campos obligatorios.');
+        return;
+      }
+
+      const newProd = {
+        nombre, codigo, cantidad, fecha, thumbnail: ''
+      };
+
+      
+      products.push(newProd);
+      saveData(products);
+
+      
+      renderGrid();
+
+      
+      showSuccessAlert(cantidad, nombre);
+
+      
+      newProductForm.reset();
+      prodDate.value = todayISODate();
+
+    
+    });
+
+    searchInput.addEventListener('input', renderGrid);
+    sortSelect.addEventListener('change', renderGrid);
+    filterDate.addEventListener('change', renderGrid);
+    clearFilterBtn.addEventListener('click', () => {
+      filterDate.value = '';
+      renderGrid();
+    });
+
+    
+    renderGrid();
+
+
+  </script>
+</body>
+</html>

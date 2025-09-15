@@ -1,0 +1,173 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f5f6fa;
+  color: #2f3640;
+  line-height: 1.5;
+}
+
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 1.5rem;
+}
+
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+  color: #273c75;
+}
+
+.header .sub {
+  font-size: 0.9rem;
+  color: #718093;
+  margin-top: 0.25rem;
+}
+
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.controls label {
+  font-size: 0.9rem;
+  margin-right: 1rem;
+}
+
+.controls input,
+.controls select {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #dcdde1;
+  border-radius: 6px;
+  margin-left: 0.25rem;
+}
+
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.btn.primary {
+  background: #273c75;
+  color: #fff;
+}
+
+.btn.primary:hover {
+  background: #192a56;
+}
+
+.btn.outline {
+  border: 1px solid #273c75;
+  background: transparent;
+  color: #273c75;
+}
+
+.btn.outline:hover {
+  background: #273c75;
+  color: #fff;
+}
+
+.btn.small {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  color: #718093;
+}
+
+.card .tag {
+  background: #44bd32;
+  color: #fff;
+  padding: 0.15rem 0.5rem;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+
+.card h2.titulo {
+  font-size: 1.2rem;
+  color: #2f3640;
+  margin-bottom: 0.5rem;
+}
+
+.card p.desc {
+  font-size: 0.9rem;
+  color: #353b48;
+  flex-grow: 1;
+  margin-bottom: 1rem;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #718093;
+}
+
+.footer .acciones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+
+.footer-global {
+  text-align: center;
+  margin-top: 2rem;
+  color: #718093;
+  font-size: 0.85rem;
+}

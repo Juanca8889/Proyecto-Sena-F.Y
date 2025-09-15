@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Proveedores</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  
+  <nav class="navbar">
+    <button class="btn-nav" onclick="goBack()">⟵</button>
+    <h1>Proveedor</h1>
+    <button class="btn-nav" onclick="recargar()">⟳</button>
+  </nav>
+
+  
+  <section class="actions">
+    <button id="btnAgregar" class="btn">+ Agregar Proveedor</button>
+  </section>
+
+  
+  <main class="proveedor-grid" id="proveedorGrid">
+   
+  </main>
+
+  
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Registrar Proveedor</h2>
+      <form id="proveedorForm" class="form">
+        <label>Nombre (obligatorio)
+          <input type="text" id="nombre" required>
+        </label>
+        <label>NIT (obligatorio)
+          <input type="text" id="nit" required>
+        </label>
+        <label>Correo
+          <input type="email" id="correo" placeholder="ejemplo@correo.com">
+        </label>
+        <label>Teléfono
+          <input type="text" id="telefono">
+        </label>
+        <label>Dirección
+          <input type="text" id="direccion">
+        </label>
+        <label>Tipo de proveedor
+          <select id="tipo">
+            <option value="insumos">Insumos</option>
+            <option value="servicios">Servicios</option>
+            <option value="tecnologia">Tecnología</option>
+          </select>
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="btn">Guardar</button>
+          <button type="button" class="btn secondary" onclick="cerrarModal()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    
+    let proveedores = [
+      {id:1,nombre:"Proveedor 1",nit:"123",correo:"prov1@mail.com",telefono:"3001112222"},
+      {id:2,nombre:"Proveedor 2",nit:"124",correo:"prov2@mail.com",telefono:"3012223333"},
+      {id:3,nombre:"Proveedor 3",nit:"125",correo:"prov3@mail.com",telefono:"3023334444"}
+    ];
+
+    const grid = document.getElementById('proveedorGrid');
+    const modal = document.getElementById('modal');
+    const form = document.getElementById('proveedorForm');
+
+    function renderProveedores() {
+      grid.innerHTML = "";
+      proveedores.forEach(p => {
+        const card = document.createElement('div');
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${p.nombre}</h3>
+          <p><strong>Cel:</strong> ${p.telefono || "-"}</p>
+          <p><strong>Correo:</strong> ${p.correo || "-"}</p>
+          <button class="btn small" onclick="verDetalles(${p.id})">Detalles</button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function verDetalles(id){
+      const prov = proveedores.find(p=>p.id===id);
+      alert(
+        `Detalles del Proveedor:\n\n`+
+        `Nombre: ${prov.nombre}\nNIT: ${prov.nit}\nCorreo: ${prov.correo}\nTeléfono: ${prov.telefono}`
+      );
+    }
+
+    function goBack(){ alert("Volviendo a la página anterior..."); }
+    function recargar(){ renderProveedores(); alert("Lista de proveedores actualizada."); }
+
+    
+    document.getElementById('btnAgregar').onclick = ()=> modal.classList.remove('hidden');
+    function cerrarModal(){ modal.classList.add('hidden'); }
+
+   
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const nuevo = {
+        id: proveedores.length+1,
+        nombre: document.getElementById('nombre').value,
+        nit: document.getElementById('nit').value,
+        correo: document.getElementById('correo').value,
+        telefono: document.getElementById('telefono').value,
+        direccion: document.getElementById('direccion').value,
+        tipo: document.getElementById('tipo').value
+      };
+
+      
+      if(proveedores.some(p=>p.nit===nuevo.nit)){
+        alert("Error: El NIT ya está registrado.");
+        return;
+      }
+
+      proveedores.push(nuevo);
+      renderProveedores();
+      cerrarModal();
+      alert("Proveedor registrado con éxito.");
+
+      form.reset();
+
+      
+    });
+
+    
+    renderProveedores();
+  </script>
+</body>
+</html>

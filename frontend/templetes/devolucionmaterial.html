@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Devoluciones</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+
+    
+    <section class="left-panel">
+      <h2>Buscar Devoluciones</h2>
+      <input type="text" id="buscar" placeholder="Buscar por código, nombre o responsable">
+      <button onclick="buscarDevoluciones()">Buscar</button>
+      <div id="lista-devoluciones" class="cards"></div>
+    </section>
+
+    
+    <section class="right-panel">
+      <h2>Registrar Devolución</h2>
+      <form id="formDevolucion">
+        <input type="text" id="codigo" placeholder="Código del producto" required>
+        <input type="text" id="nombre" placeholder="Nombre del material" required>
+        <input type="text" id="responsable" placeholder="Responsable" required>
+        
+        <select id="razon" required>
+          <option value="">Seleccione una razón</option>
+          <option value="Daño">Daño</option>
+          <option value="No pagó">No pagó</option>
+          <option value="Otro">Otro</option>
+        </select>
+        
+        <textarea id="descripcion" placeholder="Descripción detallada" required></textarea>
+        <button type="submit">Registrar</button>
+      </form>
+    </section>
+
+  </div>
+
+  <script>
+    const API = "http://localhost:5000/api/devoluciones";
+
+    async function cargarDevoluciones() {
+      const res = await fetch(API);
+      const data = await res.json();
+      renderDevoluciones(data);
+    }
+
+    async function buscarDevoluciones() {
+      const texto = document.getElementById("buscar").value;
+      const res = await fetch(`${API}/buscar/${texto}`);
+      const data = await res.json();
+      renderDevoluciones(data);
+    }
+
+    function renderDevoluciones(devoluciones) {
+      const contenedor = document.getElementById("lista-devoluciones");
+      contenedor.innerHTML = "";
+      devoluciones.forEach(dev => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${dev.nombre}</h3>
+          <p><strong>Razón:</strong> ${dev.razon}</p>
+          <p><strong>Fecha:</strong> ${dev.fecha}</p>
+          <p>${dev.descripcion}</p>
+          <button>Ver</button>
+        `;
+        contenedor.appendChild(card);
+      });
+    }
+
+    document.getElementById("formDevolucion").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = {
+        codigo: document.getElementById("codigo").value,
+        nombre: document.getElementById("nombre").value,
+        responsable: document.getElementById("responsable").value,
+        razon: document.getElementById("razon").value,
+        descripcion: document.getElementById("descripcion").value
+      };
+      await fetch(API, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data)
+      });
+      e.target.reset();
+      cargarDevoluciones();
+    });
+
+    cargarDevoluciones();
+  </script>
+</body>
+</html>

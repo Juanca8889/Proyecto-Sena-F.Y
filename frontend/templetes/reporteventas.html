@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reporte de Ventas</title>
+  <link rel="stylesheet" href="./reporteventas.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Reporte de Ventas</h1>
+      <p class="sub">Acceso exclusivo para usuarios administrativos</p>
+    </header>
+
+    <section class="controls">
+      <div class="left">
+        <label>
+          Fecha límite:
+          <input type="date" id="fechaFiltro">
+        </label>
+
+        <label>
+          Orden:
+          <select id="ordenFiltro">
+            <option value="DESC">Más recientes</option>
+            <option value="ASC">Más antiguas</option>
+          </select>
+        </label>
+
+        <button class="btn primary" onclick="cargarVentas()">Aplicar filtro</button>
+      </div>
+
+      <div class="right">
+        <button class="btn outline" onclick="cargarVentas()">Actualizar</button>
+        <button class="btn primary">Exportar CSV</button>
+        <button class="btn primary">Exportar Excel</button>
+      </div>
+    </section>
+
+    <main id="ventasGrid" class="grid"></main>
+
+    <footer class="footer">
+      <p>El sistema evita duplicados y muestra únicamente transacciones finalizadas.</p>
+    </footer>
+  </div>
+
+  <script src="reporte_ventas.js"></script>
+</body>
+</html>
