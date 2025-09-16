@@ -1,95 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Gestión de Devoluciones</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="container">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Devoluciones</title>
+    <link rel="stylesheet" href="./static/devoluciones.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Gestión de Devoluciones</h1>
+      </header>
 
-    
-    <section class="left-panel">
-      <h2>Buscar Devoluciones</h2>
-      <input type="text" id="buscar" placeholder="Buscar por código, nombre o responsable">
-      <button onclick="buscarDevoluciones()">Buscar</button>
-      <div id="lista-devoluciones" class="cards"></div>
-    </section>
+      <main class="main-content">
+        <!-- Panel Izquierdo: Búsqueda y listado -->
+        <section class="left-panel">
+          <div class="search-section">
+            <input type="text" placeholder="Buscar devolución..." />
+            <select>
+              <option value="">Filtrar por...</option>
+              <option value="fecha">Fecha</option>
+              <option value="razon">Razón</option>
+              <option value="responsable">Responsable</option>
+              <option value="alfabetico">Orden alfabético</option>
+            </select>
+          </div>
 
-    
-    <section class="right-panel">
-      <h2>Registrar Devolución</h2>
-      <form id="formDevolucion">
-        <input type="text" id="codigo" placeholder="Código del producto" required>
-        <input type="text" id="nombre" placeholder="Nombre del material" required>
-        <input type="text" id="responsable" placeholder="Responsable" required>
-        
-        <select id="razon" required>
-          <option value="">Seleccione una razón</option>
-          <option value="Daño">Daño</option>
-          <option value="No pagó">No pagó</option>
-          <option value="Otro">Otro</option>
-        </select>
-        
-        <textarea id="descripcion" placeholder="Descripción detallada" required></textarea>
-        <button type="submit">Registrar</button>
-      </form>
-    </section>
+          <div class="devoluciones-grid">
+            <div class="devolucion-card">
+              <h2>Devolución</h2>
+              <p><strong>Razón:</strong> Daño</p>
+              <p><strong>Descripción:</strong> Caja golpeada</p>
+              <p><strong>Fecha:</strong> 10/09/2025</p>
+              <button class="view-btn">Ver</button>
+            </div>
 
-  </div>
+            <div class="devolucion-card">
+              <h2>Devolución</h2>
+              <p><strong>Razón:</strong> No pagó</p>
+              <p><strong>Descripción:</strong> Cliente no cumplió con pago</p>
+              <p><strong>Fecha:</strong> 12/09/2025</p>
+              <button class="view-btn">Ver</button>
+            </div>
+          </div>
+        </section>
 
-  <script>
-    const API = "http://localhost:5000/api/devoluciones";
+        <!-- Panel Derecho: Formulario -->
+        <section class="right-panel">
+          <h2>Registrar Devolución</h2>
+          <form>
+            <label for="codigo">Código del Producto</label>
+            <input type="text" id="codigo" name="codigo" required />
 
-    async function cargarDevoluciones() {
-      const res = await fetch(API);
-      const data = await res.json();
-      renderDevoluciones(data);
-    }
+            <label for="nombre">Nombre del Material/Producto</label>
+            <input type="text" id="nombre" name="nombre" required />
 
-    async function buscarDevoluciones() {
-      const texto = document.getElementById("buscar").value;
-      const res = await fetch(`${API}/buscar/${texto}`);
-      const data = await res.json();
-      renderDevoluciones(data);
-    }
+            <label for="usuario">Usuario/Responsable</label>
+            <input type="text" id="usuario" name="usuario" required />
 
-    function renderDevoluciones(devoluciones) {
-      const contenedor = document.getElementById("lista-devoluciones");
-      contenedor.innerHTML = "";
-      devoluciones.forEach(dev => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <h3>${dev.nombre}</h3>
-          <p><strong>Razón:</strong> ${dev.razon}</p>
-          <p><strong>Fecha:</strong> ${dev.fecha}</p>
-          <p>${dev.descripcion}</p>
-          <button>Ver</button>
-        `;
-        contenedor.appendChild(card);
-      });
-    }
+            <label for="razon">Razón de Devolución</label>
+            <select id="razon" name="razon" required>
+              <option value="danio">Daño</option>
+              <option value="no_pago">No pagó</option>
+              <option value="otro">Otro</option>
+            </select>
 
-    document.getElementById("formDevolucion").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const data = {
-        codigo: document.getElementById("codigo").value,
-        nombre: document.getElementById("nombre").value,
-        responsable: document.getElementById("responsable").value,
-        razon: document.getElementById("razon").value,
-        descripcion: document.getElementById("descripcion").value
-      };
-      await fetch(API, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data)
-      });
-      e.target.reset();
-      cargarDevoluciones();
-    });
+            <label for="descripcion">Descripción Detallada</label>
+            <textarea id="descripcion" name="descripcion" rows="5"></textarea>
 
-    cargarDevoluciones();
-  </script>
-</body>
+            <button type="submit" class="register-btn">Registrar</button>
+          </form>
+        </section>
+      </main>
+    </div>
+  </body>
 </html>

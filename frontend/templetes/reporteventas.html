@@ -1,50 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Reporte de Ventas</title>
-  <link rel="stylesheet" href="./reporteventas.css">
-</head>
-<body>
-  <div class="container">
-    <header class="header">
-      <h1>Reporte de Ventas</h1>
-      <p class="sub">Acceso exclusivo para usuarios administrativos</p>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reporte de Ventas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='reporte_ventas.css') }}" />
+  </head>
+  <body>
+    <div class="window">
+      <header>
+        <div class="window-name">SERVIMAQ</div>
+        <div class="window-controls">
+          <span>&larr;</span>
+        </div>
+      </header>
 
-    <section class="controls">
-      <div class="left">
-        <label>
-          Fecha límite:
-          <input type="date" id="fechaFiltro">
-        </label>
+      <main>
+        <h1>Reporte de Ventas</h1>
+        <p class="subtitle">
+          Reporte disponible solo para administradores. Muestra únicamente las transacciones completadas.
+        </p>
 
-        <label>
-          Orden:
-          <select id="ordenFiltro">
-            <option value="DESC">Más recientes</option>
-            <option value="ASC">Más antiguas</option>
+        <!-- Filtro de fecha y orden -->
+        <form method="get" action="/reporte_ventas" class="filtros">
+          <label for="fecha">Seleccionar fecha:</label>
+          <input type="date" id="fecha" name="fecha" />
+
+          <label for="orden">Ordenar:</label>
+          <select id="orden" name="orden">
+            <option value="">-- Seleccionar --</option>
+            <option value="recientes">Más recientes</option>
+            <option value="antiguos">Más antiguos</option>
           </select>
-        </label>
 
-        <button class="btn primary" onclick="cargarVentas()">Aplicar filtro</button>
-      </div>
+          <button type="submit" class="btn-filtrar">Aplicar</button>
+        </form>
 
-      <div class="right">
-        <button class="btn outline" onclick="cargarVentas()">Actualizar</button>
-        <button class="btn primary">Exportar CSV</button>
-        <button class="btn primary">Exportar Excel</button>
-      </div>
-    </section>
+        <!-- Tabla de ventas -->
+        <div class="tabla-contenedor">
+          <table>
+            <thead>
+              <tr>
+                <th>Cantidad</th>
+                <th>Producto / Servicio</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Responsable</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for venta in ventas %}
+              <tr>
+                <td>{{ venta.cantidad }}</td>
+                <td>{{ venta.producto }}</td>
+                <td>{{ venta.fecha }}</td>
+                <td>{{ venta.hora }}</td>
+                <td>{{ venta.responsable }}</td>
+                <td>{{ venta.descripcion }}</td>
+                <td>
+                  <a href="/ver_venta/{{ venta.id }}" class="btn-ver">Ver</a>
+                  <a href="/imprimir_venta/{{ venta.id }}" class="btn-imprimir">Imprimir</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
 
-    <main id="ventasGrid" class="grid"></main>
+        <!-- Exportar datos -->
+        <div class="acciones-exportar">
+          <a href="/exportar_excel" class="btn-exportar">Exportar a Excel</a>
+          <a href="/exportar_csv" class="btn-exportar">Exportar a CSV</a>
+        </div>
+      </main>
+    </div>
 
-    <footer class="footer">
-      <p>El sistema evita duplicados y muestra únicamente transacciones finalizadas.</p>
+    <footer class="cerrar-sesion">
+      <a href="/logout">Cerrar sesión</a>
     </footer>
-  </div>
-
-  <script src="reporte_ventas.js"></script>
-</body>
+  </body>
 </html>
