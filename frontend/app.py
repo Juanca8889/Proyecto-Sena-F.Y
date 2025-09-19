@@ -55,7 +55,7 @@ def index():
 # ==========================================
 # RUTA: FORMULARIO PARA REALIZAR PEDIDO
 # ==========================================
-@app.route("/realizar_pedido", methods=["GET", "POST"])
+@app.route("/realizar_pedido", endpoint="realizar_pedido" methods=["GET", "POST"])
 def realizar_pedido():
     if request.method == "POST":
         id_proveedor = int(request.form["id_proveedor"])
