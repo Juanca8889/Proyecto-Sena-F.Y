@@ -1,6 +1,10 @@
+import sys      # Sirve para interactuar con el intérprete de Python y modificar rutas de búsqueda de módulos
+import os       # Sirve para trabajar con rutas de archivos y carpetas de forma compatible en Windows, Linux y Mac
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if BASE_DIR not in sys.path:
+    sys.path.append(BASE_DIR)
 # backend.py
-import mysql.connector
-from BD.conexion imnport conectar
+from BD.conexion import conectar
 
 class Database:
     def __init__(self, host="localhost", user="root", password="", database="inventario"):
@@ -33,7 +37,7 @@ class Database:
             )
             conn.commit()
             return True, "Herramienta registrada con éxito"
-        except mysql.connector.IntegrityError:
+        except Exception as e:
             return False, "Error: ya existe una herramienta con ese código"
         finally:
             cursor.close()
