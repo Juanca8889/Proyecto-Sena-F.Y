@@ -12,7 +12,7 @@
           <header>
             <div class="window-name">SERVIMAQ</div>
             <div class="window-controls">
-              <span>&larr;</span>
+              <span onclick="window.location.href='{{ url_for('admin') }}'"><i data-feather="arrow-left"></i></span>
             </div>
           </header>
           <main>
@@ -65,7 +65,7 @@
         </div>
 
         <footer class="cerrar-sesion">
-          <a href="./login"><i data-feather="arrow-right"></i></a>
+          <a href="./Admin"><i data-feather="arrow-left"></i></a>
         </footer>
       </main>
     </div>

@@ -10,10 +10,10 @@
     <!-- Vista 1: Historial de Tickets -->
     <div class="container">
       <header>
-        <button class="back-btn">&#8592;</button>
+        <button onclick="window.location.href='{{ url_for('admin') }}'" class="back-btn">&#8592;</button>
         <h1>Historial De Tickets</h1>
         <button class="refresh-btn">&#8635;</button>
-        <button class="create-btn">Crear Ticket</button>
+        <button  onclick="window.location.href='{{ url_for('gestion_tickets_es') }}'" class="create-btn">Crear Ticket</button>
       </header>
       <main>
         <div class="tickets-grid">

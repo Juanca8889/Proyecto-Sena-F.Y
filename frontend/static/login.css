@@ -1,31 +1,36 @@
 body {
     background-color: whitesmoke;
+    background-image: url("./img/fnd.png");
 }
 
 form {
-    background-color: rgb(22, 55, 80);
+    background-color: #262493;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: -6px 6px 5px 0px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: -6px 6px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: -6px 6px 5px 0px rgba(0, 0, 0, 0.75);
     color: white;
 }
 
 .login-container {
     margin-top: 200px;
+    font-size: 20px;
     display: flex;
     justify-content: center;
-    
-    
+
+
+
 }
 
 .icono-login {
     margin-bottom: 10px;
-    margin-left: 110px;
+    margin-left: 190px;
 }
 
 
 
-h2{
+h2 {
     text-align: center;
 }
 
@@ -33,6 +38,14 @@ h2{
     margin-bottom: 20px;
     margin-right: 40px;
     margin-left: 40px;
+
+}
+
+input {
+    border-radius: 15px;
+    border: none;
+    padding: 7px;
+    width: 270px;
 }
 
 .segundo {
@@ -52,11 +65,11 @@ h2{
     justify-content: center;
     margin-top: 15px;
     margin-bottom: 20px;
-    
+
 }
 
 button {
-    background-color: rgb(22, 112, 181);
+    background-color: rgba(11, 10, 38);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -70,3 +83,8 @@ a {
     text-align: center;
 }
 
+form {
+    width: 400px;
+    border-radius: 50px;
+    opacity: 0.97;
+}

@@ -1,34 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Login</title>
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='login.css') }}"
+    />
+  </head>
+  <body>
     <div class="login-container">
-        
-        <form action="http://localhost:5000/login" method="post">
-            <h2>Login</h2>
-            <div class="icono-login">
-            <img src="./static/img/usuario.png" alt="Buscar"  />
-            </div>
-            <div class="primero">
-            
-            <label for="username">Usuario:</label><br>
-            <input type="text" id="username" name="username" required><br>
-            </div>
-            <div class="segundo">
-            <label for="password">Contraseña:</label><br>
-            <input type="password" name="password" name="password" required pattern="^(?=.*[A-Z])(?=(?:.*\d){3})(?!.*(\d).*\1).{8,}$"
-            title="Debe tener mínimo 8 caracteres, al menos una mayúscula y 3 números no repetidos"><br>
-            <a href="/register">¿No tienes usuario?</a>
-            </div>
-            <div class="ingresar">
-            <button   type="submit">Ingresar</button>
-            </div>
-            
-        </form>
-</body>
+      <form action="{{ url_for('login') }}" method="post">
+        <h2>Login</h2>
+
+        <div class="icono-login">
+          <img
+            src="{{ url_for('static', filename='img/usuario.png') }}"
+            alt="Usuario"
+          />
+        </div>
+
+        <div class="primero">
+          <label for="username">Usuario:</label><br />
+          <input type="text" id="username" name="username" required /><br />
+        </div>
+
+        <div class="segundo">
+          <label for="password">Contraseña:</label><br />
+          <div class="campo-password">
+            <input type="password" id="password" name="password" required />
+            <i
+              class="fa-regular fa-eye icono-ojo"
+              id="togglePassword"
+              title="Mostrar/Ocultar contraseña"
+            ></i>
+          </div>
+<br>
+          <a href="{{ url_for('register') }}">¿No tienes usuario?</a><br></br>
+          <a href="{{ url_for('olvidaste_contraseña') }}">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <div class="ingresar">
+          <button type="submit">Ingresar</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const togglePassword = document.getElementById("togglePassword");
+      const passwordInput = document.getElementById("password");
+
+      togglePassword.addEventListener("click", () => {
+        const type =
+          passwordInput.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordInput.setAttribute("type", type);
+
+        togglePassword.classList.toggle("fa-eye");
+        togglePassword.classList.toggle("fa-eye-slash");
+      });
+    </script>
+  </body>
 </html>

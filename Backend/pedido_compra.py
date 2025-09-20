@@ -13,10 +13,11 @@ import logging  # Se usa para mostrar mensajes en consola (INFO, WARNING, ERROR)
 
 # Agregamos al "path" de Python la carpeta BD (donde está el archivo conexion.py).
 # Así, cuando hagamos "from conexion import ConexionCompra", Python sabrá dónde buscarlo.
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'BD')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Backend')))
 
 # Importamos la clase que maneja la conexión y las operaciones con la base de datos
-from BD.conexion import ConexionCompra
+from BD.conexion import  conectar
+from Backend.Compra import ConexionCompra
 
 
 # ==========================================

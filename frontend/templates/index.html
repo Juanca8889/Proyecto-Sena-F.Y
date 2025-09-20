@@ -14,7 +14,7 @@
         <nav>
           <ul>
             <li>
-              <button><i data-feather="truck"></i> Domicilios</button>
+              <button  onclick="window.location.href='{{ url_for('listar_clientes') }}'"><i data-feather="truck"></i> Domicilios</button>
             </li>
             <li>
               <button><i data-feather="file-text"></i> Inventario</button>
@@ -23,9 +23,7 @@
               <button><i data-feather="bar-chart-2"></i> Garantias</button>
             </li>
             <li>
-              <button>
-                <i data-feather="users"></i> Fidelización Clientes
-              </button>
+              <button onclick="window.location.href='{{ url_for('clientes') }}'" ><i data-feather="users"></i> Fidelización Clientes</button>
             </li>
             <li>
               <button><i data-feather="file-text"></i> Empleados</button>
@@ -44,12 +42,20 @@
         <header class="barra-superior">
           <div class="nav-iconos">
             <span><i data-feather="home"></i> Inicio</span>
-            <span><i data-feather="calendar"></i> Agenda</span>
+            <span onclick="window.location.href='{{ url_for('agenda') }}'"
+              ><i data-feather="calendar"></i> Agenda</span
+            >
             <span><i data-feather="file-text"></i> Reportes</span>
-            <span><i data-feather="bell"></i> Notificaciones</span>
+            <span
+              onclick="window.location.href='{{ url_for('notificaciones') }}'"
+              ><i data-feather="bell"></i>Notificaciones</span
+            >
             <span><i data-feather="shopping-cart"></i> Ventas</span>
-            <span><i data-feather="clipboard"></i> Pedidos</span>
-            <span><i data-feather="info"></i> Info</span>
+
+            <span onclick="window.location.href='{{ url_for('pedido_compra') }}'"
+              ><i data-feather="clipboard"></i>Pedidos</span
+            >
+            <span onclick="window.location.href='{{ url_for('gestion_tickets') }}'"><i data-feather="info"></i> Info</span>
           </div>
           <div class="buscar">
             <input type="search" placeholder="Buscar..." class="buscador" />

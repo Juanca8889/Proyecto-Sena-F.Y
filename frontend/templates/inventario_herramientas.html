@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Inventario de herramientas</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='inventario_herramientas.css') }}" />
+</head>
+<body>
+  <div class="contenedor">
+    <!-- IZQUIERDA: Inventario -->
+    <section class="inventario">
+      <h2>Inventario de herramientas</h2>
+
+      <div class="lista-herramientas">
+        {% for h in herramientas %}
+        <div class="card-herramienta">
+          <p><strong>{{ h['nombre'] }}</strong> ({{ h['codigo'] }})</p>
+          <p><strong>Estado:</strong> {{ h['estado'] }}</p>
+          <p>Fecha de ingreso: {{ h['fechaIngreso'] }}</p>
+          <p>Fecha de salida: {{ h['fechaSalida'] or '---' }}</p>
+          <p>Cantidad: {{ h['cantidad'] }}</p>
+        </div>
+        {% else %}
+        <p>No hay herramientas registradas.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- DERECHA: Formularios -->
+    <section class="panel">
+      <!-- Registro -->
+      <h2>Registro de herramientas</h2>
+      <form action="/registrar" method="POST" autocomplete="off">
+        <label>Nombre</label>
+        <input type="text" name="nombre" placeholder="Ingrese el nombre" required />
+
+        <label>Descripción</label>
+        <input type="text" name="descripcion" placeholder="Descripción" />
+
+        <label>Código</label>
+        <input type="text" name="codigo" placeholder="COD-000" required />
+
+        <label>Cantidad</label>
+        <input type="number" name="cantidad" min="1" value="1" required />
+
+        <button type="submit">Registrar</button>
+      </form>
+
+      <!-- Retiro -->
+      <h3>Retiro de herramientas</h3>
+      <form action="/retiro" method="POST" autocomplete="off">
+        <label>Herramienta (código)</label>
+        <input type="text" name="codigo" placeholder="Ej: COD-000" required />
+
+        <label>Cantidad</label>
+        <input type="number" name="cantidad" min="1" value="1" required />
+
+        <label>Fecha</label>
+        <input type="date" name="fecha" required />
+
+        <label>Nombre/usuario</label>
+        <input type="text" name="usuario" placeholder="Ingrese su nombre/usuario" required />
+
+        <button type="submit">Retirar</button>
+      </form>
+
+      <!-- Reintegro -->
+      <h3>Reintegro de herramientas</h3>
+      <form action="/reintegro" method="POST" autocomplete="off">
+        <label>Herramienta (código)</label>
+        <input type="text" name="codigo" placeholder="Ej: COD-000" required />
+
+        <label>Cantidad</label>
+        <input type="number" name="cantidad" min="1" value="1" required />
+
+        <label>Nombre/usuario</label>
+        <input type="text" name="usuario" placeholder="Ingrese su nombre/usuario" required />
+
+        <button type="submit">Ingresar</button>
+      </form>
+    </section>
+  </div>
+
+  <!-- MENSAJES flash -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="toast">
+        {% for category, message in messages %}
+          <p class="{{ category }}">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+</body>
+</html>

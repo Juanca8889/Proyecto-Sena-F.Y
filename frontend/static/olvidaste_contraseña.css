@@ -1,0 +1,285 @@
+/* ===========================
+  Variables y configuración
+   =========================== */
+:root {
+  color-scheme: light dark;
+
+  /* Colores base (manteniendo la misma paleta) */
+  --bg: #0e2131;                 /* Fondo global (ligero azul petróleo) */
+  --bg-accent: #133148;          /* Segundo tono para el gradiente */
+  --surface: #163750;            /* Azul original del form (card) */
+  --surface-contrast: #ffffff;   /* Texto sobre card */
+  --text: #ffffff;
+  --text-muted: #d8e3ef;
+
+  /* Acentos (manteniendo los existentes) */
+  --primary: rgb(22, 112, 181);
+  --primary-2: #1c88d4;          /* Derivado para gradientes/hover */
+  --primary-hover: rgb(10, 90, 150);
+  --primary-active: rgb(8, 78, 130);
+
+  /* Inputs */
+  --input-bg: #ffffff;
+  --input-text: #0f172a;
+  --input-placeholder: #8aa1b6;
+  --input-border: rgba(15, 23, 42, 0.18);
+  --input-border-focus: rgba(22, 112, 181, 0.55);
+
+  /* Links */
+  --link: #ffffff;
+  --link-hover: var(--primary);
+
+  /* Sombras y bordes */
+  --shadow-1: 0 2px 6px rgba(2, 6, 23, 0.08);
+  --shadow-2: 0 10px 28px rgba(2, 6, 23, 0.18);
+  --ring: 0 0 0 3px rgba(22, 112, 181, 0.35);
+  --card-border: rgba(255, 255, 255, 0.06);   /* borde sutil del card */
+  --divider: rgba(255, 255, 255, 0.08);
+
+  /* Estados */
+  --error: #e11d48;
+  --success: #16a34a;
+}
+
+/* Modo oscuro automático (si el sistema lo usa)
+   (Mantenemos variables para el card, pero el fondo de página se fuerza a blanco en body) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a1724;
+    --bg-accent: rgb(8, 24, 39);
+    --surface: rgb(22, 55, 80);
+    --surface-contrast: #e2e8f0;
+    --text: #050505;
+    --text-muted: #cbd5e1;
+
+    --input-bg: #ffffff;
+    --input-text: #000000;
+    --input-placeholder: #94a3b8;
+    --input-border: rgba(148, 163, 184, 0.25);
+    --input-border-focus: rgba(56, 189, 248, 0.45);
+
+    --link: #e2e8f0;
+    --divider: rgba(255,255,255,0.08);
+  }
+}
+
+/* ===========================
+   Layout y tipografía
+   =========================== */
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+
+  /* Fondo blanco sólido como en la referencia */
+  background: #ffffff;
+
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 16px; /* respiración en móviles */
+}
+
+/* ===========================
+   Contenedor del formulario (Card)
+   =========================== */
+form {
+  position: relative;
+  background-color: var(--surface);
+  color: var(--text);
+  padding: 26px 22px 24px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-1), var(--shadow-2);
+  width: min(92vw, 380px);
+  box-sizing: border-box;
+  text-align: center;
+  border: 1px solid var(--card-border);
+  animation: float-in 380ms ease-out both;
+  overflow: clip; /* para cortar la franja superior */
+}
+
+/* Franja superior decorativa (como en la captura) */
+form::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-2));
+}
+
+/* Línea separadora tenue bajo el título, opcional */
+form::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: var(--divider);
+  margin: 14px -22px 18px;
+}
+
+@keyframes float-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.992); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  form { animation: none; }
+}
+
+/* ===========================
+   Títulos y textos
+   =========================== */
+h2 {
+  margin: 4px 0 12px;
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: 0.3px;
+  color: var(--surface-contrast);
+}
+
+/* ===========================
+   Labels e inputs
+   =========================== */
+label {
+  display: block;
+  text-align: left;
+  margin: 10px 2px 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+input[type="email"] {
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--input-border);
+  font-size: 15px;
+  background: var(--input-bg);
+  color: var(--input-text);
+  box-sizing: border-box;
+  margin-bottom: 14px;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, transform 0.06s ease;
+}
+
+input[type="email"]::placeholder {
+  color: var(--input-placeholder);
+}
+
+input[type="email"]:hover {
+  border-color: rgb(0, 0, 0);
+}
+
+input[type="email"]:focus-visible {
+  border-color: var(--primary);
+  box-shadow: var(--ring);
+  transform: translateY(-1px);
+}
+
+/* Estado inválido nativo del input email */
+input[type="email"]:user-invalid {
+  border-color: var(--error);
+  box-shadow: 0 0 0 2px rgb(245, 242, 242);
+}
+
+/* Soporte adicional si se agrega una clase manualmente */
+input.is-invalid {
+  border-color: var(--error) !important;
+  box-shadow: 0 0 0 2px rgb(247, 246, 246) !important;
+}
+
+/* Mensajería opcional */
+.helper-text,
+.feedback {
+  display: block;
+  text-align: left;
+  font-size: 0.86rem;
+  margin-top: -6px;
+  margin-bottom: 12px;
+  color: var(--text-muted);
+}
+
+.feedback.error { color: var(--error); }
+.feedback.success { color: var(--success); }
+
+/* ===========================
+   Botones
+   =========================== */
+button {
+  background-image: linear-gradient(180deg, var(--primary), var(--primary-hover));
+  color: #fff;
+  border: 0;
+  padding: 12px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  box-shadow: 0 8px 18px rgba(22, 112, 181, 0.35);
+  transition: background-color 0.18s ease, transform 0.06s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  will-change: transform;
+}
+
+button:hover {
+  filter: brightness(1.03);
+  box-shadow: 0 10px 22px rgba(22, 112, 181, 0.42);
+  transform: translateY(-1px);
+}
+
+button:active {
+  filter: none;
+  background-image: linear-gradient(180deg, var(--primary-hover), var(--primary-active));
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(22, 112, 181, 0.32);
+}
+
+button:focus-visible {
+  outline: none;
+  box-shadow: var(--ring), 0 8px 18px rgba(22, 112, 181, 0.35);
+}
+
+button:disabled,
+button[aria-disabled="true"] {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===========================
+   Enlace volver al login
+   =========================== */
+.volver-login {
+  margin-top: 14px;
+  display: inline-block;
+  color: var(--link);
+  font-size: 14px;
+  text-decoration: none;
+  text-align: center;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease, transform 0.06s ease;
+  text-underline-offset: 3px;
+}
+
+.volver-login:hover,
+.volver-login:focus-visible {
+  color: var(--link-hover);
+  text-decoration: underline;
+  transform: translateY(-1px);
+}
+
+/* ===========================
+   Ajustes responsivos finos
+   =========================== */
+@media (max-width: 380px) {
+  form { width: 100%; }
+}
+
+@media (max-width: 360px) {
+  h2 { font-size: 1.42rem; }
+  button { padding: 11px 14px; }
+}
