@@ -9,7 +9,9 @@
 </head>
 <body>
     <header class="dash-header">
-        <a class="back-link" href="{{ menu_url if menu_url is defined else url_for('login') }}" title="Volver al menú">←</a>
+         <a href="{{ url_for('admin') }}" class="btn-volver" title="Volver al menú"> ←
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
         <h1 class="dash-title">{{ page_title or 'Dashboard' }}</h1>
     </header>
 

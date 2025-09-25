@@ -8,7 +8,7 @@
 /* Fuentes y colores base */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #0A0F1C;
+  background-color: #6b6b6b;
   color: #FFFFFF;
   margin: 0;
   padding: 40px 20px; /* consolidado */
@@ -27,7 +27,7 @@ body {
   max-width: 480px;
   padding: 40px 50px;
   box-sizing: border-box;
-  color: #0D1B2A; /* Texto azul oscuro */
+  color: #000000; /* Texto azul oscuro */
 }
 
 /* Título principal */
@@ -35,10 +35,10 @@ body {
   font-family: 'Merriweather', serif;
   font-weight: 700;
   font-size: 28px;
-  color: #0D1B2A; /* Azul oscuro */
+  color: #000000; /* Azul oscuro */
   margin-bottom: 8px;
   text-transform: uppercase;
-  border-bottom: 2px solid #FFD700; /* Línea amarilla */
+  border-bottom: 2px solid #6d6d6d; /* Línea amarilla */
   padding-bottom: 6px;
 }
 
@@ -58,7 +58,7 @@ body {
   display: block;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #0D1B2A;
+  color: #000000;
 }
 
 /* Inputs: text, email, tel */
@@ -90,7 +90,7 @@ body {
 .formulario input[type="tel"]:focus-visible,
 button.guardar:focus-visible,
 a.volver:focus-visible {
-  outline: 3px solid rgba(13, 27, 42, 0.45);
+  outline: 3px solid #6b6b6b;
   outline-offset: 2px;
 }
 
@@ -98,7 +98,7 @@ a.volver:focus-visible {
 .formulario input[type="text"]:focus,
 .formulario input[type="email"]:focus,
 .formulario input[type="tel"]:focus {
-  border-color: #0D1B2A; /* borde azul oscuro */
+  border-color: #6b6b6b; /* borde azul oscuro */
   box-shadow: none;
 }
 
@@ -129,7 +129,7 @@ a.volver:focus-visible {
 }
 .flash.success { background: #27ae60; }
 .flash.danger  { background: #e74c3c; }
-.flash.warning { background: #f39c12; color: #1a1a1a; }
+.flash.warning { background: #6b6b6b; color: #020202; }
 .flash.info    { background: #3498db; }
 
 /* Botonera */
@@ -147,8 +147,8 @@ a.volver {
   border-radius: 10px;
   padding: 12px 28px;
   font-size: 16px;
-  background-color: #FFD700; /* amarillo */
-  color: #0D1B2A; /* azul oscuro */
+  background-color: #6b6b6b; /* amarillo */
+  color: #000000; /* azul oscuro */
   border: none;
   text-decoration: none;
   display: flex;
@@ -161,15 +161,15 @@ a.volver {
 /* Hover neutral (sin cambios) */
 button.guardar:hover,
 a.volver:hover {
-  background-color: #FFD700;
-  color: #0D1B2A;
+  background-color: #888887;
+  color: #000000;
   transform: none;
   box-shadow: none;
 }
 
 /* Estados deshabilitado (por si se usa) */
 button.guardar:disabled {
-  background-color: #e6cf66;
+  background-color: #000000;
   cursor: not-allowed;
   opacity: 0.85;
 }

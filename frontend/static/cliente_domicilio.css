@@ -3,9 +3,9 @@
      ========================= */
   :root {
     --bg: #ecf0f1;
-    --text: #2c3e50;
-    --primary: #0D1B2A;
-    --accent: #FFD700;
+    --text: #000000;
+    --primary: #6b6b6b;
+    --accent: #050505;
     --panel: #ffffff;
     --muted: #f9f9f9;
     --muted-2: #f1f1f1;
@@ -14,8 +14,8 @@
     --success: #27ae60;
     --success-2: #2ecc71;
     --danger: #e74c3c;
-    --warning: #f39c12;
-    --info: #3498db;
+    --warning: #000000;
+    --info: #6b6b6b;
   }
 
   * { box-sizing: border-box; }
@@ -56,7 +56,7 @@
 
   header .volver:hover { color: var(--accent); }
   header .volver:focus-visible {
-    outline: 3px solid rgba(255, 215, 0, 0.5);
+    outline: 3px solid rgba(66, 66, 65, 0.5);
     outline-offset: 2px;
   }
 
@@ -108,7 +108,7 @@
   .btn-agregar:focus-visible,
   header .acciones button:focus-visible,
   header .acciones .btn:focus-visible {
-    outline: 3px solid rgba(52, 152, 219, 0.45);
+    outline: 3px solid #6b6b6b;
     outline-offset: 2px;
   }
 

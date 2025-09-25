@@ -266,7 +266,7 @@ def notificaciones():
 # ==========================================
 # RUTAS DE CLIENTES A DOMICILIO (DAO robusto)
 # ==========================================
-@app.route('/clientes_domicilio', endpoint='clientes_domicilio')
+@app.route('/clientes_domicilio', endpoint='listar_clientes')
 def listar_clientes():
     cliente = Cliente()
     clientes = cliente.listar_clientes()
@@ -360,11 +360,11 @@ def register():
 # ==========================================
 # RUTAS DE ADMIN Y EMPLEADO
 # ==========================================
-@app.route('/Admin', endpoint="admin")
+@app.route('/admin', endpoint="admin")
 def home():
     return render_template('index.html')
 
-@app.route('/Empleado', endpoint="empleado")
+@app.route('/Empleado', endpoint="Empleado")
 def empleado():
     return render_template('empleado.html')
 

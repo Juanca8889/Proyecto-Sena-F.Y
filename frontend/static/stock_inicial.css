@@ -18,7 +18,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #0D1B2A;
+    background-color: #000000;
     color: white;
     padding: 15px 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -51,7 +51,7 @@ body {
 }
 
 .crear-btn {
-    background-color: #0D1B2A;
+    background-color: #6b6b6b;
     padding: 8px 14px;
     border-radius: 5px;
     font-weight: 600;
@@ -59,7 +59,7 @@ body {
 }
 
 .crear-btn:hover {
-    background-color: #0D1B2A;
+    background-color: #6b6b6b;
 }
 
 /* BARRA DE BÚSQUEDA */
@@ -76,7 +76,7 @@ body {
 }
 
 .btn-buscar {
-    background-color: #0D1B2A;
+    background-color: #6b6b6b;
     border: none;
     padding: 6px 12px;
     border-radius: 0 4px 4px 0;
@@ -86,7 +86,7 @@ body {
 }
 
 .btn-buscar:hover {
-    background-color: #0D1B2A;
+    background-color: #6b6b6b;
 }
 
 .btn-buscar i {
@@ -127,8 +127,8 @@ table {
 }
 
 thead {
-    background-color: #0D1B2A; /* Azul oscuro */
-    color: #FFD700;            /* Amarillo dorado */
+    background-color: #6b6b6b; /* Azul oscuro */
+    color: #6b6b6b;            /* Amarillo dorado */
 }
 
 thead tr th {
@@ -139,7 +139,7 @@ thead tr th {
 }
 
 thead tr th a {
-    color: #FFD700;            /* Amarillo dorado */
+    color: #000000;            /* Amarillo dorado */
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -148,7 +148,7 @@ thead tr th a {
 
 thead tr th i {
     font-size: 0.75rem;
-    color: #FFD700;            /* Amarillo dorado */
+    color: #000000;            /* Amarillo dorado */
 }
 
 tbody tr {
@@ -338,4 +338,16 @@ input[type="number"]:focus {
         width: 100%;
         justify-content: center;
     }
+}
+
+.btn-volver {
+    color: #333;
+    text-decoration: none;
+    font-size: 20px;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+}
+
+.btn-volver:hover {
+    color: #838383;
 }

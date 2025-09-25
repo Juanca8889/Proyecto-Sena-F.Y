@@ -9,14 +9,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <!-- Encabezado de la página -->
-    <header>
-        <!-- Flecha Volver al menú (Admin/Empleado/Login) sin JS -->
-        <a class="volver"
-           href="{% if menu_url is defined %}{{ menu_url }}{% else %}{{ url_for('admin') if session.get('rol') == 1 else (url_for('empleado') if session.get('rol') else url_for('login')) }}{% endif %}"
-           title="Volver al menú">←</a>
+  <header class="encabezado">
+    {% set _menu = url_for('admin') %}
+    <div class="titulo-con-flecha">
+        <!-- Flecha Volver al menú -->
+        <a class="volver" href="{{ _menu }}" title="Volver al menú">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
         <h1>Compra de material</h1>
-    </header>
+    </div>
+</header>
 
     {# 
       BLOQUE DE MENSAJES FLASH 

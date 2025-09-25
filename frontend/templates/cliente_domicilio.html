@@ -11,11 +11,8 @@
     <!-- HEADER -->
     <header>
         <!-- Volver al menú (Admin/Empleado/Login) sin JS -->
-        {% set _menu = menu_url if menu_url is defined else (
-            url_for('admin') if session.get('rol') == 1 else (
-                url_for('empleado') if session.get('rol') else url_for('login')
-            )
-        ) %}
+     {% set _menu = url_for('admin') %}
+
         <a class="volver" href="{{ _menu }}" title="Volver al menú">
             <i class="fa-solid fa-arrow-left"></i>
         </a>
