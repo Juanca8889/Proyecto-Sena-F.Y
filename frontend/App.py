@@ -323,7 +323,7 @@ def login():
                 # La ruta de admin tiene endpoint="admin"
                 return redirect(url_for('admin'))
             else:
-                return redirect(url_for('empleado'))
+                return redirect(url_for('admin'))
         else:
             flash("Usuario o contraseña incorrectos", "danger")
 
@@ -364,9 +364,9 @@ def register():
 def home():
     return render_template('index.html')
 
-@app.route('/Empleado', endpoint="Empleado")
+@app.route('/Empleado')
 def empleado():
-    return render_template('empleado.html')
+    return render_template('index.html')
 
 # ==========================================
 # RUTAS DE GESTIÓN DE CLIENTES (vista general)
@@ -522,6 +522,62 @@ def registrar_salida():
     ok, msg = db.registrar_salida(fecha, codigo, nombre, cantidad, motivo, responsable)
     flash(msg, "success" if ok else "danger")
     return redirect(url_for("salida_inventario"))
+
+# ==========================================
+# Laura
+# ==========================================
+
+# -----------------------
+# RUTA: REPORTE DE VENTAS
+# -----------------------
+@app.route("/reporte_ventas" ,methods=["GET"])
+def reporte_ventas():
+    fecha = request.args.get("fecha")
+    orden = request.args.get("orden")
+
+    conexion = conectar()
+    cursor = conexion.cursor(dictionary=True)
+
+    # Consulta base: solo transacciones completadas y sin duplicados
+    query = """
+        SELECT  id_venta, cliente_id, cantidad, descripcion, fecha_venta, encargado_id, monto
+        FROM venta
+        
+    """
+    valores = []
+
+    # Si hay filtro por fecha
+    if fecha:
+        query += " AND fecha = %s"
+        valores.append(fecha)
+
+    # Ordenar según filtro
+    if orden == "recientes":
+        query += " ORDER BY fecha_venta DESC"
+    elif orden == "antiguos":
+        query += " ORDER BY fecha_venta ASC"
+
+    cursor.execute(query, valores)
+    ventas = cursor.fetchall()
+
+    cursor.close()
+    conexion.close()
+
+    return render_template("reporteventas.html", ventas=ventas)
+
+# -----------------------
+# EXPORTAR A EXCEL (ejemplo simple)
+# -----------------------
+@app.route("/exportar_excel")
+def exportar_excel():
+    return "Aquí implementas exportación a Excel"
+
+# -----------------------
+# EXPORTAR A CSV (ejemplo simple)
+# -----------------------
+@app.route("/exportar_csv")
+def exportar_csv():
+    return "Aquí implementas exportación a CSV"
 
 # ==========================================
 # INICIO DE APP

@@ -4,13 +4,19 @@
   <meta charset="UTF-8" />
   <title>Inventario de herramientas</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='inventario_herramientas.css') }}" />
+  <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
   <div class="contenedor">
+    <a href="{{ url_for('admin') }}" class="btn-volver" title="Volver al menú"> ←
+            <i class="fa-solid fa-arrow-left"></i></a>
     <!-- IZQUIERDA: Inventario -->
     <section class="inventario">
+      
+      
+      <br></br>
       <h2>Inventario de herramientas</h2>
-
+      
       <div class="lista-herramientas">
         {% for h in herramientas %}
         <div class="card-herramienta">
@@ -24,6 +30,7 @@
         <p>No hay herramientas registradas.</p>
         {% endfor %}
       </div>
+      
     </section>
 
     <!-- DERECHA: Formularios -->

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reporte de Ventas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='reporteventas.css') }}" />
+  </head>
+  <body>
+    <div class="window">
+      <header>
+        <div class="window-name">SERVIMAQ</div>
+        <div class="window-controls">
+          <a href="admin"><span >&larr;</span></a>
+        </div>
+      </header>
+
+      <main>
+        <h1>Reporte de Ventas</h1>
+        <p class="subtitle">
+          Reporte disponible solo para administradores. Muestra únicamente las transacciones completadas.
+        </p>
+
+        <!-- Filtro de fecha y orden -->
+        <form method="get" action="/reporte_ventas" class="filtros">
+          <label for="fecha">Seleccionar fecha:</label>
+          <input type="date" id="fecha" name="fecha" />
+
+          <label for="orden">Ordenar:</label>
+          <select id="orden" name="orden">
+            <option value="">-- Seleccionar --</option>
+            <option value="recientes">Más recientes</option>
+            <option value="antiguos">Más antiguos</option>
+          </select>
+
+          <button type="submit" class="btn-filtrar">Aplicar</button>
+        </form>
+
+        <!-- Tabla de ventas -->
+        <div class="tabla-contenedor">
+          <table>
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Cliente</th>
+                <th>Cantidad</th>
+                <th>Descripcion</th>
+                <th>Fecha</th>
+                <th>Encargado</th>
+                <th>Monto</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for venta in ventas %}
+              <tr>
+                <td>{{ venta.id_venta }}</td>
+                <td>{{ venta.cliente_id }}</td>
+                <td>{{ venta.cantidad }}</td> 
+                <td>{{ venta.descripcion }}</td>
+                <td>{{ venta.fecha_venta }}</td>
+                <td>{{ venta.encargado_id }}</td>
+                <td>{{ venta.monto }}</td>
+                
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Exportar datos -->
+        <div class="acciones-exportar">
+          <a href="/exportar_excel" class="btn-exportar">Exportar a Excel</a>
+          <a href="/exportar_csv" class="btn-exportar">Exportar a CSV</a>
+        </div>
+      </main>
+    </div>
+
+    
+  </body>
+</html>

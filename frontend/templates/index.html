@@ -17,20 +17,22 @@
               <button  onclick="window.location.href='{{ url_for('listar_clientes') }}'"><i data-feather="truck"></i> Domicilios</button>
             </li>
             <li>
-             <button onclick="window.location.href='{{ url_for('inventario') }}'" ><i data-feather="users"></i> Inventario </button>
+                    <div class="menu">
+        <button onclick="window.location.href='{{ url_for('inventario') }}'" ><i data-feather="archive"></i> Inventario </button>
+        <div class="menu-content">
+            <span oneclick><i data-feather="archive"></i> Inventario</span oneclick>
+              <span oneclick><i data-feather="file-plus"></i> Registrar Material</span oneclick>
+             </div>
             </li>
             </li>
             <li>
-              <button><i data-feather="bar-chart-2"></i> Garantias</button>
+              <button onclick="window.location.href='{{ url_for('clientes') }}'" ><i data-feather="users"></i> Clientes</button>
             </li>
             <li>
-              <button onclick="window.location.href='{{ url_for('clientes') }}'" ><i data-feather="users"></i> Fidelización Clientes</button>
+              <button ><i data-feather="file-text"></i> Empleados</button>
             </li>
             <li>
-              <button><i data-feather="file-text"></i> Empleados</button>
-            </li>
-            <li>
-              <button><i data-feather="tool"></i> Herramientas</button>
+              <button onclick="window.location.href='{{ url_for('inventario') }}'"><i data-feather="tool"></i> Herramientas</button>
             </li>
             <li>
               <button><i data-feather="settings"></i> Configuración</button>
@@ -47,14 +49,24 @@
               ><i data-feather="calendar"></i> Agenda</span
             >
             
-            <span
-                onclick="window.location.href='{{ url_for('dashboard.dashboard') }}'">
-              <i data-feather="file-text"></i> Reportes</span>
+            <span class="dropdown">
+            <i data-feather="file-text"></i> Reportes 
+            <ul class="submenu">
+            <li><a href="{{url_for('reporte_ventas')}}">Reportes  </a></li>
+            <li><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
+            </ul>
+            </span>
+
             <span
               onclick="window.location.href='{{ url_for('notificaciones') }}'"
               ><i data-feather="bell"></i>Notificaciones</span
             >
-            <span><i data-feather="shopping-cart"></i> Ventas</span>
+            <div class="menu">
+              <div class="menu-button"><i data-feather="shopping-cart"></i> Ventas</div>
+              <div class="menu-content">
+             <a href="{{url_for('salida_inventario')}}"><span oneclick><i data-feather="shopping-cart"></i> Ventas</span oneclick></a>
+              <span oneclick><i data-feather="check-square"></i> Ordenes</span oneclick>
+             </div></div>
 
             <span onclick="window.location.href='{{ url_for('pedido_compra') }}'"
               ><i data-feather="clipboard"></i>Pedidos</span

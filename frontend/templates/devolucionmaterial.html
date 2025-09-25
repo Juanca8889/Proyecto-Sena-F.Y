@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Devoluciones</title>
+    <link rel="stylesheet" href="./static/devoluciones.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Gestión de Devoluciones</h1>
+      </header>
+
+      <main class="main-content">
+        <!-- Panel Izquierdo: Búsqueda y listado -->
+        <section class="left-panel">
+          <div class="search-section">
+            <input type="text" placeholder="Buscar devolución..." />
+            <select>
+              <option value="">Filtrar por...</option>
+              <option value="fecha">Fecha</option>
+              <option value="razon">Razón</option>
+              <option value="responsable">Responsable</option>
+              <option value="alfabetico">Orden alfabético</option>
+            </select>
+          </div>
+
+          <div class="devoluciones-grid">
+            <div class="devolucion-card">
+              <h2>Devolución</h2>
+              <p><strong>Razón:</strong> Daño</p>
+              <p><strong>Descripción:</strong> Caja golpeada</p>
+              <p><strong>Fecha:</strong> 10/09/2025</p>
+              <button class="view-btn">Ver</button>
+            </div>
+
+            <div class="devolucion-card">
+              <h2>Devolución</h2>
+              <p><strong>Razón:</strong> No pagó</p>
+              <p><strong>Descripción:</strong> Cliente no cumplió con pago</p>
+              <p><strong>Fecha:</strong> 12/09/2025</p>
+              <button class="view-btn">Ver</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Panel Derecho: Formulario -->
+        <section class="right-panel">
+          <h2>Registrar Devolución</h2>
+          <form>
+            <label for="codigo">Código del Producto</label>
+            <input type="text" id="codigo" name="codigo" required />
+
+            <label for="nombre">Nombre del Material/Producto</label>
+            <input type="text" id="nombre" name="nombre" required />
+
+            <label for="usuario">Usuario/Responsable</label>
+            <input type="text" id="usuario" name="usuario" required />
+
+            <label for="razon">Razón de Devolución</label>
+            <select id="razon" name="razon" required>
+              <option value="danio">Daño</option>
+              <option value="no_pago">No pagó</option>
+              <option value="otro">Otro</option>
+            </select>
+
+            <label for="descripcion">Descripción Detallada</label>
+            <textarea id="descripcion" name="descripcion" rows="5"></textarea>
+
+            <button type="submit" class="register-btn">Registrar</button>
+          </form>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

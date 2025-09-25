@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='Gestion_tickets_es.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='Gestion_tickets.css') }}" />
     <title>Document</title>
   </head>
   <body>
@@ -13,7 +13,7 @@
     <!-- Vista 2: Detalles del Ticket (al hacer clic en "Ver detalles") -->
     <div class="container">
       <header>
-        <button class="back-btn">&#8592;</button>
+        <button class="back-btn"><a href="{{ url_for('admin') }}">&#8592;</a></button>
         <h1>Historial De Tickets</h1>
       </header>
       <main class="details-layout">

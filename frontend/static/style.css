@@ -121,7 +121,8 @@ body {
 
 .buscador {
   width: 250px;
-  padding: 8px 12px 8px 38px; /* espacio para la lupa */
+  padding: 8px 12px 8px 38px;
+  /* espacio para la lupa */
   border-radius: 24px;
   border: 1px solid #dcdcdc;
   outline: none;
@@ -216,7 +217,7 @@ body {
 }
 
 /* ====== Submenús ====== */
-.has-submenu > button {
+.has-submenu>button {
   justify-content: space-between;
 }
 
@@ -247,5 +248,91 @@ body {
 }
 
 .has-submenu.open .submenu {
+  display: block;
+}
+
+
+/* Dropdown de Reportes */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown .submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  /* 👈 aparece debajo */
+  left: 0;
+  /* alineado con el texto Reportes */
+  background: #fff;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  min-width: 160px;
+  z-index: 1000;
+}
+
+.dropdown:hover .submenu {
+  display: block;
+}
+
+.submenu li {
+  padding: 10px;
+}
+
+.submenu li a {
+  text-decoration: none;
+  color: #000;
+  display: block;
+}
+
+.submenu li:hover {
+  background: #f0f0f0;
+}
+
+
+
+.menu {
+  position: relative;
+  display: inline-block;
+}
+
+/* Botón que muestra el menú */
+.menu-button {
+
+  color: white;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Contenido del menú desplegable */
+.menu-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+}
+
+.menu-content span {
+  color: black;
+  padding: 12px 16px;
+  display: block;
+  cursor: pointer;
+}
+
+.menu-content span:hover {
+  background-color: #f1f1f1;
+}
+
+/* Mostrar el menú al hacer hover */
+.menu:hover .menu-content {
   display: block;
 }
