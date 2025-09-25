@@ -11,7 +11,7 @@ def get_db_connection():
         database="montallantasfy"
     )
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/ordenes_servicio", methods=["GET", "POST"])
 def ordenes_servicio():
     if request.method == "POST":
         # Obtener datos del formulario
@@ -33,7 +33,7 @@ def ordenes_servicio():
         cursor.close()
         conn.close()
 
-        return redirect(url_for("ordenes_servicio"))
+        return redirect(url_for("ordenes"))
 
     # Consultar órdenes desde la base de datos
     conn = get_db_connection()

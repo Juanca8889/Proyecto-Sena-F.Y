@@ -12,7 +12,7 @@ def get_db_connection():
         database="montallantasfy"
     )
 
-@app.route("/")
+@app.route("/registrarmat")
 def registrar():
     """
     Página principal: muestra el formulario y el historial desde la DB.
@@ -24,10 +24,10 @@ def registrar():
     cursor.close()
     conn.close()
 
-    return render_template("registrarmat2.html", historial=historial)
+    return render_template("registrarmat.html", historial=historial)
 
 
-@app.route("/agregar", methods=["POST"])
+@app.route("../templates/registrarmat", methods=["POST"])
 def agregar():
     """
     Procesa el formulario y guarda un nuevo material en la DB.
@@ -53,7 +53,7 @@ def agregar():
     cursor.close()
     conn.close()
 
-    return redirect(url_for("registrar"))
+    return redirect(url_for("../templates/registrarmat"))
 
 
 @app.errorhandler(404)
