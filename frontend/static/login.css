@@ -1,7 +1,21 @@
 body {
     background-color: whitesmoke;
-    background-image: url("./img/fnd.png");
+    background-image: url("./img/fnd.png")
 }
+
+/*.login-container .forma {
+    position: absolute;
+    right: -600px;
+    top: -5px;
+    height: 1000px;
+    width: 1000px;
+    background: linear-gradient(45deg, #262493, #0b0a26);
+    transform: rotate(10deg) skew(40deg);
+    transform-origin: bottom right;
+
+}
+*/
+
 
 form {
     background-color: #262493;

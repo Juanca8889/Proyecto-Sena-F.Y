@@ -240,7 +240,7 @@ def guardar_cliente():
     nuevo_cliente.registrar_cliente()
     nuevo_cliente.cerrar()
 
-    return redirect(url_for('clientes_domicilio'))
+    return redirect(url_for('listar_clientes'))
 
 # ==========================================
 # LOGIN Y REGISTRO
@@ -299,7 +299,7 @@ def register():
 # ==========================================
 # RUTAS DE ADMIN Y EMPLEADO
 # ==========================================
-@app.route('/Admin', endpoint="admin")
+@app.route('/Admin', endpoint="home")
 def home():
     return render_template('index.html')
 
