@@ -9,10 +9,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <!-- Encabezado de la página -->
-    <header>
+  <header class="encabezado">
+    {% set _menu = url_for('admin') %}
+    <div class="titulo-con-flecha">
+        <!-- Flecha Volver al menú -->
+        <a class="volver" href="{{ _menu }}" title="Volver al menú">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
         <h1>Compra de material</h1>
-    </header>
+    </div>
+</header>
 
     {# 
       BLOQUE DE MENSAJES FLASH 

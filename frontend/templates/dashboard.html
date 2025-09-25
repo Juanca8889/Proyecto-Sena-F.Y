@@ -2,72 +2,120 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <title>Dashboard</title>
+    <title>{{ page_title or 'Dashboard' }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 </head>
 <body>
-    <h1>Dashboard de Ventas y Stock</h1>
+    <header class="dash-header">
+         <a href="{{ url_for('admin') }}" class="btn-volver" title="Volver al menú"> ←
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h1 class="dash-title">{{ page_title or 'Dashboard' }}</h1>
+    </header>
 
-    <h2>Ventas por Día (Últimos 7 días)</h2>
-    <img src="data:image/png;base64,{{ img_ventas_dia }}" alt="Ventas por Día" />
+    <main class="dash-main">
+        <section class="cards">
+            <article class="card">
+                <h2 class="card-title">Ventas por Día (últimos 7 días)</h2>
+                <div class="card-body">
+                    {% if img_ventas_dia %}
+                        <img class="chart" src="data:image/png;base64,{{ img_ventas_dia }}" alt="Gráfica de ventas por día" />
+                    {% else %}
+                        <p class="empty">No hay datos de ventas por día.</p>
+                    {% endif %}
+                </div>
+            </article>
 
-    <h2>Ventas por Semana (Últimas 4 semanas)</h2>
-    <img src="data:image/png;base64,{{ img_ventas_semana }}" alt="Ventas por Semana" />
+            <article class="card">
+                <h2 class="card-title">Ventas por Semana (últimas 4 semanas)</h2>
+                <div class="card-body">
+                    {% if img_ventas_semana %}
+                        <img class="chart" src="data:image/png;base64,{{ img_ventas_semana }}" alt="Gráfica de ventas por semana" />
+                    {% else %}
+                        <p class="empty">No hay datos de ventas por semana.</p>
+                    {% endif %}
+                </div>
+            </article>
 
-    <h2>Ventas por Mes (Últimos 12 meses)</h2>
-    <img src="data:image/png;base64,{{ img_ventas_mes }}" alt="Ventas por Mes" />
+            <article class="card">
+                <h2 class="card-title">Ventas por Mes (últimos 12 meses)</h2>
+                <div class="card-body">
+                    {% if img_ventas_mes %}
+                        <img class="chart" src="data:image/png;base64,{{ img_ventas_mes }}" alt="Gráfica de ventas por mes" />
+                    {% else %}
+                        <p class="empty">No hay datos de ventas por mes.</p>
+                    {% endif %}
+                </div>
+            </article>
+        </section>
 
-    <h2>Productos Bajo Stock (<=10 unidades)</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID Producto</th>
-                <th>Nombre</th>
-                <th>Cantidad</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for p in bajo_stock %}
-            <tr>
-                <td>{{ p.id_producto }}</td>
-                <td>{{ p.nombre }}</td>
-                <td>{{ p.cantidad }}</td>
-            </tr>
-            {% else %}
-            <tr><td colspan="3">No hay productos bajo stock.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <section class="cards two">
+            <article class="card">
+                <h2 class="card-title">Productos Bajo Stock</h2>
+                <div class="card-body">
+                    <div class="table-wrapper">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID Producto</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for p in bajo_stock|default([], true) %}
+                                <tr>
+                                    <td>{{ p.id_producto }}</td>
+                                    <td>{{ p.nombre }}</td>
+                                    <td>{{ p.cantidad }}</td>
+                                </tr>
+                                {% else %}
+                                <tr><td colspan="3" class="empty">No hay productos bajo stock.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </article>
 
-    <h2>Pedidos Activos</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID Compra</th>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-                <th>Estado</th>
-                <th>Fecha Pedido</th>
-                <th>Fecha Entrega</th>
-                <th>Proveedor</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for pedido in pedidos %}
-            <tr>
-                <td>{{ pedido.id_compra }}</td>
-                <td>{{ pedido.descripcion }}</td>
-                <td>{{ pedido.cantidad }}</td>
-                <td>{{ pedido.estado }}</td>
-                <td>{{ pedido.fecha_pedido.strftime("%Y-%m-%d") }}</td>
-                <td>{{ pedido.fecha_entrega.strftime("%Y-%m-%d") }}</td>
-                <td>{{ pedido.proveedor_nombre }}</td>
-            </tr>
-            {% else %}
-            <tr><td colspan="7">No hay pedidos activos.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
+            <article class="card">
+                <h2 class="card-title">Pedidos Activos</h2>
+                <div class="card-body">
+                    <div class="table-wrapper">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID Compra</th>
+                                    <th scope="col">Descripción</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Fecha Pedido</th>
+                                    <th scope="col">Fecha Entrega</th>
+                                    <th scope="col">Proveedor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for pedido in pedidos|default([], true) %}
+                                <tr>
+                                    <td>{{ pedido.id_compra }}</td>
+                                    <td>{{ pedido.descripcion }}</td>
+                                    <td>{{ pedido.cantidad }}</td>
+                                    <td>{{ pedido.estado|default('N/A', true) }}</td>
+                                    <td>{{ pedido.fecha_pedido|default('—', true) }}</td>
+                                    <td>{{ pedido.fecha_entrega|default('—', true) }}</td>
+                                    <td>{{ pedido.proveedor_nombre }}</td>
+                                </tr>
+                                {% else %}
+                                <tr><td colspan="7" class="empty">No hay pedidos activos.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
 </body>
 </html>

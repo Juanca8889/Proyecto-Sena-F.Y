@@ -1,349 +1,301 @@
 /* =========================================================
    VARIABLES GLOBALES
-   Aquí definimos colores y fuentes que se usarán en todo
-   el sitio. Así, si queremos cambiar el color dorado, 
-   solo modificamos aquí y se actualiza en todo el CSS.
    ========================================================= */
 :root {
-  --color-fondo: #0A0F1C;            /* Fondo principal (azul oscuro) */
-  --color-fondo-secundario: #0D1B2A; /* Fondo de tarjetas y bloques */
-  --color-dorado: #FFD700;           /* Color dorado para resaltar */
-  --color-blanco: #FFFFFF;           /* Blanco puro */
-  --color-gris: #666666;             /* Gris para botones secundarios */
-  --color-gris-hover: #555555;       /* Gris más oscuro en hover */
-  --color-texto: #222222;            /* Texto base (negro/gris oscuro) */
-  
-  --fuente-principal: 'Segoe UI', sans-serif;  /* Fuente para textos */
-  --fuente-titulos: 'Merriweather', serif;     /* Fuente elegante para títulos */
+  --color-fondo: #ffffff;            /* Fondo principal blanco */
+  --color-fondo-secundario: #777777; /* Fondos suaves de tarjetas */
+  --color-encabezado: #050505;       /* Encabezado oscuro */
+  --color-texto: #080808;            /* Texto gris oscuro */
+  --color-gris: #757171;             /* Gris medio */
+  --color-gris-hover: #706f6f;       /* Gris más oscuro en hover */
+  --color-borde: #cccccc;            /* Bordes sutiles */
+
+  --fuente-principal: 'Segoe UI', sans-serif;
+  --fuente-titulos: 'Merriweather', serif;
 }
 
 /* =========================================================
    ESTILOS BASE
-   Configuración general para todo el cuerpo de la página.
    ========================================================= */
 body {
-    font-family: var(--fuente-principal);
-    background-color: var(--color-blanco); /* Fondo blanco */
-    color: var(--color-texto);             /* Texto negro/gris oscuro */
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;                      /* Mejora la lectura del texto */
+  font-family: var(--fuente-principal);
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--fuente-titulos);
-    color: var(--color-dorado); /* Títulos en dorado */
-    margin-bottom: 0.5em;
+  font-family: var(--fuente-titulos);
+  color: var(--color-encabezado);
+  margin-bottom: 0.5em;
 }
 
 /* =========================================================
    ENCABEZADO
-   La franja superior que contiene el título principal.
    ========================================================= */
 header {
-    background-color: var(--color-fondo);
-    color: var(--color-dorado);
-    padding: 5px 0; 
-    text-align: center;
-    font-size: 1.5em; 
-    font-weight: 700;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Efecto de sombra abajo */
+  background: linear-gradient(90deg, #707070, #444444);
+  color: #ffffff;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 1.6em;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* =========================================================
    LAYOUT GENERAL
-   Distribución de la página: filtros, materiales y sugerencias.
    ========================================================= */
 main {
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;       /* Si no cabe en fila, baja de línea */
-    gap: 20px;             /* Espacio entre secciones */
-    justify-content: space-between;
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  padding: 0 20px;
 }
 
 .filtros-sugerencias {
-    display: flex;
-    gap: 40px;
-    width: 100%;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 30px;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 /* =========================================================
    FILTROS
-   Cajita que contiene el menú desplegable para ordenar productos.
    ========================================================= */
 .filtros {
-    flex: 1 1 200px;
-    background-color: var(--color-fondo-secundario);
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px #00000088;
-    height: fit-content;
-    color: var(--color-blanco);
+  flex: 1 1 200px;
+  background-color: var(--color-fondo-secundario);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  height: fit-content;
 }
 
 .filtros label {
-    font-weight: 600;
-    display: block;
-    margin-bottom: 8px;
-    color: var(--color-dorado);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-texto);
 }
 
 .filtros select {
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid var(--color-dorado);
-    font-size: 1em;
-    cursor: pointer;
-    background-color: var(--color-fondo);
-    color: var(--color-blanco);
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid var(--color-borde);
+  font-size: 1em;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: var(--color-texto);
 }
 
 /* =========================================================
    MATERIALES
-   Cada producto se muestra como una "tarjeta" con datos y formulario.
    ========================================================= */
 .contenedor-materiales {
-    flex: 3 1 600px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+  flex: 3 1 600px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
 
 .material {
-    background-color: var(--color-fondo-secundario);
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 3px 6px rgb(0 0 0 / 0.3);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    color: var(--color-blanco);
+  background-color: #ffffff;
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .nombre-material {
-    font-weight: 700;
-    font-size: 1.2em;
-    margin-bottom: 8px;
-    color: var(--color-dorado);
+  font-weight: 700;
+  font-size: 1.2em;
+  margin-bottom: 8px;
+  color: var(--color-encabezado);
 }
 
 .material p {
-    margin: 4px 0;
-    font-size: 0.95em;
-    color: #CCCCCC;
+  margin: 4px 0;
+  font-size: 0.95em;
+  color: var(--color-texto);
 }
 
-.material form {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.material label {
-    font-weight: 600;
-    font-size: 0.9em;
-    color: var(--color-dorado);
-}
-
-/* Inputs dentro de cada tarjeta */
 .material input[type="number"],
 .material select,
 .material input[type="date"] {
-    padding: 6px;
-    border-radius: 4px;
-    border: 1px solid var(--color-dorado);
-    font-size: 1em;
-    width: 100%;
-    background-color: var(--color-fondo);
-    color: var(--color-blanco);
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid var(--color-borde);
+  font-size: 1em;
+  width: 100%;
+  background-color: #ffffff;
+  color: var(--color-texto);
 }
 
-/* Botón dentro de cada tarjeta de producto */
+/* Botón dentro de cada tarjeta */
 .material button {
-    background-color: var(--color-dorado);
-    border: none;
-    color: var(--color-fondo);
-    padding: 10px;
-    font-weight: 700;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.25s ease;
+  background-color: var(--color-encabezado);
+  border: none;
+  color: #ffffff;
+  padding: 10px;
+  font-weight: 700;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 .material button:hover {
-    background-color: var(--color-blanco);
-    color: var(--color-dorado); /* Contraste al pasar el mouse */
+  background-color: var(--color-gris-hover);
 }
 
 /* =========================================================
    SUGERENCIAS
-   Sección lateral con recomendaciones de compra.
    ========================================================= */
 .sugerencias {
-    flex: 1 1 250px;
-    background-color: var(--color-fondo-secundario);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px #00000088;
-    height: fit-content;
-    color: var(--color-blanco);
+  flex: 1 1 250px;
+  background-color: var(--color-fondo-secundario);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  height: fit-content;
 }
 
 .sugerencias h3 {
-    margin-top: 0;
-    color: var(--color-dorado);
-    font-weight: 700;
+  margin-top: 0;
+  color: var(--color-encabezado);
+  font-weight: 700;
 }
 
 .sugerencia-item {
-    background-color: #0F1525;
-    margin-bottom: 12px;
-    padding: 10px 15px;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(255, 215, 0, 0.15);
-    color: var(--color-blanco);
+  background-color: #ffffff;
+  border: 1px solid var(--color-borde);
+  margin-bottom: 12px;
+  padding: 10px 15px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  color: var(--color-texto);
 }
 
 /* =========================================================
    BOTONES PRINCIPALES
-   Botones grandes debajo de los productos: "Realizar un pedido" y "Ver pedidos".
    ========================================================= */
 .botones-principales {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 .botones-principales button {
-    background-color: var(--color-dorado);
-    border: none;
-    color: var(--color-fondo);
-    padding: 12px 25px;
-    font-weight: 700;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.25s ease;
+  background-color: var(--color-encabezado);
+  border: none;
+  color: #ffffff;
+  padding: 12px 25px;
+  font-weight: 700;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 .botones-principales button:hover {
-    background-color: var(--color-blanco);
-    color: var(--color-dorado); /* Mejor contraste en hover */
+  background-color: var(--color-gris-hover);
 }
 
 /* =========================================================
-   FORMULARIO DE PEDIDO Y LISTA DE PEDIDOS
-   Caja centrada donde se ingresan los datos de un pedido o se ven los pedidos realizados.
+   FORMULARIOS
    ========================================================= */
 .formulario-pedido, .ver-pedidos {
-    max-width: 600px;
-    margin: 30px auto;
-    background-color: var(--color-fondo-secundario);
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgb(0 0 0 / 0.4);
-    color: var(--color-blanco);
+  max-width: 600px;
+  margin: 30px auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--color-borde);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .formulario-pedido h2, .ver-pedidos h2 {
-    color: var(--color-dorado);
-    margin-bottom: 25px;
-    font-weight: 700;
-    text-align: center;
+  color: var(--color-encabezado);
+  margin-bottom: 25px;
+  font-weight: 700;
+  text-align: center;
 }
 
-.formulario-pedido form label {
-    display: block;
-    margin-bottom: 15px;
-    font-weight: 600;
-    color: var(--color-dorado);
+.formulario-pedido form input,
+.formulario-pedido form select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid var(--color-borde);
+  font-size: 1em;
+  background-color: #ffffff;
+  color: var(--color-texto);
+  margin-bottom: 15px;
 }
 
-/* Inputs dentro del formulario de pedido */
-.formulario-pedido form input[type="text"],
-.formulario-pedido form input[type="number"],
-.formulario-pedido form select,
-.formulario-pedido form input[type="date"] {
-    width: 100%;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid var(--color-dorado);
-    font-size: 1em;
-    box-sizing: border-box;
-    background-color: var(--color-fondo);
-    color: var(--color-blanco);
-}
-
-/* Botón principal dentro del formulario */
 .formulario-pedido form button {
-    background-color: var(--color-dorado);
-    color: var(--color-fondo);
-    font-weight: 700;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 15px;
-    transition: all 0.25s ease;
+  background-color: var(--color-encabezado);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.25s ease;
 }
 .formulario-pedido form button:hover {
-    background-color: var(--color-blanco);
-    color: var(--color-dorado);
+  background-color: var(--color-gris-hover);
 }
 
 /* =========================================================
    BOTÓN VOLVER
-   Botón gris que aparece en formularios y lista de pedidos.
    ========================================================= */
 .btn-volver {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 12px 0;
-    background-color: var(--color-gris);
-    color: var(--color-blanco);
-    font-weight: 600;
-    font-size: 1rem;
-    border-radius: 6px;
-    text-decoration: none;
-    cursor: pointer;
-    user-select: none;
-    margin-top: 15px;
-    transition: background-color 0.3s ease;
-}
-.btn-volver i {
-    margin-right: 10px;
-    font-size: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 0;
+  background-color: var(--color-gris);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
 }
 .btn-volver:hover {
-    background-color: var(--color-gris-hover);
+  background-color: var(--color-gris-hover);
 }
 
 /* =========================================================
    LISTA DE PEDIDOS
-   Cada pedido se muestra como un bloque con fondo oscuro y texto dorado.
    ========================================================= */
 .ver-pedidos ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 .ver-pedidos ul li {
-    padding: 10px 15px;
-    margin-bottom: 12px;
-    background-color: #0F1525;
-    border-radius: 6px;
-    color: var(--color-dorado);
-    font-weight: 600;
-    box-shadow: 0 1px 3px rgba(255, 215, 0, 0.3);
+  padding: 10px 15px;
+  margin-bottom: 12px;
+  background-color: var(--color-fondo-secundario);
+  border-radius: 6px;
+  color: var(--color-texto);
+  font-weight: 600;
 }
 
 /* =========================================================
-   ALERTAS (MENSAJES FLASH)
-   Cuadros que muestran mensajes de éxito o error.
+   ALERTAS
    ========================================================= */
 .alert {
   padding: 15px;
@@ -352,19 +304,18 @@ main {
   font-weight: bold;
 }
 .alert-success {
-  background-color: #d4edda; /* Verde claro */
-  color: #155724;           /* Verde oscuro */
-  border: 1px solid #c3e6cb;
+  background-color: #eafbea;
+  color: #2d6a2d;
+  border: 1px solid #c9e6c9;
 }
 .alert-danger {
-  background-color: #f8d7da; /* Rojo claro */
-  color: #721c24;           /* Rojo oscuro */
-  border: 1px solid #f5c6cb;
+  background-color: #fdeaea;
+  color: #992d2d;
+  border: 1px solid #f1c0c0;
 }
 
 /* =========================================================
-   RESPONSIVIDAD
-   Reglas para pantallas pequeñas (tablets y móviles).
+   RESPONSIVE
    ========================================================= */
 @media (max-width: 768px) {
   main {
@@ -377,4 +328,36 @@ main {
   .botones-principales {
     flex-direction: column;
   }
+}
+
+/* =========================================================
+   TITULO CON FLECHA
+   ========================================================= */
+.titulo-con-flecha {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.titulo-con-flecha h1 {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: 2em;
+  color: var(--color-encabezado);
+}
+
+.volver {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 22px;
+  color: var(--color-encabezado);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.volver:hover {
+  color: var(--color-gris);
 }

@@ -1,207 +1,268 @@
-/* ====== GENERAL ====== */
-body {
+/* =========================
+     Variables y base
+     ========================= */
+  :root {
+    --bg: #ecf0f1;
+    --text: #000000;
+    --primary: #6b6b6b;
+    --accent: #050505;
+    --panel: #ffffff;
+    --muted: #f9f9f9;
+    --muted-2: #f1f1f1;
+    --border: #d9d9d9;
+    --border-strong: #7e7d7d;
+    --success: #27ae60;
+    --success-2: #2ecc71;
+    --danger: #e74c3c;
+    --warning: #000000;
+    --info: #6b6b6b;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #ecf0f1;
+    background: var(--bg);
     margin: 0;
     padding: 0;
-    color: #2c3e50;
-}
+    color: var(--text);
+  }
 
-/* ====== HEADER ====== */
-header {
-    background: #2c3e50;
-    color: white;
+  /* =========================
+     Header
+     ========================= */
+  header {
+    background: var(--primary);
+    color: var(--accent);
     padding: 15px 30px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* centramos el título */
     align-items: center;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
-}
-
-header .titulo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-header .titulo h1 {
-    margin: 0;
-    font-size: 22px;
-}
-
-header .acciones {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-header .acciones button {
-    padding: 10px 18px;
-    background: #27ae60;
-    border: none;
-    border-radius: 6px;
-    color: white;
-    font-size: 15px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-header .acciones button:hover {
-    background: #2ecc71;
-    transform: scale(1.05);
-}
-
-header .acciones .volver {
-    font-size: 20px;
-    color: white;
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-header .acciones .volver:hover {
-    color: #f1c40f;
-}
-
-/* ====== CONTENIDO ====== */
-main {
-    background: white;
-    margin: 20px auto;
-    padding: 20px;
-    width: 90%;
-    border-radius: 10px;
-    box-shadow: 0px 6px 15px rgba(0,0,0,0.1);
-}
-
-/* ====== TABLA ====== */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    overflow: hidden;
-    border-radius: 10px;
-}
-
-thead {
-    background: #34495e;
-    color: white;
-}
-
-th, td {
-    padding: 12px 15px;
-    text-align: center;
-}
-
-tbody tr:nth-child(even) {
-    background: #f9f9f9;
-}
-
-tbody tr:hover {
-    background: #f1f1f1;
-    transition: 0.2s;
-}
-
-/* Bordes suaves */
-table th, table td {
-    border-bottom: 1px solid #ddd;
-}
-/* ====== GENERAL ====== */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #ecf0f1;
-    margin: 0;
-    padding: 0;
-    color: #2c3e50;
-}
-
-/* ====== HEADER ====== */
-header {
-    background: #0D1B2A;;
-    color: #FFD700;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     position: relative;
-}
+  }
 
-header .volver {
+  header .volver {
     font-size: 22px;
-    color: white;
+    color: #fff;
     text-decoration: none;
     position: absolute;
     left: 20px;
-}
+    top: 50%;
+    transform: translateY(-50%);
+    transition: color .2s ease, transform .1s ease;
+    border-radius: 6px; /* para foco visible */
+  }
 
-header .volver:hover {
-    color: #f1c40f;
-}
+  header .volver:hover { color: var(--accent); }
+  header .volver:focus-visible {
+    outline: 3px solid rgba(66, 66, 65, 0.5);
+    outline-offset: 2px;
+  }
 
-header .titulo {
+  header .titulo {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 0 auto; /* centra */
-}
+  }
 
-header .titulo h1 {
+  header .titulo h1 {
     margin: 0;
     font-size: 22px;
-}
+    color: var(--accent);
+  }
 
-header .acciones button {
-    padding: 10px 18px;
+  header .acciones {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Botón/Link principal en header y reutilizable */
+  .btn-agregar,
+  header .acciones button,
+  header .acciones .btn {
+    padding: 10px 16px;
     background: #fafafa;
     border: none;
     border-radius: 6px;
-    color: rgb(7, 7, 7);
+    color: #070707;
     font-size: 15px;
     cursor: pointer;
-    transition: 0.3s;
-}
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background .2s ease, transform .1s ease;
+  }
 
-header .acciones button:hover {
-    background: #FFD700;
+  .btn-agregar:hover,
+  header .acciones button:hover,
+  header .acciones .btn:hover {
+    background: var(--accent);
     transform: scale(1.05);
-}
+  }
 
-/* ====== CONTENIDO ====== */
-main {
-    background: rgb(255, 255, 255);
+  .btn-agregar:focus-visible,
+  header .acciones button:focus-visible,
+  header .acciones .btn:focus-visible {
+    outline: 3px solid #6b6b6b;
+    outline-offset: 2px;
+  }
+
+  /* Variante de éxito si se necesitara */
+  .btn-success {
+    background: var(--success);
+    color: #fff;
+  }
+  .btn-success:hover { background: var(--success-2); }
+
+  /* =========================
+     Contenido
+     ========================= */
+  main {
+    background: var(--panel);
     margin: 20px auto;
     padding: 20px;
     width: 90%;
+    max-width: 1200px; /* limitar ancho extremo */
     border-radius: 10px;
-    box-shadow: 0px 6px 15px rgba(0,0,0,0.1);
-}
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  }
 
-/* ====== TABLA ====== */
-table {
+  /* =========================
+     Tabla
+     ========================= */
+  table {
     width: 100%;
     border-collapse: collapse;
     overflow: hidden;
     border-radius: 10px;
-}
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
 
-thead {
-    background: #0D1B2A;;
-    color: #FFD700;
-}
+  thead {
+    background: var(--primary);
+    color: var(--accent);
+  }
 
-th, td {
+  th, td {
     padding: 12px 15px;
     text-align: center;
-}
+    border-bottom: 1px solid var(--border-strong);
+    word-break: break-word; /* evita desbordes con textos largos */
+  }
 
-tbody tr:nth-child(even) {
-    background: #f9f9f9;
-}
+  tbody tr:nth-child(even) { background: var(--muted); }
 
-tbody tr:hover {
-    background: #9999998f;
-    transition: 0.2s;
-}
+  tbody tr:hover {
+    background: rgba(153,153,153,0.12);
+    transition: background .2s ease;
+  }
 
-/* Bordes suaves */
-table th, table td {
-    border-bottom: 1px solid #7e7d7d;
-}
+  /* =========================
+     Flashes (mensajes)
+     ========================= */
+  .flashes {
+    width: 90%;
+    margin: 12px auto 0;
+    max-width: 1200px;
+  }
+
+  .flash-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .flash {
+    padding: 10px 14px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .flash.success { background: var(--success); }
+  .flash.danger  { background: var(--danger); }
+  .flash.warning { background: var(--warning); color: #000; }
+  .flash.info    { background: var(--info); }
+
+  /* =========================
+     Estado vacío
+     ========================= */
+  .estado-vacio {
+    padding: 28px 12px;
+    text-align: center;
+    color: var(--text);
+  }
+
+  .estado-vacio i {
+    font-size: 42px;
+    color: var(--border-strong);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .estado-vacio .btn-agregar {
+    margin-top: 10px;
+  }
+
+  /* =========================
+     Utilidades de accesibilidad
+     ========================= */
+  .sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  /* =========================
+     Reduce motion (respeta preferencias del usuario)
+     ========================= */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* =========================
+     Responsive tweaks
+     ========================= */
+  @media (max-width: 768px) {
+    main { width: 95%; padding: 16px; }
+
+    th, td { padding: 10px 8px; font-size: 14px; }
+
+    header { padding: 12px 16px; }
+    header .volver { left: 12px; }
+    header .acciones { right: 12px; }
+
+    /* Permite scroll horizontal de la tabla en móviles */
+    table {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      white-space: nowrap; /* evita saltos raros en headers */
+    }
+
+    thead, tbody, th, td, tr {
+      white-space: nowrap;
+    }
+  }

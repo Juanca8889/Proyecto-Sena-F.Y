@@ -10,7 +10,10 @@
 
     <!-- HEADER -->
     <header>
-        <a href="{{ url_for('home') }}" class="volver">
+        <!-- Volver al menú (Admin/Empleado/Login) sin JS -->
+     {% set _menu = url_for('admin') %}
+
+        <a class="volver" href="{{ _menu }}" title="Volver al menú">
             <i class="fa-solid fa-arrow-left"></i>
         </a>
 
@@ -20,14 +23,28 @@
         </div>
 
         <div class="acciones">
-            <a href="{{ url_for('form_cliente') }}">
-                <button><i class="fa-solid fa-plus"></i> Agregar Cliente</button>
+            <a class="btn-agregar" href="{{ url_for('form_cliente') }}">
+                <i class="fa-solid fa-plus"></i> Agregar Cliente
             </a>
         </div>
     </header>
 
+    <!-- MENSAJES FLASH -->
+    <section class="flashes">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flash-list">
+                {% for category, message in messages %}
+                    <li class="flash {{ category }}">{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </section>
+
     <!-- CONTENIDO -->
     <main>
+        {% if clientes and clientes|length > 0 %}
         <table>
             <thead>
                 <tr>
@@ -56,6 +73,15 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+            <div class="estado-vacio">
+                <i class="fa-regular fa-face-meh"></i>
+                <p>No hay clientes registrados aún.</p>
+                <a class="btn-agregar" href="{{ url_for('form_cliente') }}">
+                    <i class="fa-solid fa-plus"></i> Registrar el primero
+                </a>
+            </div>
+        {% endif %}
     </main>
 
 </body>

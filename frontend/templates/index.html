@@ -17,7 +17,8 @@
               <button  onclick="window.location.href='{{ url_for('listar_clientes') }}'"><i data-feather="truck"></i> Domicilios</button>
             </li>
             <li>
-              <button><i data-feather="file-text"></i> Inventario</button>
+             <button onclick="window.location.href='{{ url_for('inventario') }}'" ><i data-feather="users"></i> Inventario </button>
+            </li>
             </li>
             <li>
               <button><i data-feather="bar-chart-2"></i> Garantias</button>
@@ -45,7 +46,10 @@
             <span onclick="window.location.href='{{ url_for('agenda') }}'"
               ><i data-feather="calendar"></i> Agenda</span
             >
-            <span><i data-feather="file-text"></i> Reportes</span>
+            
+            <span
+                onclick="window.location.href='{{ url_for('dashboard.dashboard') }}'">
+              <i data-feather="file-text"></i> Reportes</span>
             <span
               onclick="window.location.href='{{ url_for('notificaciones') }}'"
               ><i data-feather="bell"></i>Notificaciones</span
