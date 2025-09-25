@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Salidas de Inventario</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='salida_inventario.css') }}">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <button class="back-btn">←</button>
+      <select>
+        <option>Todo</option>
+      </select>
+      <h1>Registro de salidas de inventario</h1>
+      <button class="add-btn" onclick="document.getElementById('modal-form').style.display='flex'">+ Registrar salida</button>
+    </header>
+
+    <table id="tabla-registros">
+      <thead>
+        <tr>
+          <th>Fecha de salida</th>
+          <th>Código del producto</th>
+          <th>Nombre del material</th>
+          <th>Cantidad retirada</th>
+          <th>Motivo</th>
+          <th>Responsable</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in salidas %}
+        <tr>
+          <td>{{ s['fecha'] }}</td>
+          <td>{{ s['codigo'] }}</td>
+          <td>{{ s['nombre'] }}</td>
+          <td>{{ s['cantidad'] }}</td>
+          <td>{{ s['motivo'] }}</td>
+          <td>{{ s['responsable'] }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6">No hay registros todavía.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <footer>
+      <div class="pagination">
+        <button>&lt;</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>&gt;</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Formulario Modal -->
+  <div class="modal" id="modal-form">
+    <div class="modal-content">
+      <h2>Registrar salida</h2>
+      <form action="/registrar" method="POST">
+        <label>Fecha de salida:</label>
+        <input type="date" name="fecha" required>
+
+        <label>Código del producto:</label>
+        <input type="text" name="codigo" required>
+
+        <label>Nombre del material:</label>
+        <input type="text" name="nombre" required>
+
+        <label>Cantidad retirada:</label>
+        <input type="number" name="cantidad" min="1" required>
+
+        <label>Motivo:</label>
+        <input type="text" name="motivo" required>
+
+        <label>Responsable:</label>
+        <input type="text" name="responsable" required>
+
+        <button type="submit">Guardar</button>
+        <button type="button" onclick="document.getElementById('modal-form').style.display='none'">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Mensajes flash -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="mensaje">
+        {% for category, message in messages %}
+          <p class="{{ category }}">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+</body>
+</html>

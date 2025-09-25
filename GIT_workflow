@@ -1,0 +1,23 @@
+# Git Workflow
+
+## Convención de commits
+- `feat:` nueva funcionalidad.
+- `fix:` corrección de errores.
+- `docs:` cambios en documentación.
+- `style:` cambios de formato sin afectar el código.
+- `refactor:` reestructuración de código sin cambiar funcionalidad.
+- `test:` añadir o modificar pruebas.
+- `chore:` tareas varias como actualización de dependencias.
+
+**Ejemplo:**
+
+
+## Frecuencia de push/pull
+- **Push**: después de completar una tarea o al final de la jornada.
+- **Pull**: antes de iniciar trabajo y antes de abrir un PR.
+
+## Política de Pull Requests
+1. Todo cambio se hace en rama `feature/*`.
+2. Al terminar la tarea, abrir PR hacia `develop`.
+3. Revisión por al menos 1 compañero antes de merge.
+4. No hacer commit directo a `main`.
