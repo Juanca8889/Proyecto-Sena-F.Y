@@ -5,7 +5,7 @@ from datetime import date
 app = Flask(__name__)
 app.secret_key = "clave_secreta"
 
-# Ruta principal: mostrar referencias
+
 @app.route("/referencias")
 def referencias():
     conn = conectar()
@@ -16,7 +16,7 @@ def referencias():
 
     return render_template("referencias.html", referencias=referencias, fecha_actual=date.today())
 
-# Ruta para registrar un producto nuevo
+
 @app.route("/referencias/crear", methods=["POST"])
 def crear_referencia():
     nombre = request.form["nombre"]
@@ -57,7 +57,7 @@ def reporte_ventas():
     conexion = conectar()
     cursor = conexion.cursor(dictionary=True)
 
-    # Consulta base: solo transacciones completadas y sin duplicados
+    
     query = """
         SELECT DISTINCT id_venta, cantidad, producto, servicio, fecha, hora, responsable, descripcion
         FROM ventas
@@ -65,12 +65,12 @@ def reporte_ventas():
     """
     valores = []
 
-    # Si hay filtro por fecha
+    
     if fecha:
         query += " AND fecha = %s"
         valores.append(fecha)
 
-    # Ordenar según filtro
+    
     if orden == "recientes":
         query += " ORDER BY fecha DESC, hora DESC"
     elif orden == "antiguos":

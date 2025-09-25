@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Reporte de Ventas</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='reporte_ventas.css') }}" />
+    <link rel="stylesheet" href= "../static/reporteventas" />
   </head>
   <body>
     <div class="window">
@@ -21,7 +21,7 @@
         </p>
 
         <!-- Filtro de fecha y orden -->
-        <form method="get" action="/reporte_ventas" class="filtros">
+        <form method="get" action="/reporteventas" class="filtros">
           <label for="fecha">Seleccionar fecha:</label>
           <input type="date" id="fecha" name="fecha" />
 
