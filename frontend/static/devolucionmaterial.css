@@ -1,0 +1,177 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
+  color: #222;
+}
+
+.window {
+  max-width: 1100px;
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 380px; 
+  gap: 20px;
+}
+
+header {
+  grid-column: span 2;
+  background: #164b8f;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  align-items: center;
+}
+
+.window-name {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+main {
+  padding: 20px;
+  display: contents; 
+}
+
+
+.panel-left {
+  padding: 20px;
+  border-right: 1px solid #e1e5eb;
+}
+
+.panel-left h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #164b8f;
+}
+
+
+.devoluciones-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.devoluciones-actions input,
+.devoluciones-actions select {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+
+.grid-devoluciones {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.card {
+  background: #f9fafc;
+  border: 1px solid #e1e5eb;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card h3 {
+  margin: 0 0 5px 0;
+  font-size: 1rem;
+  color: #164b8f;
+}
+
+.card .razon {
+  font-weight: bold;
+  color: #444;
+  margin-bottom: 5px;
+}
+
+.card .fecha {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.card button {
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  background: #164b8f;
+  color: #fff;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background: #123a70;
+}
+
+
+.panel-right {
+  padding: 20px;
+  background: #f1f5fb;
+  border-left: 1px solid #dce3ef;
+}
+
+.panel-right h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #164b8f;
+}
+
+.form-devolucion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+label {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+input, select, textarea {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+button.btn {
+  background: #164b8f;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+button.btn:hover {
+  background: #123a70;
+}
+
+
+@media (max-width: 900px) {
+  .window {
+    grid-template-columns: 1fr;
+  }
+  header {
+    grid-column: span 1;
+  }
+  .panel-left {
+    border-right: none;
+    border-bottom: 1px solid #e1e5eb;
+  }
+}
