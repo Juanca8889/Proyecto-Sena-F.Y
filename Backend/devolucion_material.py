@@ -1,4 +1,4 @@
-from BD.BDa import conectar
+from BD.conexion import conectar
 
 class Devolucion:
     def __init__(self, codigo, nombre, usuario, razon, descripcion):

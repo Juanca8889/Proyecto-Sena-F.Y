@@ -36,6 +36,12 @@ class ConexionClientes:
         
         
     def buscar_usuario(self, id_cliente):
+        query = "SELECT * FROM Cliente where id_cliente = %s;"
+        values = (id_cliente)
+        self.cursor.execute(query, values)
+        self.conexion.commit()
+        
+    def buscar_correo_usuario(self, id_cliente):
         query = "SELECT correo FROM Cliente where id_cliente = %s;"
         values = (id_cliente)
         self.cursor.execute(query, values)

@@ -1,4 +1,4 @@
-from BD.BDa import conectar
+from BD.conexion import conectar
 
 class CreacionReferencia:
     def __init__(self):
@@ -28,6 +28,8 @@ class CreacionReferencia:
         query = "SELECT * FROM referencias WHERE codigo = %s"
         self.cursor.execute(query, (codigo,))
         return self.cursor.fetchone()
+    
+    
 
     def cerrar(self):
         """Cierra la conexión"""

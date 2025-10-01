@@ -1,5 +1,5 @@
 
-from BD.BDa import conectar
+from BD.conexion import conectar
 
 class DetalleCompra:
     def __init__(self, id_detalle=None, producto=None, descripcion=None, cantidad=None, monto=None, estado=None, fecha=None):
