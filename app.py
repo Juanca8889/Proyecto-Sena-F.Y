@@ -15,7 +15,7 @@ def get_db_connection():
     )
 
 # -----------------------------------------
-# REGISTRAR MATERIALES
+# REGISTRAR MATERIALESS
 # -----------------------------------------
 @app.route("/registrarmat", methods=["GET", "POST"])
 def registrarmat():

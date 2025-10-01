@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Montallantas FY</title>
+  <link rel="stylesheet" href="../static/registrarmat.css">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Panel izquierdo -->
+    <div class="left-panel">
+      <div class="header">
+        <span>&larr;<h2>Registrar Material</h2></span>
+      </div>
+      <div class="header2"><h2>Vista de Historial</h2></div>
+      <div class="historial">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Código</th>
+            <th>Tipo</th>
+            <th>Precio</th>
+          </tr>
+        </thead>
+        <tbody>
+  {% for m in materiales %}
+  <tr>
+    <td>{{ m["codigo"] }}</td>
+    <td>{{ m["nombre"] }}</td>
+    <td>{{ m["tipo"] }}</td>
+    <td>${{ m["precio"] }}</td>
+    <td>{{ m["proveedor"] }}</td>
+    <td>{{ m["estado"] }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+      </table>
+    </div>
+    </div>
+<a href="/ordenes2">ordenes</a> |
+  <a href="/filtro2">Filtro</a>
+    <!-- Panel derecho -->
+    <div class="right-panel">
+      <h3>Productos Nuevos</h3>
+      <form method="POST" action="/agregar">
+        <div class="form-group">
+          <label>Ingrese el nombre</label>
+          <input type="text" name="nombre" placeholder="Parche PP4" required>
+        </div>
+
+        <div class="code-box">
+          <p><strong>Codigo:</strong> <input type="text" name="codigo" placeholder="Codigo" required></p>
+          <p><strong>Tipo:</strong> <input type="text" name="tipo" placeholder="Material"></p>
+        </div>
+
+        <div class="form-group">
+          <label>Cantidad</label>
+          <input type="number" name="cantidad" min="1" required>
+        </div>
+
+        <div class="form-group">
+          <label>Precio</label>
+          <input type="number" step="0.01" name="precio" required>
+        </div>
+
+        <div class="form-group">
+          <label>Fecha de ingreso</label>
+          <input type="date" name="fecha" value="2025-08-02">
+        </div>
+
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea name="descripcion"></textarea>
+        </div>
+
+        <button type="submit" class="btn-crear">Crear</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

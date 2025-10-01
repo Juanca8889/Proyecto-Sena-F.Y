@@ -1,157 +1,125 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Registro de Materiales</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gestión de Clientes</title>
+    <link rel="stylesheet" href="pruebas.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+  </head>
+  <body>
+    <div class="contenedor">
+      <aside class="sidebar">
+        <h2>🚗 Montallantas.F.Y</h2>
+        <nav>
+          <ul>
+            <li>
+              <button><i data-feather="truck"></i> Domicilios</button>
+            </li>
+            <li>
+              <button><i data-feather="file-text"></i> Inventario</button>
+            </li>
+            <li>
+              <button><i data-feather="bar-chart-2"></i> Garantias</button>
+            </li>
+            <li>
+              <button>
+                <i data-feather="users"></i> Fidelización Clientes
+              </button>
+            </li>
+            <li>
+              <button><i data-feather="file-text"></i> Empleados</button>
+            </li>
+            <li>
+              <button><i data-feather="tool"></i> Herramientas</button>
+            </li>
+            <li>
+              <button><i data-feather="settings"></i> Configuración</button>
+            </li>
+          </ul>
+        </nav>
+      </aside>
 
-    header {
-      background: #ddd;
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+      <main class="contenido">
+        <header class="barra-superior">
+          <div class="nav-iconos">
+            <span><i data-feather="home"></i> Inicio</span>
+            <span><i data-feather="calendar"></i> Agenda</span>
+            <span><i data-feather="file-text"></i> Reportes</span>
+            <span><i data-feather="bell"></i> Notificaciones</span>
+            <span><i data-feather="shopping-cart"></i> Ventas</span>
+            <span><i data-feather="clipboard"></i> Pedidos</span>
+            <span><i data-feather="info"></i> Info</span>
+          </div>
+          <div class="buscar">
+            <input type="search" placeholder="Buscar..." class="buscador" />
+            <i data-feather="search" class="icono-busqueda"></i>
+            <i data-feather="user" class="icono-usuario"></i>
+          </div>
+        </header>
 
-    header h1 {
-      font-size: 18px;
-      margin: 0;
-    }
+        <div class="window">
+          <header>
+            <div class="window-name">SERVIMAQ</div>
+            <div class="window-controls">
+              <span>&larr;</span>
+            </div>
+          </header>
+          <main>
+            <h1>Gestión de Clientes</h1>
+            <p class="subtitle">
+              Visualiza y almacena los datos de los clientes, incluyendo sus
+              contactos y transaccion
+            </p>
+            <div class="clientes-actions">
+              <select onchange="location.href='/clientes?orden=' + this.value">
+                <option value="">Buscar clientes…</option>
+                <option value="az">A-Z</option>
+                <option value="recientes">Recientes</option>
+                <option value="antiguos">Antiguos</option>
+              </select>
+            </div>
+            <div class="tabla-contenedor">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Modelo</th>
+                    <th>Placa</th>
+                    <th>ID</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for usuario in usuarios %}
+                  <tr>
+                    <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
+                    <td>{{ usuario.correo }}</td>
+                    <td>{{ usuario.celular }}</td>
+                    <td>{{ usuario.modelo }}</td>
+                    <td>{{ usuario.placa }}</td>
+                    <td>{{ usuario.id_cliente }}</td>
+                    <td>
+                      <button><i data-feather="edit"></i></button>
+                      <button><i data-feather="trash"></i></button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="actions-icons"></div>
+          </main>
+        </div>
 
-    .container {
-      display: flex;
-      padding: 10px;
-    }
-
-    /* Sección izquierda */
-    .historial {
-      flex: 2;
-      margin-right: 10px;
-    }
-
-    .historial h2 {
-      text-align: center;
-      font-size: 18px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    table th, table td {
-      border: 1px solid #999;
-      padding: 6px;
-      text-align: center;
-    }
-
-    table th {
-      background: #eee;
-    }
-
-    /* Sección derecha */
-    .registro {
-      flex: 1;
-      border: 1px solid #999;
-      padding: 10px;
-      background: #fafafa;
-    }
-
-    .registro h3 {
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    .registro label {
-      display: block;
-      margin-top: 8px;
-      font-size: 14px;
-    }
-
-    .registro input {
-      width: 95%;
-      padding: 5px;
-      margin-top: 3px;
-      border: 1px solid #999;
-    }
-
-    .registro .small-input {
-      width: 50px;
-      text-align: center;
-    }
-
-    .registro button {
-      margin-top: 15px;
-      width: 100%;
-      padding: 10px;
-      background: #ddd;
-      border: 1px solid #999;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .registro button:hover {
-      background: #bbb;
-    }
-
-  </style>
-</head>
-<body>
-  <header>
-    <span>&larr;</span>
-    <h1>Registro de Materiales</h1>
-    <span>&times;</span>
-  </header>
-
-  <div class="container">
-    <!-- Vista Historial -->
-    <div class="historial">
-      <h2>Vista de Historial</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Cantidad</th>
-            <th>Código</th>
-            <th>Tipo</th>
-            <th>Precio</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Aquí se agregarán  registros -->
-        </tbody>
-      </table>
+        <footer class="cerrar-sesion">
+          <a href="./login"><i data-feather="arrow-right"></i></a>
+        </footer>
+      </main>
     </div>
-
-    <!-- Registro -->
-    <div class="registro">
-      <h3>Registro</h3>
-      
-      <label>Ingrese el Nombre</label>
-      <input type="text" placeholder="Parche">
-
-      <label>Cantidad</label>
-      <input type="number" class="small-input" value="5">
-
-      <label>Código</label>
-      <input type="text" placeholder="#0000">
-
-      <label>Tipo</label>
-      <input type="text" placeholder="Material">
-
-      <label>Precio</label>
-      <input type="text" placeholder="$0000">
-
-      <label>Fecha de ingreso</label>
-      <input type="date" value="2025-08-02">
-
-      <button>Registrar</button>
-    </div>
-  </div>
-</body>
+    <script>
+      feather.replace();
+    </script>
+  </body>
 </html>

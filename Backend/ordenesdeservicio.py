@@ -3,6 +3,7 @@ import mysql.connector
 
 app = Flask(__name__)
 
+# Conexión a la base de datos
 def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
@@ -11,6 +12,7 @@ def get_db_connection():
         database="montallantasfy"
     )
 
+# Ruta principal para ver y crear órdenes
 @app.route("/", methods=["GET", "POST"])
 def ordenes_servicio():
     if request.method == "POST":
@@ -43,7 +45,9 @@ def ordenes_servicio():
     cursor.close()
     conn.close()
 
+    # Renderizar la plantilla HTML
     return render_template("ordenes.html", ordenes=ordenes)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

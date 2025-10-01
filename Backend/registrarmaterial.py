@@ -12,7 +12,7 @@ def get_db_connection():
         database="montallantasfy"
     )
 
-@app.route("/")
+@app.route("/registrarmat")
 def registrar():
     """
     Página principal: muestra el formulario y el historial desde la DB.
@@ -24,10 +24,9 @@ def registrar():
     cursor.close()
     conn.close()
 
-    return render_template("registrarmat2.html", historial=historial)
+    return render_template("registrar", historial=historial)
 
-
-@app.route("/agregar", methods=["POST"])
+@app.route("/registrarmat", methods=["POST"])
 def agregar():
     """
     Procesa el formulario y guarda un nuevo material en la DB.
@@ -43,18 +42,19 @@ def agregar():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    
+    # 🔹 Ajusta los campos a los que realmente tengas en tu tabla InventarioProductos
     cursor.execute("""
-        INSERT INTO InventarioProductos (producto_id, cantidad, categoria_id, rol_id)
-        VALUES (%s, %s, %s, %s)
-    """, (codigo, cantidad, tipo, None))  
+        INSERT INTO InventarioProductos 
+        (producto_id, nombre, categoria_id, descripcion, fecha, cantidad, precio, rol_id)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    """, (codigo, nombre, tipo, descripcion, fecha, cantidad, precio, None))
 
     conn.commit()
     cursor.close()
     conn.close()
 
-    return redirect(url_for("registrar"))
-
+    # 🔹 Redirige a la ruta usando el nombre de la función
+    return redirect(url_for("registrarmat"))
 
 @app.errorhandler(404)
 def pagina_no_encontrada(error):
@@ -62,7 +62,6 @@ def pagina_no_encontrada(error):
     Manejo de errores: ruta no encontrada.
     """
     return "Página no encontrada. Verifica la URL.", 404
-
 
 if __name__ == "__main__":
     app.run(debug=True)

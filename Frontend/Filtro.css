@@ -156,3 +156,12 @@
       padding: 7px;
       font-size: 15px;
     }
+
+      @media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    .container {
+        padding: 10px;
+    }
+}
