@@ -27,12 +27,16 @@ class ConexionUsuario:
         self.cursor.execute(query, (nombre,))
         return self.cursor.fetchall()
 
+    
     def actualizar_usuario(self, nombre, nueva_contrasena, nuevo_correo):
         query = "UPDATE Usuarios SET `contraseña` = %s, correo = %s WHERE Nombre = %s"
         values = (nueva_contrasena, nuevo_correo, nombre)
         self.cursor.execute(query, values)
         self.conexion.commit()
-        
+    
+    
+    
+    
     def eliminar_usuario(self, nombre):
         query = "DELETE FROM Usuarios WHERE Nombre = %s"
         self.cursor.execute(query, (nombre,))
