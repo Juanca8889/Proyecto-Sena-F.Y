@@ -14,6 +14,9 @@ from Backend.pedido_compra import GestorCompras
 from Backend.stock_inicial import GestorStock
 from Backend.cliente_domicilio import Cliente
 from Backend.dashboard import dashboard_bp
+from Backend.Recuperacion_contraseña import recuperacion_contraseña
+from Backend.Recuperacion_contraseña import  actualizar_contrasena_usuario
+from Backend.Encuestas import Encuestas
 
 app = Flask(__name__)
 app.secret_key = 'wjson'  # En prod: usa variable de entorno
@@ -333,6 +336,11 @@ def login():
 def olvidaste_contraseña():
     if request.method == 'POST':
         email = request.form.get('email')
+        
+        recuperacion = recuperacion_contraseña(email)
+        
+        recuperacion.enviar_correo_verificacion()
+        
         flash(f"Se ha enviado un correo para restablecer la contraseña a {email}", "info")
         return redirect(url_for('login'))
     return render_template('olvidaste_contraseña.html')
@@ -362,6 +370,7 @@ def register():
 # ==========================================
 @app.route('/admin', endpoint="admin")
 def home():
+    
     return render_template('index.html')
 
 @app.route('/Empleado')
@@ -378,6 +387,15 @@ def mostrar_clientes():
     clientes = conexion.mostrar_clientes(orden)
     conexion.cerrar()
     return render_template("Gestion_clientes.html", usuarios=clientes, menu_url=_menu_url())
+
+@app.route("/enviar-encuesta", methods=["POST"])
+def enviar_encuesta():
+    correo = request.form.get("correo")
+    encuesta = Encuestas(correo)
+    encuesta.enviar_correo()
+    if not correo:
+        flash("No se encontró el correo del usuario", "error")
+    return redirect(url_for("clientes"))  # o la ruta de gestión clientes
 
 @app.route("/eliminar_cliente/<int:id_cliente>", methods=["POST"], endpoint="eliminar_cliente")
 def eliminar_cliente(id_cliente):
@@ -565,6 +583,21 @@ def reporte_ventas():
 
     return render_template("reporteventas.html", ventas=ventas)
 
+# -----------------------
+# Recupeacion de contraseña
+# -----------------------
+
+@app.route("/recuperar_contraseña", methods=["GET", "POST"])
+def recuperar_contraseña():
+    if request.method == 'POST':
+        usuario = request.form.get('usuario')
+        new_password = request.form.get('new-password')
+    
+        actualizar_contrasena_usuario(usuario, new_password)
+    else:
+        pass
+    return render_template('Recuperacion_contraseña.html')
+        
 # -----------------------
 # EXPORTAR A EXCEL (ejemplo simple)
 # -----------------------

@@ -39,7 +39,7 @@
                     <th>Modelo</th>
                     <th>Placa</th>
                     <th>ID</th>
-                    <th>Acciones</th>
+                    <th>Encuestas</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -52,15 +52,19 @@
                     <td>{{ usuario.placa }}</td>
                     <td>{{ usuario.id_cliente }}</td>
                     <td>
-                      <button><i data-feather="edit"></i></button>
-                      <button><i data-feather="trash"></i></button>
+                      <form action="{{ url_for('enviar_encuesta') }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="correo" value="{{ usuario.correo }}">
+                        <button type="submit" style="margin-left:30px">
+                          <i data-feather="inbox"></i>
+                        </button>
+                      </form>
                     </td>
                   </tr>
                   {% endfor %}
                 </tbody>
               </table>
             </div>
-            <div class="actions-icons"></div>
+            <div  class="actions-icons"></div>
           </main>
         </div>
 
