@@ -11,7 +11,7 @@ from Backend.Clientes import ConexionClientes
 
 class Encuestas: 
     def __init__(self,email_MFY = "montallantasfy@gmail.com", id_cliente = None):
-      self.email_para = ConexionClientes.buscar_correo_usuario(id_cliente)
+        self.email_para = ConexionClientes.buscar_correo_usuario(id_cliente)
 
     def enviar_correo(email_para):
             load_dotenv()
