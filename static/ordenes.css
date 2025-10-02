@@ -9,7 +9,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 15px;
-      background: #0A0F1C;
+      background: #003366;
       COLOR: white;
     }
 
@@ -27,7 +27,7 @@
         margin-top: 20px;
       padding: 6px;
       font-size: 14px;
-      background-color: #0A0F1C;
+      background-color: #003366;
       color: #eee;
     }
     select:hover{
@@ -43,8 +43,8 @@
 
     .create-order button {
       padding: 10px 20px;
-      border: black;
-      background: #0A0F1C;
+      border: white;
+      background: #28a745;
       color: #fff;
       border: none;
       cursor: pointer;
@@ -52,8 +52,7 @@
       border-radius: 4px;
     }
     button:hover {
-      background-color: rgb(199, 197, 197);  
-      color: black;             
+      background-color: #218838;       
     }
     
 
@@ -70,10 +69,11 @@
     }
 
     .card {
-      border: 1px solid black;
+      border: 1px solid ;
       width: 180px;
       padding: 10px;
-      background: #fff;
+      background: #003366;
+      color: white;
     }
 
     .card h4 {
@@ -101,6 +101,7 @@
       transform: scale(1.02);
       transition: 0.2s;
       cursor: pointer;
+      color: black;
     }
 
 
@@ -121,16 +122,16 @@
       color: #fff;
     }
     .modal-content {
-      background: #0A0F1C;
+      background: #003366;
       padding: 20px;
-      border: 1px solid #FFD700;
+      border: 1px solid black;
       width: 400px;
       max-width: 90%;
     }
     .modal-content h2 {
       text-align: center;
       margin-bottom: 15px;
-      color: #FFD700;
+      color: white;
     }
     .modal-content label {
       display: block;
@@ -141,19 +142,23 @@
       width: 95%;
       padding: 5px;
       margin-top: 5px;
-      border: 1px solid #FFD700;
+      border: 1px solid black;
     }
     .modal-content button {
       display: block;
       margin: 15px auto 0;
       padding: 10px 20px;
-      background-color: #FFD700;
+      background-color: #28a745;
       color: #0A0F1C;
       border: none;
       cursor: pointer;
       border-radius: 5px;
+      }
+.modal-content button:hover {
+  background-color: #218838;
+  
+}
       
-    }
     .close {
       float: right;
       cursor: pointer;

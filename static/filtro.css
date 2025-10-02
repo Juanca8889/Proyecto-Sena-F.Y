@@ -10,7 +10,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #0A0F1C;
+      background: #003366;
       padding: 10px 15px;
       color: white;
     }
@@ -37,7 +37,7 @@
 
     button {
       padding: 6px 12px;
-      background: #444;
+      background: #28a745;
       color: #fff;
       border: none;
       cursor: pointer;
@@ -57,7 +57,7 @@
     }
 
     table th {
-      background:#0A0F1C;
+      background:#003366;
       color: white;
     }
     table tbody tr:hover {
@@ -84,73 +84,8 @@
       color: #fff;
     }
     button:hover {
-      background-color: rgb(228, 225, 225);  
-      color: black;             
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    /* MODAL*/
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.4);
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-    }
-    .modal-content {
-      background: #0A0F1C;
-      padding: 20px;
-      border: 1px solid black;
-      width: 400px;
-      max-width: 90%;
-    }
-    .modal-content h2 {
-      text-align: center;
-      margin-bottom: 15px;
-      color: white;
-    }
-    .modal-content label {
-      display: block;
-      margin-top: 10px;
-    }
-    .modal-content input, 
-    .modal-content textarea {
-      width: 95%;
-      padding: 5px;
-      margin-top: 5px;
-      border: 1px solid white;
-    }
-    .modal-content button {
-      display: block;
-      margin: 15px auto 0;
-      padding: 10px 20px;
-      background-color: rgb(194, 190, 190);
-      color: #0A0F1C;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-      
-    }
-    .close {
-      float: right;
-      cursor: pointer;
-      font-weight: bold;
+      background-color: #218838;  
+      color: white;             
     }
      select {
       padding: 7px;
