@@ -10,7 +10,7 @@
       align-items: center;
       padding: 15px;
       background: #0A0F1C;
-      COLOR: #FFD700;
+      COLOR: white;
     }
 
     header h2 {
@@ -31,7 +31,7 @@
       color: #eee;
     }
     select:hover{
-        background-color: #FFD700;
+        background-color: white;
         color:#0A0F1C
     }
 
@@ -43,6 +43,7 @@
 
     .create-order button {
       padding: 10px 20px;
+      border: black;
       background: #0A0F1C;
       color: #fff;
       border: none;
@@ -51,7 +52,7 @@
       border-radius: 4px;
     }
     button:hover {
-      background-color: #FFD700;  
+      background-color: rgb(199, 197, 197);  
       color: black;             
     }
     
@@ -69,7 +70,7 @@
     }
 
     .card {
-      border: 1px solid #FFD700;
+      border: 1px solid black;
       width: 180px;
       padding: 10px;
       background: #fff;
@@ -96,7 +97,7 @@
 
     /* Hover para resaltar tarjetas */
     .card:hover {
-      background: #FFD700;
+      background: white;
       transform: scale(1.02);
       transition: 0.2s;
       cursor: pointer;
