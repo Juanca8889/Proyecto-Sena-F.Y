@@ -4,8 +4,9 @@ body {
   margin: 0;
   padding: 0;
 }
+
 .window {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 30px auto;
   background: white;
   border: 1px solid #ccc;
@@ -13,62 +14,77 @@ body {
   box-shadow: 0 2px 8px #aaa;
   padding: 24px;
 }
+
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .window-name {
   font-size: 18px;
   font-weight: bold;
 }
+
 .window-controls span {
   font-size: 22px;
   margin: 0 4px;
 }
+
 h1 {
   text-align: center;
   margin-top: 0;
 }
+
 .subtitle {
   text-align: center;
-  color: #555;
+  color: #6f3232;
   margin-bottom: 16px;
 }
+
 .clientes-actions {
   margin-bottom: 16px;
   text-align: left;
 }
+
 select {
   padding: 6px;
   font-size: 14px;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 12px;
 }
-th, td {
+
+th,
+td {
   border: 1px solid #ddd;
   padding: 7px 10px;
   text-align: left;
 }
+
 th {
   background: #eee;
   font-weight: bold;
 }
+
 .actions-icons {
   text-align: right;
   font-size: 22px;
 }
+
 .actions-icons span {
   margin-left: 14px;
   cursor: pointer;
 }
 
 .tabla-contenedor {
-  max-height: 300px;     /* alto fijo */
-  overflow-y: auto;      /* scroll vertical si se llena */
+  max-height: 300px;
+  /* alto fijo */
+  overflow-y: auto;
+  /* scroll vertical si se llena */
   border: 1px solid #ddd;
 }
 
@@ -205,7 +221,8 @@ body {
 
 .buscador {
   width: 250px;
-  padding: 8px 12px 8px 38px; /* espacio para la lupa */
+  padding: 8px 12px 8px 38px;
+  /* espacio para la lupa */
   border-radius: 24px;
   border: 1px solid #dcdcdc;
   outline: none;

@@ -17,6 +17,7 @@ from Backend.dashboard import dashboard_bp
 from Backend.Recuperacion_contraseña import recuperacion_contraseña
 from Backend.Recuperacion_contraseña import  actualizar_contrasena_usuario
 from Backend.Encuestas import Encuestas
+from datetime import date
 
 app = Flask(__name__)
 app.secret_key = 'wjson'  # En prod: usa variable de entorno
@@ -582,6 +583,39 @@ def reporte_ventas():
     conexion.close()
 
     return render_template("reporteventas.html", ventas=ventas)
+
+
+@app.route("/referencias", methods=["GET"])
+def mostrar_productos():
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT id_producto AS codigo, nombre, descripcion, cantidad, precio FROM producto")
+    productos = cursor.fetchall()
+    cursor.close()
+    return render_template("creacion_referencias_producto.html", referencias=productos)
+
+
+@app.route("/referencias/crear", methods=["POST"])
+def crear_referencia_producto():
+    
+    nombre = request.form["nombre"]
+    descripcion = request.form["descripcion"]
+    cantidad = request.form["cantidad"]
+    categoria_id = request.form["categoria"]
+    precio = request.form["precio"]
+
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO producto ( nombre, descripcion, cantidad, categoria_id, precio) VALUES ( %s, %s, %s, %s, %s)",
+        ( nombre, descripcion, cantidad, categoria_id, precio)
+    )
+    conn.commit()
+    conn.close()
+
+    flash(f"Se han registrado {cantidad} unidades de '{nombre}' en el inventario.")
+    return redirect(url_for("referencias"))
+
 
 # -----------------------
 # Recupeacion de contraseña
