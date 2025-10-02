@@ -10,7 +10,7 @@
 <body>
   <header>
     <div>
-      <button>&larr;</button>
+      <a href="/"><button>&larr;</button></a>
       <h2>Órdenes de Servicio</h2>
     </div>
     <div>
@@ -58,7 +58,7 @@
     <div class="modal-content">
       <span class="close" id="cerrarModal">&times;</span>
       <h2>Crear Orden</h2>
-      <form method="POST" action="{{ url_for('ordenes.ordenes_servicio') }}">
+      <form method="POST" action="ordenes_servicio">
         <label>Modelo:</label>
         <input type="text" name="modelo" required>
 

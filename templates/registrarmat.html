@@ -12,47 +12,50 @@
     <!-- Panel izquierdo -->
     <div class="left-panel">
       <div class="header">
-        <span>&larr;<h2>Registrar Material</h2></span>
+        <span><a href="/"><button>&larr;</button></a><h2>Registrar Material</h2></span>
       </div>
       <div class="header2"><h2>Vista de Historial</h2></div>
       <div class="historial">
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Cantidad</th>
-            <th>Código</th>
-            <th>Tipo</th>
-            <th>Precio</th>
-          </tr>
-        </thead>
-        <tbody>
-  {% for m in materiales %}
-  <tr>
-    <td>{{ m["codigo"] }}</td>
-    <td>{{ m["nombre"] }}</td>
-    <td>{{ m["tipo"] }}</td>
-    <td>${{ m["precio"] }}</td>
-    <td>{{ m["proveedor"] }}</td>
-    <td>{{ m["estado"] }}</td>
-  </tr>
-  {% endfor %}
-</tbody>
-      </table>
-    </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Código</th>
+              <th>Tipo</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Fecha</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for m in historial %}
+            <tr>
+              <td>{{ m["nombre"] }}</td>
+              <td>{{ m["producto_id"] }}</td>
+              <td>{{ m["categoria_id"] }}</td>
+              <td>{{ m["cantidad"] }}</td>
+              <td>${{ m["precio"] }}</td>
+              <td>{{ m["fecha"] }}</td>
+              <td>{{ m["descripcion"] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Panel derecho -->
     <div class="right-panel">
       <h3>Productos Nuevos</h3>
-      <form method="POST" action="/agregar">
+      <form method="POST" action="{{ url_for('agregar') }}">
         <div class="form-group">
           <label>Ingrese el nombre</label>
           <input type="text" name="nombre" placeholder="Parche PP4" required>
         </div>
 
         <div class="code-box">
-          <p><strong>Codigo:</strong> <input type="text" name="codigo" placeholder="Codigo" required></p>
+          <p><strong>Código:</strong> <input type="text" name="codigo" placeholder="Codigo" required></p>
           <p><strong>Tipo:</strong> <input type="text" name="tipo" placeholder="Material"></p>
         </div>
 
@@ -68,7 +71,7 @@
 
         <div class="form-group">
           <label>Fecha de ingreso</label>
-          <input type="date" name="fecha" value="2025-08-02">
+          <input type="date" name="fecha" required>
         </div>
 
         <div class="form-group">

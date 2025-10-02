@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Búsqueda y filtrado de material</title>
-  <link rel="stylesheet" href="/static/filtro.css">
+  <link rel="stylesheet" href="../static/filtro.css">
 </head>
 <body>
   <header>
@@ -14,7 +14,7 @@
       <h2>Búsqueda y filtrado de material</h2>
     </div>
     <div class="right">
-      <button class="btn-orden" id="abrirModal">Crear</button>
+      <button class="btn-orden">Importar/Exportar</button>
       <button>&#128276;</button>
     </div>
   </header>
@@ -46,71 +46,6 @@
     </table>
   </main>
 
-  <!-- MODAL -->
-  <div class="modal" id="miModal">
-    <div class="modal-content">
-      <span class="close" id="cerrarModal">&times;</span>
-      <h2>Crear Material</h2>
-      <form action="/crear" method="POST">
-  <label>Código:</label>
-  <input type="text" name="codigo" required>
-
-  <label>Nombre:</label>
-  <input type="text" name="nombre" required>
-
-  <label>Tipo:</label>
-  <input type="text" name="tipo" required>
-
-  <label>Precio:</label>
-  <input type="number" name="precio" required>
-
-  <label>Proveedor:</label>
-  <input type="text" name="proveedor" required>
-
-  <label>Estado:</label>
-  <select name="estado">
-      <option>Activo</option>
-      <option>Inactivo</option>
-  </select>
-
-  <label>Cantidad:</label>
-  <input type="number" name="cantidad" required>
-
-  <label>Categoría:</label>
-  <select name="categoria_id" required>
-   
-    <option value="1">Llantas</option>
-    <option value="2">Accesorios</option>
-  </select>
-
-  <label>Rol:</label>
-  <select name="rol_id">
   
-    <option value="1">Administrador</option>
-    <option value="2">Operario</option>
-  </select>
-
-  <button type="submit">Crear Material</button>
-</form>
-
-    </div>
-  </div>
-
-  <script>
-    // Abrir modal
-    document.getElementById("abrirModal").addEventListener("click", function() {
-      document.getElementById("miModal").style.display = "flex";
-    });
-    // Cerrar modal
-    document.getElementById("cerrarModal").addEventListener("click", function() {
-      document.getElementById("miModal").style.display = "none";
-    });
-    // Cerrar si clickea fuera
-    window.addEventListener("click", function(e) {
-      if (e.target == document.getElementById("miModal")) {
-        document.getElementById("miModal").style.display = "none";
-      }
-    });
-  </script>
 </body>
 </html>
