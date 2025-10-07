@@ -95,18 +95,11 @@
                 >Descripción <textarea name="descripcion"></textarea>
               </label>
               <button class="boton-modal" type="submit">Guardar</button>
-              <!-- Botón para cerrar: vuelve a la agenda sin parámetro "dia" -->
-              <a class="boton-modal" href="{{ url_for('agenda', vista=vista) }}"
-                >Cerrar</a
-              >
+              <button class="boton-modal" href="{{ url_for('agenda', vista=vista) }}">Cerrar</button>
             </form>
           </div>
           {% endif %}
         </div>
-
-        <footer class="cerrar-sesion">
-          <a href="./Empleado"><i data-feather="arrow-left"></i></a>
-        </footer>
       </main>
     </div>
     <script>

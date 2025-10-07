@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Búsqueda y filtrado de material</title>
+  <link rel="stylesheet" href="../static/filtro.css">
+</head>
+<body>
+  <header>
+    <div class="left">
+      <a href="/"><button class="btn-retroceso">&larr;</button></a>
+      <input type="text" placeholder="Buscar material">
+      <h2>Búsqueda y filtrado de material</h2>
+    </div>
+    <div class="right">
+      <button  onclick="window.location.href='{{ url_for('admin') }}'" class="btn-orden">Importar/Exportar</button>
+      <button  onclick="window.location.href='{{ url_for('registrarmaterial') }}'" class="btn-orden">Registrar Material</button>
+      <button  onclick="window.location.href='{{ url_for('referencias') }}'" class="btn-orden">Crear Referencia</button>
+
+    </div>
+  </header>
+
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Descripcion</th>
+          <th>Cantidad</th>
+          <th>Categoria_id</th>
+          <th>Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for material in materiales %}
+        <tr>
+          <td>{{ material.id_producto }}</td>
+          <td>{{ material.nombre }}</td>
+          <td>{{ material.descripcion }}</td>
+          <td>{{ material.cantidad }}</td>
+          <td>{{ material.categoria_id }}</td>
+          <td>{{ material.precio }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+
+  
+</body>
+</html>

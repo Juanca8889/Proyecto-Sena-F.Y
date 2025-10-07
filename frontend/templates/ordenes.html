@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Órdenes de Servicio</title>
+  <link rel="stylesheet" href="../static/ordenes.css">
+
+</head>
+<body>
+  <header>
+    <div>
+      <a href="/"><button>&larr;</button></a>
+      <h2>Órdenes de Servicio</h2>
+    </div>
+    <div>
+      <button onclick="window.location.reload()">&#8635;</button>
+    </div>
+  </header>
+
+  <div class="filters">
+    <select>
+      <option>Hoy</option>
+      <option>Ayer</option>
+      <option>Últimos 7 días</option>
+      <option>Último mes</option>
+      <option>DD/MM/AA</option>
+    </select>
+    <select>
+      <option>Filtrar</option>
+      <option>Instalaciones</option>
+      <option>Reparaciones</option>
+      <option>Revisiones</option>
+    </select>
+  </div>
+
+  <div class="create-order">
+    <button class="btn-orden" id="abrirModal">Crear Orden</button>
+  </div>
+
+  <div class="section-title">Órdenes</div>
+  <div class="cards">
+    {% for orden in ordenes %}
+    <div class="card">
+      <h4>Servicio</h4>
+      <p><b>Modelo:</b> {{ orden.modelo }}</p>
+      <p><b>Servicio:</b> {{ orden.servicio }}</p>
+      <p><b>Fecha y hora:</b> {{ orden.fecha_hora }}</p>
+      <p><b>Responsable:</b> {{ orden.responsable }}</p>
+      <p><b>Detalles:</b> {{ orden.detalles }}</p>
+      <span class="garantia">{{ orden.garantia }}</span>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal" id="miModal">
+    <div class="modal-content">
+      <span class="close" id="cerrarModal">&times;</span>
+      <h2>Crear Orden</h2>
+      <form method="POST" action="ordenes_servicio">
+        <label>Modelo:</label>
+        <input type="text" name="modelo" required>
+
+        <label>Servicio:</label>
+        <input type="text" name="servicio" required>
+
+        <label>Fecha y hora:</label>
+        <input type="datetime-local" name="fecha_hora" required>
+
+        <label>Responsable:</label>
+        <input type="text" name="responsable" required>
+
+        <label>Detalles:</label>
+        <textarea name="detalles" required></textarea>
+
+        <label>Garantía:</label>
+        <input type="text" name="garantia">
+
+        <button type="submit">Crear Orden</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Abrir modal
+    document.getElementById("abrirModal").addEventListener("click", function() {
+      document.getElementById("miModal").style.display = "flex";
+    });
+    // Cerrar modal
+    document.getElementById("cerrarModal").addEventListener("click", function() {
+      document.getElementById("miModal").style.display = "none";
+    });
+    // Cerrar si clickea fuera
+    window.addEventListener("click", function(e) {
+      if (e.target == document.getElementById("miModal")) {
+        document.getElementById("miModal").style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>

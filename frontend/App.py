@@ -586,7 +586,7 @@ def reporte_ventas():
 
 
 @app.route("/referencias", methods=["GET"])
-def mostrar_productos():
+def referencias():
     conn = conectar()
     cursor = conn.cursor(dictionary=True)
     cursor.execute("SELECT id_producto AS codigo, nombre, descripcion, cantidad, precio FROM producto")
@@ -645,6 +645,107 @@ def exportar_excel():
 @app.route("/exportar_csv")
 def exportar_csv():
     return "Aquí implementas exportación a CSV"
+
+# ==========================================
+# Ceron
+# ==========================================
+
+
+
+
+# -----------------------------------------
+# REGISTRAR MATERIALESS
+# -----------------------------------------
+@app.route("/registrarmaterial", methods=["GET", "POST"])
+def registrarmaterial():
+    conn = conectar()
+    cursor = conn.cursor(dictionary=True)
+
+    if request.method == "POST":
+        nombre = request.form.get("nombre")
+        codigo = request.form.get("codigo")
+        tipo = request.form.get("tipo")
+        fecha = request.form.get("fecha")
+        descripcion = request.form.get("descripcion")
+        cantidad = request.form.get("cantidad")
+        precio = request.form.get("precio")
+
+        cursor.execute("""Update  producto set cantidad = sum(cantidad + '%s') where nombre == '%s' and codigo == '%s'""")
+        ( cantidad, nombre, codigo,)
+        conn.commit()
+
+    cursor.execute("SELECT * FROM InventarioProductos ORDER BY id_inve_produ DESC")
+    historial = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template("registrarmat.html", historial=historial)
+
+
+# -----------------------------------------
+# ÓRDENES DE SERVICIO
+# -----------------------------------------
+@app.route("/ordenes", methods=["GET", "POST"])
+def ordenes():
+
+    return render_template("ordenes.html")
+
+
+# -----------------------------------------
+# FILTRO DE PRODUCTOS
+# -----------------------------------------
+@app.route("/filtro", methods=["GET", "POST"])
+def filtro():
+    materiales = []
+    if request.method == "POST":
+        criterio = request.form.get("criterio")
+        valor = request.form.get("valor")
+        busqueda = BusquedaInventario()
+        materiales = busqueda.buscar(**{criterio: valor})
+        busqueda.cerrar()
+    else:
+        conexion = conectar()
+        cursor = conexion.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM producto")
+        materiales = cursor.fetchall()
+        cursor.close()
+        conexion.close()
+
+    return render_template("filtro.html", materiales=materiales)
+
+
+
+
+# -----------------------------------------
+# CLASE DE BÚSQUEDA
+# -----------------------------------------
+class BusquedaInventario:
+    def __init__(self):
+        self.conexion = conectar()
+        self.cursor = self.conexion.cursor(dictionary=True)
+
+    def buscar(self, **criterios):
+        query = "SELECT * FROM producto WHERE 1=1"
+        valores = []
+        for campo, valor in criterios.items():
+            query += f" AND {campo} LIKE %s"
+            valores.append(f"%{valor}%")
+        self.cursor.execute(query, valores)
+        resultados = self.cursor.fetchall()
+        return resultados
+
+    def cerrar(self):
+        self.cursor.close()
+        self.conexion.close()
+
+
+# -----------------------------------------
+# ERRORES
+# -----------------------------------------
+@app.errorhandler(404)
+def pagina_no_encontrada(error):
+    return "Página no encontrada. Verifica la URL.", 404
+
+
 
 # ==========================================
 # INICIO DE APP

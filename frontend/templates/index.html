@@ -18,11 +18,7 @@
             </li>
             <li>
                     <div class="menu">
-        <button onclick="window.location.href='{{ url_for('inventario') }}'" ><i data-feather="archive"></i> Inventario </button>
-        <div class="menu-content">
-            <span oneclick><i data-feather="archive"></i> Inventario</span oneclick>
-              <span oneclick><i data-feather="file-plus"></i> Registrar Material</span oneclick>
-             </div>
+        <button onclick="window.location.href='{{ url_for('filtro') }}'" ><i data-feather="archive"></i> Inventario </button>
             </li>
             </li>
             <li>
@@ -64,8 +60,9 @@
             <div class="menu">
               <div class="menu-button"><i data-feather="shopping-cart"></i> Ventas</div>
               <div class="menu-content">
-             <a href="{{url_for('salida_inventario')}}"><span oneclick><i data-feather="shopping-cart"></i> Ventas</span oneclick></a>
-              <span oneclick><i data-feather="check-square"></i> Ordenes</span oneclick>
+            <a href="{{url_for('salida_inventario')}}"><span oneclick><i data-feather="shopping-cart"></i> Ventas</span oneclick></a>
+            <a href="{{url_for('ordenes')}}"><span oneclick><i data-feather="book-open"></i> Servicio</span oneclick></a>
+
              </div></div>
 
             <span onclick="window.location.href='{{ url_for('pedido_compra') }}'"

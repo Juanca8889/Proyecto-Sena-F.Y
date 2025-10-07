@@ -1,4 +1,8 @@
-/* Estilo general */
+@import url('./variables.css');
+
+/* tus estilos aquí */
+
+
 body {
   font-family: Arial, sans-serif;
   background: #f6f6f6;
@@ -66,7 +70,7 @@ h1 {
 }
 
 .filtros button {
-  background-color: #1c1f26;
+  background-color: var(--color-verde);
   color: white;
   cursor: pointer;
   transition: background 0.2s;
@@ -142,12 +146,12 @@ th {
 }
 
 .btn-exportar {
-  background-color: #ff9800;
+  background-color: var(--color-verde);
   color: white;
 }
 
 .btn-exportar:hover {
-  background-color: #e68900;
+  background-color: var(--color-azul);
 }
 
 /* Acciones exportar */
@@ -156,20 +160,20 @@ th {
   margin-top: 12px;
 }
 
-/* Footer */
-.cerrar-sesion {
-  text-align: right;
-  padding: 15px 30px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  color: #1c1f26;
+
+
+
+.btn-retroceso {
+  background-color: #ffffff;
+  color: black;
+  border: none;
+  font-size: larger;
+
 }
 
-.cerrar-sesion a {
-  text-decoration: none;
-  color: inherit;
-}
 
-.cerrar-sesion:hover {
-  color: red;
+.btn-retroceso:hover {
+  background-color: #000000;
+  color: rgb(255, 255, 255);
+
 }

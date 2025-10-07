@@ -1,0 +1,125 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #003366;
+  padding: 20px 15px;
+  color: white;
+
+}
+
+.btn-retroceso {
+  background-color: #ffffff;
+  color: black;
+
+}
+
+
+.btn-retroceso:hover {
+  background-color: #000000;
+  color: rgb(255, 255, 255);
+
+}
+
+
+
+header .left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header input {
+  padding: 5px;
+  width: 200px;
+}
+
+header h2 {
+  margin: 0;
+}
+
+header .right {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 6px 12px;
+  background: #28a745;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+table {
+  width: 80%;
+  border-collapse: collapse;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table th,
+table td {
+  border: 1px solid #999;
+  padding: 8px;
+  text-align: center;
+}
+
+table th {
+  background: #003366;
+  color: white;
+}
+
+table tbody tr:hover {
+  background-color: #d3d3d3;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin: 10px 0;
+
+}
+
+.pagination span,
+.pagination button {
+  border: 1px solid #999;
+  padding: 5px 10px;
+  cursor: pointer;
+  background: #f9f9f9;
+}
+
+.pagination .active {
+  background: #333;
+  color: #fff;
+}
+
+button:hover {
+  background-color: #218838;
+  color: white;
+}
+
+select {
+  padding: 7px;
+  font-size: 15px;
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 10px;
+  }
+}

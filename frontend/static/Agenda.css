@@ -2,19 +2,21 @@
 
     position: relative;
     text-align: center;
-    box-shadow: 5px 5px 5px 5px #0A0F1C;
+    box-shadow: 5px 5px 5px 5px #003366;
     border-radius: 12px;
-    margin:80px auto;
+    margin: 80px auto;
     max-width: 1200px;
-    
+
 
 }
+
 .titulo_agenda {
     margin-top: 120px;
     font-family: 'Merriweather', serif;
 }
+
 .boton-seleccionado {
-    background: #0A0F1C;
+    background: #003366;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -26,14 +28,15 @@
 
 .calendario {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); 
-    gap: 10px; /* espacio entre días */
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
     padding: 20px;
 
-    justify-items: center; 
+    justify-items: center;
 }
+
 .dia {
-    border: 1px solid #0A0F1C;
+    border: 1px solid #003366;
     padding: 20px;
     border-radius: 15px;
     height: 70px;
@@ -42,6 +45,7 @@
     align-items: center;
     justify-content: center;
 }
+
 .boton-agregar {
     background: #b7b5a5;
     border: none;
@@ -52,9 +56,10 @@
     height: 28px;
     margin-top: 6px;
 }
+
 .form-actividad {
 
-    background: #0A0F1C;
+    background: #003366;
     color: white;
     border: 2px solid #444;
     border-radius: 15px;
@@ -63,21 +68,31 @@
     z-index: 2;
     width: 220px;
     top: 200px;
-    left: 180px;
+    left: 480px;
 }
-.mostrar { display: flex; }
+
+.mostrar {
+    display: flex;
+}
+
 .selector {
     margin: 12px 0;
 }
-.salir {
-    position: absolute; top: 15px; left: 15px;
-}
-/* Para ocultar vistas */
-.oculto { display: none; }
 
-.boton-modal{
+.salir {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+/* Para ocultar vistas */
+.oculto {
+    display: none;
+}
+
+.boton-modal {
     background: #ffffff;
-    color: #0A0F1C;
+    color: #003366;
     border: none;
     padding: 10px 10px;
     border-radius: 8px;
@@ -85,4 +100,8 @@
     margin-top: 10px;
     font-size: 15px;
     font-family: 'Segoe UI', sans-serif;
+}
+
+h2 {
+    padding: 10px;
 }

@@ -1,0 +1,190 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f8f8f8;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Merriweather', serif;
+  color: white; 
+  margin-bottom: 0.5em;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+a:hover {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
+input[type="text"] {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid black;
+    border-radius: 4px;
+    background-color: white;
+    color: #FFFFFF;
+}
+
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  
+  cursor: pointer;
+}
+
+select {
+  background: #FFD700;
+  color: #ffff;
+  padding: 10px;
+  border: black;
+  width: 15%;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+input[type="text1"] {
+  background: white;
+  border: 1px solid black;
+  color: #ffffff;
+  padding: 10px;
+  border: none;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #003366; 
+  color: white; 
+  height: 70px;
+  width: 100%;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.header2 {
+  align-items: center;
+  justify-content: center;
+  background-color: #003366; 
+  color: white; 
+  height: 50px;
+  width: 99.3%; 
+}
+
+.historial {
+      flex: 2;
+      margin-right: 10px;
+    }
+
+    .historial h2 {
+      text-align: center;
+      font-size: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table th, table td {
+      border: 1px solid #999;
+      padding: 6px;
+      text-align: center;
+    }
+
+    table th {
+      background: #eee;
+    }
+.header2 h2 {
+  margin: 0;
+  font-size: 30px;
+}
+.container {
+  display: flex;
+  margin-top: 70px; /* Empuje para que no se tape con el header */
+  height: calc(100vh - 70px);
+}
+
+/* Panel izquierdo */
+.left-panel {
+  width: 65%;
+  border-right: 2px solid #ccc;
+  padding: 20px;
+  overflow-y: auto;
+  background: #fff;
+}
+
+
+/* Panel derecho */
+.right-panel {
+  justify-content: left;
+  width: 35%;
+  height: 100%;
+  padding: 20px;
+  color: #FFFFFF;
+  background-color: #003366;
+  overflow-y: auto;
+}
+
+.right-panel h3 {
+  margin-top: 0;
+  color: white;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.form-group input, 
+.form-group textarea, 
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid black;
+  border-radius: 3px;
+  background: White;
+  color: #fff;
+}
+
+.form-group textarea {
+  height: 60px;
+}
+
+.code-box {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.btn-crear {
+  background: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn-crear:hover {
+  background-color: #218838;
+  
+}
+
+

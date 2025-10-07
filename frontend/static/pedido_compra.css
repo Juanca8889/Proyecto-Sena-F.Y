@@ -1,14 +1,23 @@
 /* =========================================================
    VARIABLES GLOBALES
    ========================================================= */
+@import '../styles/variables.css';
+
 :root {
-  --color-fondo: #ffffff;            /* Fondo principal blanco */
-  --color-fondo-secundario: #777777; /* Fondos suaves de tarjetas */
-  --color-encabezado: #050505;       /* Encabezado oscuro */
-  --color-texto: #080808;            /* Texto gris oscuro */
-  --color-gris: #757171;             /* Gris medio */
-  --color-gris-hover: #706f6f;       /* Gris más oscuro en hover */
-  --color-borde: #cccccc;            /* Bordes sutiles */
+  --color-fondo: #ffffff;
+  /* Fondo principal blanco */
+  --color-fondo-secundario: #777777;
+  /* Fondos suaves de tarjetas */
+  --color-encabezado: #050505;
+  /* Encabezado oscuro */
+  --color-texto: #080808;
+  /* Texto gris oscuro */
+  --color-gris: #757171;
+  /* Gris medio */
+  --color-gris-hover: #706f6f;
+  /* Gris más oscuro en hover */
+  --color-borde: #cccccc;
+  /* Bordes sutiles */
 
   --fuente-principal: 'Segoe UI', sans-serif;
   --fuente-titulos: 'Merriweather', serif;
@@ -26,7 +35,12 @@ body {
   line-height: 1.6;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--fuente-titulos);
   color: var(--color-encabezado);
   margin-bottom: 0.5em;
@@ -72,7 +86,7 @@ main {
   background-color: var(--color-fondo-secundario);
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   height: fit-content;
 }
 
@@ -109,7 +123,7 @@ main {
   border: 1px solid var(--color-borde);
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -151,6 +165,7 @@ main {
   cursor: pointer;
   transition: all 0.25s ease;
 }
+
 .material button:hover {
   background-color: var(--color-gris-hover);
 }
@@ -163,7 +178,7 @@ main {
   background-color: var(--color-fondo-secundario);
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   height: fit-content;
 }
 
@@ -179,7 +194,7 @@ main {
   margin-bottom: 12px;
   padding: 10px 15px;
   border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   color: var(--color-texto);
 }
 
@@ -203,6 +218,7 @@ main {
   cursor: pointer;
   transition: all 0.25s ease;
 }
+
 .botones-principales button:hover {
   background-color: var(--color-gris-hover);
 }
@@ -210,17 +226,19 @@ main {
 /* =========================================================
    FORMULARIOS
    ========================================================= */
-.formulario-pedido, .ver-pedidos {
+.formulario-pedido,
+.ver-pedidos {
   max-width: 600px;
   margin: 30px auto;
   background-color: #ffffff;
   padding: 30px;
   border-radius: 8px;
   border: 1px solid var(--color-borde);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.formulario-pedido h2, .ver-pedidos h2 {
+.formulario-pedido h2,
+.ver-pedidos h2 {
   color: var(--color-encabezado);
   margin-bottom: 25px;
   font-weight: 700;
@@ -250,6 +268,7 @@ main {
   width: 100%;
   transition: all 0.25s ease;
 }
+
 .formulario-pedido form button:hover {
   background-color: var(--color-gris-hover);
 }
@@ -274,6 +293,7 @@ main {
   margin-top: 15px;
   transition: background-color 0.3s ease;
 }
+
 .btn-volver:hover {
   background-color: var(--color-gris-hover);
 }
@@ -285,6 +305,7 @@ main {
   list-style: none;
   padding: 0;
 }
+
 .ver-pedidos ul li {
   padding: 10px 15px;
   margin-bottom: 12px;
@@ -303,11 +324,13 @@ main {
   border-radius: 5px;
   font-weight: bold;
 }
+
 .alert-success {
   background-color: #eafbea;
   color: #2d6a2d;
   border: 1px solid #c9e6c9;
 }
+
 .alert-danger {
   background-color: #fdeaea;
   color: #992d2d;
@@ -321,10 +344,12 @@ main {
   main {
     flex-direction: column;
   }
+
   .filtros-sugerencias {
     flex-direction: column;
     gap: 20px;
   }
+
   .botones-principales {
     flex-direction: column;
   }
