@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Inventario</title>
+  <link rel="stylesheet" href="../static/exportar.css">
+ 
+</head>
+<body>
+  <div class="container">
+    <!-- Flecha en la esquina -->
+    <a href="javascript:history.back()" class="back-arrow">←</a>
+
+    <h1>Montallantas F.Y</h1>
+
+    <!-- Importar -->
+    <div class="card">
+      <h2>Importación de Inventario</h2>
+      <form action="/importar" method="post" enctype="multipart/form-data">
+        <input type="file" name="archivo" accept=".csv,.xlsx">
+        <button type="submit">Importar</button>
+      </form>
+    </div>
+
+    <!-- Exportar -->
+    <div class="card">
+      <h2>Exportación de Inventario</h2>
+      <div class="export-buttons">
+        <a href="/exportar/pdf" class="btn pdf">Descargar PDF</a>
+        <a href="/exportar/excel" class="btn excel">Descargar Excel</a>
+      </div>
+    </div>
+
+    <!-- Tabla de inventario -->
+    <h3>Reporte Generado</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Cantidad</th>
+          <th>Precio Unitario</th>
+          <th>Fecha Ingreso</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fila in tables %}
+        <tr>
+          <td>{{ fila.Codigo }}</td>
+          <td>{{ fila.Nombre }}</td>
+          <td>{{ fila.Tipo }}</td>
+          <td>{{ fila.Cantidad }}</td>
+          <td>{{ fila.PrecioUnitario }}</td>
+          <td>{{ fila.FechaIngreso }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

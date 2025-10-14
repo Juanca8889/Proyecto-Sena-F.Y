@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 import sys
 import os
+import pandas as pd
+from fpdf import FPDF
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if BASE_DIR not in sys.path:
@@ -17,6 +19,7 @@ from Backend.dashboard import dashboard_bp
 from Backend.Recuperacion_contraseña import recuperacion_contraseña
 from Backend.Recuperacion_contraseña import  actualizar_contrasena_usuario
 from Backend.Encuestas import Encuestas
+from Backend.salida_inventario import SalidaInventario
 from datetime import date
 
 app = Flask(__name__)
@@ -462,8 +465,7 @@ def gestion_tickets_es():
 # ==========================================
 # INVENTARIO DE HERRAMIENTAS (protegido)
 # ==========================================
-# Nota: conectar() retorna una conexión MySQL que NO expone métodos de inventario.
-# Protegemos estas rutas para que no revienten si no tienes un DAO específico.
+
 def _inv_has(obj, name):
     return hasattr(obj, name) and callable(getattr(obj, name, None))
 
@@ -517,14 +519,11 @@ def reintegro():
     flash(msg, "success" if ok else "danger")
     return redirect(url_for("inventario"))
 
+
 @app.route("/salida_inventario")
 def salida_inventario():
-    db = conectar()
-    if not _inv_has(db, "get_salidas"):
-        flash("No está disponible la salida de inventario en este entorno.", "warning")
-        return render_template("salida_inventario.html", salidas=[], menu_url=_menu_url())
-    salidas = db.get_salidas()
-    return render_template("salida_inventario.html", salidas=salidas, menu_url=_menu_url())
+   
+    return render_template("salida_inventario.html" )
 
 @app.route("/registrar_salida", methods=["POST"])
 def registrar_salida():
@@ -633,18 +632,97 @@ def recuperar_contraseña():
     return render_template('Recuperacion_contraseña.html')
         
 # -----------------------
-# EXPORTAR A EXCEL (ejemplo simple)
+# EXPORTAR A EXCEL
 # -----------------------
-@app.route("/exportar_excel")
-def exportar_excel():
-    return "Aquí implementas exportación a Excel"
+# ----------- PÁGINA PRINCIPAL -----------
+@app.route("/exportar")
+def exportar():
+    return render_template("Exportar.html")
 
-# -----------------------
-# EXPORTAR A CSV (ejemplo simple)
-# -----------------------
-@app.route("/exportar_csv")
-def exportar_csv():
-    return "Aquí implementas exportación a CSV"
+
+# ----------- IMPORTAR INVENTARIO -----------
+@app.route("/importar", methods=["POST"])
+def importar():
+    archivo = request.files.get("archivo")  # ← más seguro que usar directamente request.files["archivo"]
+
+    if not archivo:
+        return "❌ No se ha enviado ningún archivo."
+
+    if archivo.filename.endswith(".csv"):
+        df = pd.read_csv(archivo)
+        df.to_csv("inventario.csv", index=False)
+        return "✅ Inventario importado desde CSV."
+    
+    if archivo.filename.endswith(".xlsx"):
+        df = pd.read_excel(archivo)
+        df.to_csv("inventario.csv", index=False)
+        return "✅ Inventario importado desde Excel."
+    
+    return "❌ Formato no válido. Solo se permiten CSV o Excel."
+
+
+# ----------- EXPORTAR INVENTARIO (Excel) -----------
+@app.route("/exportar/excel")
+def exportar_excel():
+    try:
+        # Conectar a la BD
+        conn = conectar()
+
+        # Leer datos con pandas directamente desde la query
+        query = "SELECT * FROM inventarioproductos"
+        df = pd.read_sql(query, conn)
+
+        # Guardar como CSV temporal
+        archivo_xlsx = "inventario.xlsx"
+        df.to_excel(archivo_xlsx, index=False)
+
+        conn.close()
+
+        return send_file(archivo_xlsx, as_attachment=True)
+    except Exception as e:
+        return f"❌ Error al exportar: {str(e)}"
+
+# ----------- EXPORTAR INVENTARIO (PDF) -----------
+
+
+@app.route("/exportar/pdf")
+def exportar_pdf():
+    try:
+        # Conectar a la BD
+        conn = conectar()
+        cursor = conn.cursor()
+        cursor.execute("SELECT id_inve_produ, producto_id, cantidad, categoria_id, rol_id FROM inventarioproductos")
+        resultados = cursor.fetchall()
+
+        # Crear el PDF
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", "B", 12)
+
+        # Títulos
+        columnas = ["Código", "Producto", "Cantidad", "Categoria", "Rol"]
+        for col in columnas:
+            pdf.cell(32, 10, col, 1, 0, "C")
+        pdf.ln()
+
+        # Datos
+        pdf.set_font("Arial", "", 10)
+        for fila in resultados:
+            for dato in fila:
+                pdf.cell(32, 10, str(dato), 1, 0, "C")
+            pdf.ln()
+
+        archivo_pdf = "inventario.pdf"
+        pdf.output(archivo_pdf)
+
+        # Descargar
+        return send_file(archivo_pdf, as_attachment=True)
+
+    except Exception as e:
+        return f"❌ Error exportando a PDF: {str(e)}"
+
+
+
 
 # ==========================================
 # Ceron
@@ -656,8 +734,8 @@ def exportar_csv():
 # -----------------------------------------
 # REGISTRAR MATERIALESS
 # -----------------------------------------
-@app.route("/registrarmaterial", methods=["GET", "POST"])
-def registrarmaterial():
+@app.route("/registrar_material", methods=["GET", "POST"])
+def registrar_material():
     conn = conectar()
     cursor = conn.cursor(dictionary=True)
 
@@ -710,7 +788,7 @@ def filtro():
         cursor.close()
         conexion.close()
 
-    return render_template("filtro.html", materiales=materiales)
+    return render_template("inventario.html", materiales=materiales)
 
 
 

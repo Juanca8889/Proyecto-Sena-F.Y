@@ -1,5 +1,5 @@
 # proveedor.py
-from BD.BDa import conectar
+from BD.conexion import conectar
 
 class Proveedor:
     def __init__(self, id_proveedor=None, nombre=None, celular=None, correo=None):

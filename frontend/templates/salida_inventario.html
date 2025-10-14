@@ -59,28 +59,29 @@
   <div class="modal" id="modal-form">
     <div class="modal-content">
       <h2>Registrar salida</h2>
-      <form action="/registrar" method="POST">
-        <label>Fecha de salida:</label>
-        <input type="date" name="fecha" required>
+     <form action="/registrar_salida" method="POST">
+  <label for="cliente_id">Cliente:</label>
+  <input type="number" id="cliente_id" name="cliente_id" min="1" required>
 
-        <label>Código del producto:</label>
-        <input type="text" name="codigo" required>
+  <label for="cantidad">Cantidad:</label>
+  <input type="number" id="cantidad" name="cantidad" min="1" required>
 
-        <label>Nombre del material:</label>
-        <input type="text" name="nombre" required>
+  <label for="descripcion">Descripción:</label>
+  <textarea id="descripcion" name="descripcion" required></textarea>
 
-        <label>Cantidad retirada:</label>
-        <input type="number" name="cantidad" min="1" required>
+  <label for="fecha_venta">Fecha de venta:</label>
+  <input type="date" id="fecha_venta" name="fecha_venta" required>
 
-        <label>Motivo:</label>
-        <input type="text" name="motivo" required>
+  <label for="encargado_id">Encargado (ID):</label>
+  <input type="number" id="encargado_id" name="encargado_id" min="1" required>
 
-        <label>Responsable:</label>
-        <input type="text" name="responsable" required>
+  <label for="monto">Monto total:</label>
+  <input type="number" id="monto" name="monto" step="0.01" min="0" required>
 
-        <button type="submit">Guardar</button>
-        <button type="button" onclick="document.getElementById('modal-form').style.display='none'">Cancelar</button>
-      </form>
+  <button type="submit">Registrar salida</button>
+  <button type="button" onclick="document.getElementById('modal-form').style.display='none'">Cancelar</button>
+</form>
+
     </div>
   </div>
 
