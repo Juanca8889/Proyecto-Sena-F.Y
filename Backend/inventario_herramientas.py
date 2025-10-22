@@ -1,91 +1,96 @@
-
 from BD.conexion import conectar
+import mysql.connector
 
-class Database:
-    def __init__(self, host="localhost", user="root", password="", database="inventario"):
-        self.host = host
-        self.user = user
-        self.password = password
-        self.database = database
-        self.conectar = conectar()
+class Herramientas:
+    def __init__(self, id_herr=None, nombre=None, descripcion=None, cantidad=None, estado=None, usuario_id=None):
+        self.conexion = conectar()
+        self.cursor = self.conexion.cursor(dictionary=True)
+        self.id_herr = id_herr
+        self.nombre = nombre
+        self.descripcion = descripcion
+        self.cantidad = cantidad
+        self.estado = estado
+        self.usuario_id = usuario_id
 
+    def insertar_herramienta(self):
+        try:
+            query = """
+                INSERT INTO inventarioherramientas (nombre, descripcion, cantidad, estado, usuario_id)
+                VALUES (%s, %s, %s, %s, %s);
+            """
+            values = (self.nombre, self.descripcion, self.cantidad, self.estado, self.usuario_id)
+            self.cursor.execute(query, values)
+            self.conexion.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Error al registrar herramienta: {err}")
+            return False
 
-    # Obtener todas las herramientas
-    def get_herramientas(self):
-        conn = self.connect()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM herramientas")
-        herramientas = cursor.fetchall()
-        cursor.close()
-        conn.close()
+    def mostrar_herramientas(self):
+        self.cursor.execute("SELECT * FROM inventarioherramientas")
+        herramientas = self.cursor.fetchall()
         return herramientas
 
-    # Registrar una herramienta
-    def registrar_herramienta(self, nombre, descripcion, codigo, cantidad):
-        conn = self.connect()
-        cursor = conn.cursor()
+    def buscar_herramienta(self, id_herr):
+        query = "SELECT * FROM inventarioherramientas WHERE id_herr = %s;"
+        self.cursor.execute(query, (id_herr,))
+        herramienta = self.cursor.fetchone()
+        return herramienta
+
+    def salida(self, nombre, cantidad_salida):
         try:
-            cursor.execute(
-                "INSERT INTO herramientas (nombre, descripcion, codigo, cantidad, estado, fechaIngreso) "
-                "VALUES (%s, %s, %s, %s, %s, NOW())",
-                (nombre, descripcion, codigo, cantidad, "Nuevo")
-            )
-            conn.commit()
-            return True, "Herramienta registrada con éxito"
-        except Exception as e:
-            return False, "Error: ya existe una herramienta con ese código"
-        finally:
-            cursor.close()
-            conn.close()
+            query_select = "SELECT cantidad FROM inventarioherramientas WHERE nombre = %s;"
+            self.cursor.execute(query_select, (nombre))
+            result = self.cursor.fetchone()
 
-    # Retirar una herramienta
-    def retirar_herramienta(self, codigo, cantidad, usuario, fecha):
-        conn = self.connect()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM herramientas WHERE codigo = %s", (codigo,))
-        herramienta = cursor.fetchone()
-
-        if herramienta:
-            if cantidad <= herramienta["cantidad"]:
-                nueva_cantidad = herramienta["cantidad"] - cantidad
-                estado = "En uso" if nueva_cantidad > 0 else "Dañado"
-                cursor = conn.cursor()
-                cursor.execute(
-                    "UPDATE herramientas SET cantidad=%s, estado=%s, fechaSalida=%s WHERE codigo=%s",
-                    (nueva_cantidad, estado, fecha, codigo)
-                )
-                conn.commit()
-                cursor.close()
-                conn.close()
-                return True, f"Retiro realizado por {usuario}"
+            if result:
+                cantidad_actual = result["cantidad"]
+                if cantidad_actual >= cantidad_salida:
+                    nueva_cantidad = cantidad_actual - cantidad_salida
+                    query_update = "UPDATE inventarioherramientas SET cantidad = %s WHERE nombre = %s;"
+                    self.cursor.execute(query_update, (nueva_cantidad, nombre))
+                    self.conexion.commit()
+                    return True
+                else:
+                    print("No hay suficiente cantidad disponible para salida.")
+                    return False
             else:
-                cursor.close()
-                conn.close()
-                return False, "Cantidad insuficiente"
-        else:
-            cursor.close()
-            conn.close()
-            return False, "Herramienta no encontrada"
+                print("Herramienta no encontrada.")
+                return False
+        except mysql.connector.Error as err:
+            print(f"Error al registrar salida: {err}")
+            return False
 
-    # Reintegrar herramienta
-    def reintegrar_herramienta(self, codigo, cantidad, usuario):
-        conn = self.connect()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM herramientas WHERE codigo = %s", (codigo,))
-        herramienta = cursor.fetchone()
+    def reintegro(self, id_herr, cantidad_reintegro):
+        try:
+            query_select = "SELECT cantidad FROM inventarioherramientas WHERE id_herr = %s;"
+            self.cursor.execute(query_select, (id_herr,))
+            result = self.cursor.fetchone()
 
-        if herramienta:
-            nueva_cantidad = herramienta["cantidad"] + cantidad
-            cursor = conn.cursor()
-            cursor.execute(
-                "UPDATE herramientas SET cantidad=%s, estado=%s, fechaSalida=NULL WHERE codigo=%s",
-                (nueva_cantidad, "Disponible", codigo)
-            )
-            conn.commit()
-            cursor.close()
-            conn.close()
-            return True, f"Reintegro realizado por {usuario}"
-        else:
-            cursor.close()
-            conn.close()
-            return False, "Herramienta no encontrada"
+            if result:
+                cantidad_actual = result["cantidad"]
+                nueva_cantidad = cantidad_actual + cantidad_reintegro
+                query_update = "UPDATE inventarioherramientas SET cantidad = %s WHERE  = %s;"
+                self.cursor.execute(query_update, (nueva_cantidad, id_herr))
+                self.conexion.commit()
+                return True
+            else:
+                print("Herramienta no encontrada.")
+                return False
+        except mysql.connector.Error as err:
+            print(f"Error al reintegrar herramienta: {err}")
+            return False
+
+    def eliminar_herramienta(self, id_herr):
+        try:
+            query = "DELETE FROM inventarioherramientas WHERE id_herr = %s;"
+            self.cursor.execute(query, (id_herr,))
+            self.conexion.commit()
+            return True
+        except mysql.connector.Error as err:
+            print(f"Error al eliminar herramienta: {err}")
+            return False
+
+    def cerrar(self):
+        self.cursor.close()
+        self.conexion.close()

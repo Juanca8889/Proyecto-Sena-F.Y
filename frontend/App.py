@@ -21,11 +21,11 @@ from Backend.Recuperacion_contraseña import  actualizar_contrasena_usuario
 from Backend.Encuestas import Encuestas
 from Backend.salida_inventario import SalidaInventario
 from datetime import date
+from Backend.inventario_herramientas import Herramientas
 
 app = Flask(__name__)
-app.secret_key = 'wjson'  # En prod: usa variable de entorno
+app.secret_key = 'wjson'  
 
-# Instancias de gestores principales
 gestor_compras = GestorCompras()
 gestor_stock = GestorStock()
 app.register_blueprint(dashboard_bp)
@@ -34,33 +34,17 @@ app.register_blueprint(dashboard_bp)
 # Helper global: URL del menú según la sesión
 # ------------------------------------------
 def _menu_url() -> str:
-    """
-    Devuelve la URL del menú adecuado según el rol en sesión:
-      - admin si rol == 1
-      - empleado si hay otro rol
-      - login si no hay sesión
-    """
     destino = 'admin' if session.get('rol') == 1 else ('empleado' if session.get('rol') else 'login')
     return url_for(destino)
 
 @app.context_processor
 def inject_menu_url():
-    """
-    Inyecta menu_url en todas las plantillas para poder usar
-    <a href="{{ menu_url }}">Volver</a> sin tener que pasarlo siempre.
-    """
     try:
         return {"menu_url": _menu_url()}
     except Exception:
         # En casos sin contexto de solicitud, evita romper.
         return {}
 
-# ==========================================
-# HEALTH CHECK E INICIO
-# ==========================================
-@app.route("/healthz")
-def healthz():
-    return {"status": "ok"}, 200
 
 @app.route("/")
 def root():
@@ -251,7 +235,7 @@ def crear_referencia():
     return render_template("crear_referencia.html", menu_url=_menu_url())
 
 # ==========================================
-# RUTA: NOTIFICACIONES (CAMPANA)
+# RUTA: NOTIFICACIONES 
 # ==========================================
 @app.route("/notificaciones", endpoint="notificaciones")
 def notificaciones():
@@ -271,14 +255,13 @@ def notificaciones():
     )
 
 # ==========================================
-# RUTAS DE CLIENTES A DOMICILIO (DAO robusto)
+# RUTAS DE CLIENTES A DOMICILIO 
 # ==========================================
 @app.route('/clientes_domicilio')
 def listar_clientes():
     cliente = Cliente()
     clientes = cliente.listar_clientes()
     cliente.cerrar()
-    # Destino: Admin si rol==1, Empleado si hay otro rol, y Login si no hay sesión
     destino = 'admin' if session.get('rol') == 1 else ('empleado' if session.get('rol') else 'login')
     return render_template("cliente_domicilio.html", clientes=clientes, menu_url=url_for(destino))
 
@@ -312,7 +295,7 @@ def guardar_cliente():
     return redirect(url_for('listar_clientes'))
 
 # ==========================================
-# LOGIN Y REGISTRO
+# LOGIN 
 # ==========================================
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -349,6 +332,25 @@ def olvidaste_contraseña():
         return redirect(url_for('login'))
     return render_template('olvidaste_contraseña.html')
 
+# -----------------------
+# Recupeacion de contraseña
+# -----------------------
+
+@app.route("/recuperar_contraseña", methods=["GET", "POST"])
+def recuperar_contraseña():
+    if request.method == 'POST':
+        usuario = request.form.get('usuario')
+        new_password = request.form.get('new-password')
+    
+        actualizar_contrasena_usuario(usuario, new_password)
+    else:
+        pass
+    return render_template('Recuperacion_contraseña.html')
+        
+# -----------------------
+# REGISTRO DE USUARIO
+# -----------------------
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -374,7 +376,6 @@ def register():
 # ==========================================
 @app.route('/admin', endpoint="admin")
 def home():
-    
     return render_template('index.html')
 
 @app.route('/Empleado')
@@ -382,7 +383,7 @@ def empleado():
     return render_template('index.html')
 
 # ==========================================
-# RUTAS DE GESTIÓN DE CLIENTES (vista general)
+# RUTAS DE GESTIÓN DE CLIENTES camilo
 # ==========================================
 @app.route("/clientes", endpoint="clientes")
 def mostrar_clientes():
@@ -401,34 +402,7 @@ def enviar_encuesta():
         flash("No se encontró el correo del usuario", "error")
     return redirect(url_for("clientes"))  # o la ruta de gestión clientes
 
-@app.route("/eliminar_cliente/<int:id_cliente>", methods=["POST"], endpoint="eliminar_cliente")
-def eliminar_cliente(id_cliente):
-    # Usamos el DAO robusto
-    cli = Cliente()
-    ok = cli.eliminar_cliente(id_cliente)
-    cli.cerrar()
-    flash("Cliente eliminado" if ok else "No se pudo eliminar el cliente", "success" if ok else "danger")
-    return redirect(url_for("clientes"))
 
-@app.route("/editar_cliente/<int:id_cliente>", methods=["GET", "POST"], endpoint="editar_cliente")
-def editar_cliente(id_cliente):
-    # Usamos el DAO robusto que sí tiene obtener/actualizar
-    cli = Cliente()
-    if request.method == "POST":
-        nombre = request.form["nombre"]
-        correo = request.form.get("correo")
-        celular = request.form.get("celular")
-        ok = cli.actualizar_cliente(id_cliente, nombre=nombre, correo=correo, celular=celular)
-        cli.cerrar()
-        flash("Cliente actualizado" if ok else "No se pudo actualizar el cliente", "success" if ok else "danger")
-        return redirect(url_for("clientes"))
-    else:
-        cliente = cli.obtener_cliente(id_cliente)
-        cli.cerrar()
-        if not cliente:
-            flash("Cliente no encontrado", "warning")
-            return redirect(url_for("clientes"))
-        return render_template("editar_cliente.html", cliente=cliente, menu_url=_menu_url())
 
 # ==========================================
 # RUTAS PARA LA AGENDA DE MANTENIMIENTO
@@ -458,88 +432,80 @@ def agregar():
 def gestion_tickets():
     return render_template('gestion_tickets.html', menu_url=_menu_url())
 
-@app.route('/gestion_tickets/es', endpoint="gestion_tickets_es")
-def gestion_tickets_es():
-    return render_template('gestion_tickets_es.html', menu_url=_menu_url())
 
 # ==========================================
-# INVENTARIO DE HERRAMIENTAS (protegido)
+# INVENTARIO DE HERRAMIENTAS 
 # ==========================================
 
-def _inv_has(obj, name):
-    return hasattr(obj, name) and callable(getattr(obj, name, None))
+@app.route('/agregar_herramienta', methods=['GET', 'POST'])
+def agregar_herramienta():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        descripcion = request.form['descripcion']
+        cantidad = int(request.form['cantidad'])
+        estado = request.form['estado']
+        usuario_id = int(request.form['usuario_id'])
 
-@app.route("/inventario_herramientas/")
-def inventario():
-    db = conectar()
-    if not _inv_has(db, "get_herramientas"):
-        flash("Módulo de inventario no implementado en la conexión actual.", "warning")
-        return render_template("inventario_herramientas.html", herramientas=[], menu_url=_menu_url())
-    herramientas = db.get_herramientas()
-    return render_template("inventario_herramientas.html", herramientas=herramientas, menu_url=_menu_url())
+        herramienta = Herramientas(
+            nombre=nombre,
+            descripcion=descripcion,
+            cantidad=cantidad,
+            estado=estado,
+            usuario_id=usuario_id
+        )
+        if herramienta.insertar_herramienta():
+            return redirect(url_for('inventario'))
+        else:
+            return "Error al registrar herramienta"
+    
+    return render_template('inventario_herramientas.html')
 
-@app.route("/registrar_herramienta", methods=["POST"])
-def registrar_herramienta():
-    db = conectar()
-    if not _inv_has(db, "registrar_herramienta"):
-        flash("No está disponible el registro de herramientas en este entorno.", "warning")
-        return redirect(url_for("inventario"))
-    nombre = request.form["nombre"]
-    descripcion = request.form["descripcion"]
-    codigo = request.form["codigo"]
-    cantidad = request.form["cantidad"]
-    ok, msg = db.registrar_herramienta(nombre, descripcion, codigo, cantidad)
-    flash(msg, "success" if ok else "danger")
-    return redirect(url_for("inventario"))
+# ==========================================
+# RETIRO DE HERRAMIENTAS 
+# ==========================================
 
-@app.route("/retiro", methods=["POST"])
-def retiro():
-    db = conectar()
-    if not _inv_has(db, "retirar_herramienta"):
-        flash("No está disponible el retiro de herramientas en este entorno.", "warning")
-        return redirect(url_for("inventario"))
-    codigo = request.form["codigo"]
-    cantidad = int(request.form["cantidad"])
-    usuario = request.form["usuario"]
-    fecha = request.form["fecha"]
-    ok, msg = db.retirar_herramienta(codigo, cantidad, usuario, fecha)
-    flash(msg, "success" if ok else "danger")
-    return redirect(url_for("inventario"))
+@app.route('/retiro_herramienta', methods=['GET', 'POST'])
+def retiro_herramienta():
+    if request.method == 'POST':
+        nombre = request.form['id_herr']
+        cantidad_salida = int(request.form['cantidad_salida'])
 
-@app.route("/reintegro", methods=["POST"])
+        herramienta = Herramientas()
+        if herramienta.salida(nombre, cantidad_salida):
+            herramienta.cerrar()
+            return redirect(url_for('inventario'))
+        else:
+            herramienta.cerrar()
+            return "Error al registrar la salida de la herramienta"
+
+    return render_template('retiro_herramientas.html')
+
+# ==========================================
+# REINTEGRO DE HERRAMIENTAS 
+# ==========================================
+
+@app.route('/reintegro', methods=['GET', 'POST'])
 def reintegro():
-    db = conectar()
-    if not _inv_has(db, "reintegrar_herramienta"):
-        flash("No está disponible el reintegro de herramientas en este entorno.", "warning")
-        return redirect(url_for("inventario"))
-    codigo = request.form["codigo"]
-    cantidad = int(request.form["cantidad"])
-    usuario = request.form["usuario"]
-    ok, msg = db.reintegrar_herramienta(codigo, cantidad, usuario)
-    flash(msg, "success" if ok else "danger")
-    return redirect(url_for("inventario"))
+    if request.method == 'POST':
+        id_herr = int(request.form['id_herr'])
+        cantidad_reintegro = int(request.form['cantidad_reintegro'])
 
+        herramienta = Herramientas()
+        if herramienta.reintegro(id_herr, cantidad_reintegro):
+            herramienta.cerrar()
+            return redirect(url_for('inventario'))
+        else:
+            herramienta.cerrar()
+            return "Error al reintegrar la herramienta"
 
-@app.route("/salida_inventario")
-def salida_inventario():
-   
-    return render_template("salida_inventario.html" )
+    return render_template('reintegro_herramientas.html')
 
-@app.route("/registrar_salida", methods=["POST"])
-def registrar_salida():
-    db = conectar()
-    if not _inv_has(db, "registrar_salida"):
-        flash("No está disponible el registro de salidas en este entorno.", "warning")
-        return redirect(url_for("salida_inventario"))
-    fecha = request.form["fecha"]
-    codigo = request.form["codigo"]
-    nombre = request.form["nombre"]
-    cantidad = request.form["cantidad"]
-    motivo = request.form["motivo"]
-    responsable = request.form["responsable"]
-    ok, msg = db.registrar_salida(fecha, codigo, nombre, cantidad, motivo, responsable)
-    flash(msg, "success" if ok else "danger")
-    return redirect(url_for("salida_inventario"))
+# ==========================================
+# HERRAMIENTAS 
+# ==========================================
+@app.route('/inventario')
+def inventario():
+        return render_template('inventario_herramientas.html')  
 
 # ==========================================
 # Laura
@@ -584,53 +550,8 @@ def reporte_ventas():
     return render_template("reporteventas.html", ventas=ventas)
 
 
-@app.route("/referencias", methods=["GET"])
-def referencias():
-    conn = conectar()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT id_producto AS codigo, nombre, descripcion, cantidad, precio FROM producto")
-    productos = cursor.fetchall()
-    cursor.close()
-    return render_template("creacion_referencias_producto.html", referencias=productos)
 
 
-@app.route("/referencias/crear", methods=["POST"])
-def crear_referencia_producto():
-    
-    nombre = request.form["nombre"]
-    descripcion = request.form["descripcion"]
-    cantidad = request.form["cantidad"]
-    categoria_id = request.form["categoria"]
-    precio = request.form["precio"]
-
-    conn = conectar()
-    cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO producto ( nombre, descripcion, cantidad, categoria_id, precio) VALUES ( %s, %s, %s, %s, %s)",
-        ( nombre, descripcion, cantidad, categoria_id, precio)
-    )
-    conn.commit()
-    conn.close()
-
-    flash(f"Se han registrado {cantidad} unidades de '{nombre}' en el inventario.")
-    return redirect(url_for("referencias"))
-
-
-# -----------------------
-# Recupeacion de contraseña
-# -----------------------
-
-@app.route("/recuperar_contraseña", methods=["GET", "POST"])
-def recuperar_contraseña():
-    if request.method == 'POST':
-        usuario = request.form.get('usuario')
-        new_password = request.form.get('new-password')
-    
-        actualizar_contrasena_usuario(usuario, new_password)
-    else:
-        pass
-    return render_template('Recuperacion_contraseña.html')
-        
 # -----------------------
 # EXPORTAR A EXCEL
 # -----------------------
@@ -728,9 +649,6 @@ def exportar_pdf():
 # Ceron
 # ==========================================
 
-
-
-
 # -----------------------------------------
 # REGISTRAR MATERIALESS
 # -----------------------------------------
@@ -814,6 +732,17 @@ class BusquedaInventario:
     def cerrar(self):
         self.cursor.close()
         self.conexion.close()
+
+# -----------------------------------------
+# 🔙 Botón universal de "Volver"
+# -----------------------------------------
+
+@app.context_processor
+def inject_back_button():
+    from flask import request, url_for
+    # Si existe una página previa, úsala; si no, vuelve al admin
+    prev = request.referrer or url_for('admin')
+    return {"back_button_url": prev}
 
 
 # -----------------------------------------

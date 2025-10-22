@@ -13,12 +13,13 @@
 </head>
 <body>
 
-    <!-- HEADER MODERNO -->
+ 
     <header class="header">
         <div class="header-left">
-           <a href="{{ url_for('admin') }}" class="btn-volver" title="Volver al menú">
-                <i class="fa-solid fa-arrow-left"></i>
-            </a>
+        <a href="{{ back_button_url }}" class="volver" title="Volver">
+        <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
 
             <!-- Búsqueda con botón -->
             <form method="GET" action="{{ url_for('control_stock') }}" class="barra-busqueda" role="search">

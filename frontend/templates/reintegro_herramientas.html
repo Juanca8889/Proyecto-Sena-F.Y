@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reintegro de Herramienta</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='inventario_herramientas.css') }}">
+</head>
+<body>
+    <h1>Reintegro de Herramienta</h1>
+    <a href="javascript:history.back()"></a>
+
+    <form action="/reintegro" method="post">
+        <label for="id_herr">ID de Herramienta:</label>
+        <input type="number" id="id_herr" name="id_herr" required>
+
+        <label for="cantidad_reintegro">Cantidad a Reintegrar:</label>
+        <input type="number" id="cantidad_reintegro" name="cantidad_reintegro" required>
+
+        <button type="submit">Registrar Reintegro</button>
+    </form>
+</body>
+</html>
