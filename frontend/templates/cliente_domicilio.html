@@ -8,9 +8,9 @@
 </head>
 <body>
 
-    <!-- HEADER -->
+    
     <header>
-        <!-- Volver al menú (Admin/Empleado/Login) sin JS -->
+        
      {% set _menu = url_for('admin') %}
 
         <a class="volver" href="{{ _menu }}" title="Volver al menú">
@@ -29,7 +29,7 @@
         </div>
     </header>
 
-    <!-- MENSAJES FLASH -->
+    
     <section class="flashes">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

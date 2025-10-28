@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, jsonify
 import sys
 import os
 import pandas as pd
 from fpdf import FPDF
+
+
+
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if BASE_DIR not in sys.path:
@@ -19,9 +22,10 @@ from Backend.dashboard import dashboard_bp
 from Backend.Recuperacion_contraseña import recuperacion_contraseña
 from Backend.Recuperacion_contraseña import  actualizar_contrasena_usuario
 from Backend.Encuestas import Encuestas
-from Backend.salida_inventario import SalidaInventario
 from datetime import date
 from Backend.inventario_herramientas import Herramientas
+from Backend.salida_inventario import Venta
+from Backend.Tickets import Tickets
 
 app = Flask(__name__)
 app.secret_key = 'wjson'  
@@ -42,7 +46,7 @@ def inject_menu_url():
     try:
         return {"menu_url": _menu_url()}
     except Exception:
-        # En casos sin contexto de solicitud, evita romper.
+        
         return {}
 
 
@@ -416,7 +420,7 @@ def agenda():
 
 @app.route('/agregar', methods=['POST'], endpoint="agregar")
 def agregar():
-    # TODO: implementar persistencia con Backend.Agenda_Mantenimiento si lo habilitas
+    
     dia = request.form.get('dia')
     maquina = request.form.get('maquina')
     personal = request.form.get('personal')
@@ -428,9 +432,22 @@ def agregar():
 # ==========================================
 # RUTA DE GESTIÓN DE TICKETS
 # ==========================================
-@app.route('/gestion_tickets', endpoint="gestion_tickets")
+
+
+@app.route('/gestion_tickets', methods=['GET', 'POST'])
 def gestion_tickets():
-    return render_template('gestion_tickets.html', menu_url=_menu_url())
+    if request.method == 'POST':
+        cuerpo = request.form.get('ticket_Descripcion', '')
+        header = request.form.get('ticket_problema', '')
+        
+        ticket = Tickets(cuerpo, header)
+        ticket.enviar_ticket()
+        
+        return render_template('Gestion_tickets.html', enviado=True)
+    
+    # Si es GET solo muestra el formulario
+    return render_template('Gestion_tickets.html')
+
 
 
 # ==========================================
@@ -439,6 +456,8 @@ def gestion_tickets():
 
 @app.route('/agregar_herramienta', methods=['GET', 'POST'])
 def agregar_herramienta():
+    herramienta = Herramientas()  
+
     if request.method == 'POST':
         nombre = request.form['nombre']
         descripcion = request.form['descripcion']
@@ -446,19 +465,22 @@ def agregar_herramienta():
         estado = request.form['estado']
         usuario_id = int(request.form['usuario_id'])
 
-        herramienta = Herramientas(
+        nueva_herramienta = Herramientas(
             nombre=nombre,
             descripcion=descripcion,
             cantidad=cantidad,
             estado=estado,
             usuario_id=usuario_id
         )
-        if herramienta.insertar_herramienta():
-            return redirect(url_for('inventario'))
+        
+        if nueva_herramienta.insertar_herramienta():
+            return redirect(url_for('agregar_herramienta'))
         else:
             return "Error al registrar herramienta"
-    
-    return render_template('inventario_herramientas.html')
+
+    items = herramienta.mostrar_herramientas()
+    return render_template('inventario_herramientas.html', items=items)
+
 
 # ==========================================
 # RETIRO DE HERRAMIENTAS 
@@ -500,12 +522,79 @@ def reintegro():
 
     return render_template('reintegro_herramientas.html')
 
+@app.route('/buscar_herramienta', methods=['GET'])
+def buscar_herramienta():
+    nombre = request.args.get('nombre', '').strip()  
+    herramienta = Herramientas()
+
+    if nombre:
+        items = herramienta.buscar_herramienta(nombre)
+    else:
+        items = herramienta.mostrar_herramientas()  
+
+    return render_template('inventario_herramientas.html', items=items)
+
+@app.route('/inventario') 
+def inventario(): 
+    return render_template('inventario_herramientas.html')
+
+
+
 # ==========================================
-# HERRAMIENTAS 
+# SALIDA DE INVENTARIO 
 # ==========================================
-@app.route('/inventario')
-def inventario():
-        return render_template('inventario_herramientas.html')  
+@app.route('/salida_inventario', methods=['GET'])
+def salida_inventario():
+    venta = Venta()
+    ventas = venta.ver_ventas()
+    venta.cerrar()
+    return render_template('salida_inventario.html', ventas=ventas)
+
+# ==========================================
+# RUTA: Mostrar formulario de venta
+# ==========================================
+@app.route('/venta', methods=['GET'])
+def venta_form():
+    return render_template('venta.html')  
+
+# ==========================================
+# Registrar la venta en la base de datos
+# ==========================================
+@app.route('/registrar_venta', methods=['POST'])
+def registrar_venta():
+    id_producto = int(request.form['id_producto'])
+    cliente_id = int(request.form['cliente_id'])
+    cantidad = int(request.form['cantidad'])
+    encargado_id = int(request.form['encargado_id'])
+    garantia_dias = int(request.form['garantia_dias'])
+    descripcion = request.form['descripcion']
+
+    venta = Venta()
+    if venta.registrar_venta(cliente_id, id_producto, cantidad, encargado_id, descripcion, garantia_dias):
+        venta.cerrar()
+        return redirect(url_for('venta_form'))
+    else:
+        venta.cerrar()
+        return "Error al registrar la venta"
+
+# ==========================================
+#  Buscar producto 
+# ==========================================
+@app.route('/buscar_producto/<int:id_producto>', methods=['GET'])
+def buscar_producto(id_producto):
+    venta = Venta()
+    producto = venta.obtener_producto(id_producto)
+    venta.cerrar()
+
+    if producto:
+        return jsonify(producto)
+    else:
+        return jsonify({'error': 'Producto no encontrado'})
+
+
+
+
+
 
 # ==========================================
 # Laura
@@ -559,27 +648,6 @@ def reporte_ventas():
 @app.route("/exportar")
 def exportar():
     return render_template("Exportar.html")
-
-
-# ----------- IMPORTAR INVENTARIO -----------
-@app.route("/importar", methods=["POST"])
-def importar():
-    archivo = request.files.get("archivo")  # ← más seguro que usar directamente request.files["archivo"]
-
-    if not archivo:
-        return "❌ No se ha enviado ningún archivo."
-
-    if archivo.filename.endswith(".csv"):
-        df = pd.read_csv(archivo)
-        df.to_csv("inventario.csv", index=False)
-        return "✅ Inventario importado desde CSV."
-    
-    if archivo.filename.endswith(".xlsx"):
-        df = pd.read_excel(archivo)
-        df.to_csv("inventario.csv", index=False)
-        return "✅ Inventario importado desde Excel."
-    
-    return "❌ Formato no válido. Solo se permiten CSV o Excel."
 
 
 # ----------- EXPORTAR INVENTARIO (Excel) -----------
@@ -646,8 +714,53 @@ def exportar_pdf():
 
 
 # ==========================================
-# Ceron
+# Importar 
 # ==========================================
+
+@app.route('/importar/excel', methods=['GET', 'POST'])
+def importar_excel():
+    if request.method == 'POST':
+        archivo = request.files['archivo']
+
+        if not archivo:
+            flash('❌ No se seleccionó ningún archivo', 'error')
+            return redirect(request.url)
+
+        try:
+            # Leer el archivo Excel con pandas
+            df = pd.read_excel(archivo)
+
+            # Conectarse a la base de datos
+            conn = conectar()
+            cursor = conn.cursor()
+
+            # Iterar sobre las filas del DataFrame e insertarlas
+            for _, fila in df.iterrows():
+                query = """
+                    INSERT INTO producto (nombre, descripcion, cantidad, categoria_id, precio)
+                    VALUES (%s, %s, %s, %s, %s)
+                """
+                valores = (
+                    fila['nombre'],
+                    fila['descripcion'],
+                    int(fila['cantidad']),
+                    int(fila['categoria_id']),
+                    float(fila['precio'])
+                )
+                cursor.execute(query, valores)
+
+            conn.commit()
+            cursor.close()
+            conn.close()
+
+            flash('✅ Datos importados correctamente desde Excel', 'success')
+            return redirect(url_for('importar_excel'))
+
+        except Exception as e:
+            flash(f'❌ Error al importar: {str(e)}', 'error')
+            return redirect(url_for('importar_excel'))
+
+    return render_template('importar_excel.html')
 
 # -----------------------------------------
 # REGISTRAR MATERIALESS
@@ -734,7 +847,7 @@ class BusquedaInventario:
         self.conexion.close()
 
 # -----------------------------------------
-# 🔙 Botón universal de "Volver"
+#  Botón "Volver"
 # -----------------------------------------
 
 @app.context_processor

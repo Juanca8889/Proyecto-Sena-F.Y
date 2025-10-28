@@ -5,40 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro de Salidas de Inventario</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='salida_inventario.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body>
   <div class="container">
     <header>
-      <button class="back-btn"><a href="{{ url_for('admin') }}">←</a></button>
+    <a href="{{ "/" }}" class="volver" title="Volver">
+    <i class="fa-solid fa-arrow-left btn-volver"></i>
+    </a>
       <select>
         <option>Todo</option>
       </select>
       <h1>Registro de salidas de inventario</h1>
-      <button class="add-btn" onclick="document.getElementById('modal-form').style.display='flex'">+ Registrar salida</button>
+      <button class="add-btn" onclick="window.location.href='{{ url_for('venta_form') }}'">+ Registar Venta</button>
     </header>
 
     <table id="tabla-registros">
       <thead>
         <tr>
-          <th>Fecha de salida</th>
-          <th>Código del producto</th>
-          <th>Nombre del material</th>
-          <th>Cantidad retirada</th>
-          <th>Motivo</th>
-          <th>Responsable</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for s in salidas %}
-        <tr>
-          <td>{{ s['fecha'] }}</td>
-          <td>{{ s['codigo'] }}</td>
-          <td>{{ s['nombre'] }}</td>
-          <td>{{ s['cantidad'] }}</td>
-          <td>{{ s['motivo'] }}</td>
-          <td>{{ s['responsable'] }}</td>
-        </tr>
-        {% else %}
+                <th>Fecha</th>
+                <th>ID Venta</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Descripción</th>
+                <th>Monto</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for v in ventas %}
+            <tr>
+                <td>{{ v['fecha_venta'] }}</td>
+                <td>{{ v['id_venta'] }}</td>
+                <td>{{ v['producto'] }}</td>
+                <td>{{ v['cantidad'] }}</td>
+                <td>{{ v['descripcion'] }}</td>
+                <td>${{ v['monto'] }}</td>
+            </tr>
+            {% else %}
         <tr><td colspan="6">No hay registros todavía.</td></tr>
         {% endfor %}
       </tbody>
@@ -55,45 +59,7 @@
     </footer>
   </div>
 
-  <!-- Formulario Modal -->
-  <div class="modal" id="modal-form">
-    <div class="modal-content">
-      <h2>Registrar salida</h2>
-     <form action="/registrar_salida" method="POST">
-  <label for="cliente_id">Cliente:</label>
-  <input type="number" id="cliente_id" name="cliente_id" min="1" required>
-
-  <label for="cantidad">Cantidad:</label>
-  <input type="number" id="cantidad" name="cantidad" min="1" required>
-
-  <label for="descripcion">Descripción:</label>
-  <textarea id="descripcion" name="descripcion" required></textarea>
-
-  <label for="fecha_venta">Fecha de venta:</label>
-  <input type="date" id="fecha_venta" name="fecha_venta" required>
-
-  <label for="encargado_id">Encargado (ID):</label>
-  <input type="number" id="encargado_id" name="encargado_id" min="1" required>
-
-  <label for="monto">Monto total:</label>
-  <input type="number" id="monto" name="monto" step="0.01" min="0" required>
-
-  <button type="submit">Registrar salida</button>
-  <button type="button" onclick="document.getElementById('modal-form').style.display='none'">Cancelar</button>
-</form>
 
     </div>
   </div>
-
-  <!-- Mensajes flash -->
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <div class="mensaje">
-        {% for category, message in messages %}
-          <p class="{{ category }}">{{ message }}</p>
-        {% endfor %}
-      </div>
-    {% endif %}
-  {% endwith %}
-</body>
 </html>

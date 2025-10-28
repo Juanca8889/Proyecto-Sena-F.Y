@@ -31,35 +31,38 @@ class Herramientas:
         herramientas = self.cursor.fetchall()
         return herramientas
 
-    def buscar_herramienta(self, id_herr):
-        query = "SELECT * FROM inventarioherramientas WHERE id_herr = %s;"
-        self.cursor.execute(query, (id_herr,))
-        herramienta = self.cursor.fetchone()
+    def buscar_herramienta(self, nombre):
+        query = "SELECT * FROM inventarioherramientas WHERE nombre LIKE %s"
+        self.cursor.execute(query, ('%' + nombre + '%',))
+        herramienta = self.cursor.fetchall()
         return herramienta
 
-    def salida(self, nombre, cantidad_salida):
+    def salida(self, id_herr, cantidad_salida):
         try:
-            query_select = "SELECT cantidad FROM inventarioherramientas WHERE nombre = %s;"
-            self.cursor.execute(query_select, (nombre))
-            result = self.cursor.fetchone()
 
+            query_select = "SELECT cantidad FROM inventarioherramientas WHERE id_herr = %s;"
+            self.cursor.execute(query_select, (id_herr,))
+            result = self.cursor.fetchone()
+            
             if result:
                 cantidad_actual = result["cantidad"]
                 if cantidad_actual >= cantidad_salida:
                     nueva_cantidad = cantidad_actual - cantidad_salida
-                    query_update = "UPDATE inventarioherramientas SET cantidad = %s WHERE nombre = %s;"
-                    self.cursor.execute(query_update, (nueva_cantidad, nombre))
+                    query_update = "UPDATE inventarioherramientas SET cantidad = %s WHERE id_herr = %s;"
+                    self.cursor.execute(query_update, (nueva_cantidad, id_herr))
                     self.conexion.commit()
+                    print(f"Salida registrada correctamente. Nueva cantidad: {nueva_cantidad}")
                     return True
                 else:
-                    print("No hay suficiente cantidad disponible para salida.")
+                    print("❌ No hay suficiente cantidad disponible para salida.")
                     return False
             else:
-                print("Herramienta no encontrada.")
+                print("❌ Herramienta no encontrada.")
                 return False
         except mysql.connector.Error as err:
-            print(f"Error al registrar salida: {err}")
+            print(f"⚠️ Error al registrar salida: {err}")
             return False
+
 
     def reintegro(self, id_herr, cantidad_reintegro):
         try:
@@ -70,7 +73,7 @@ class Herramientas:
             if result:
                 cantidad_actual = result["cantidad"]
                 nueva_cantidad = cantidad_actual + cantidad_reintegro
-                query_update = "UPDATE inventarioherramientas SET cantidad = %s WHERE  = %s;"
+                query_update = "UPDATE inventarioherramientas SET cantidad = %s WHERE id_herr = %s;"
                 self.cursor.execute(query_update, (nueva_cantidad, id_herr))
                 self.conexion.commit()
                 return True
@@ -80,6 +83,7 @@ class Herramientas:
         except mysql.connector.Error as err:
             print(f"Error al reintegrar herramienta: {err}")
             return False
+
 
     def eliminar_herramienta(self, id_herr):
         try:

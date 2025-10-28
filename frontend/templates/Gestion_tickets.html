@@ -1,46 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./static/Gestion_tickets.css" />
-    <title>Document</title>
-  </head>
-  <body>
-    <!-- Vista 1: Historial de Tickets -->
-    <div class="container">
-      <header>
-        <button onclick="window.location.href='{{ url_for('admin') }}'" class="back-btn">&#8592;</button>
-        <h1>Historial De Tickets</h1>
-        <button class="refresh-btn">&#8635;</button>
-        <button  onclick="window.location.href='{{ url_for('gestion_tickets_es') }}'" class="create-btn">Crear Ticket</button>
-      </header>
-      <main>
-        <div class="tickets-grid">
-          <!-- Tarjetas de ticket -->
-          <div class="ticket-card">
-            <h2>Ticket</h2>
-            <p>Estado: <span>Abierto</span></p>
-            <p>Usuario: <span>Ejemplo</span></p>
-            <p>Fecha: <span>01/01/2025</span></p>
-            <button class="details-btn">Ver detalles</button>
-          </div>
-          <div class="ticket-card">
-            <h2>Ticket</h2>
-            <p>Estado: <span>Abierto</span></p>
-            <p>Usuario: <span>Ejemplo</span></p>
-            <p>Fecha: <span>01/01/2025</span></p>
-            <button class="details-btn">Ver detalles</button>
-          </div>
-          <div class="ticket-card">
-            <h2>Ticket</h2>
-            <p>Estado: <span>Abierto</span></p>
-            <p>Usuario: <span>Ejemplo</span></p>
-            <p>Fecha: <span>01/01/2025</span></p>
-            <button class="details-btn">Ver detalles</button>
-          </div>
-        </div>
-      </main>
-    </div>
-  </body>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Tickets</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='Gestion_tickets.css') }}"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+  <a class="volver" href="{{ _menu }}" title="Volver al menú">
+    <i class="fa-solid fa-arrow-left"></i>
+  </a>
+
+  <div class="contenedor">
+    <form id="ticketForm" action="/gestion_tickets" method="POST">
+      <h1>Gestión de Tickets</h1>
+
+      <label for="ticket_problema">Problema u error:</label><br>
+      <input type="text" id="ticket_problema" name="ticket_problema"
+             placeholder="No carga el módulo de agenda" required><br>
+
+      <label for="ticket_Descripcion">Descripción:</label><br>
+      <input type="text" id="ticket_Descripcion" name="ticket_Descripcion"
+             placeholder="Intento ingresar pero..." required><br>
+
+      <button type="submit">Enviar Ticket</button>
+    </form>
+  </div>
+
+  {% if enviado %}
+  <script>
+    Swal.fire({
+      icon: 'success',
+      title: 'Ticket enviado correctamente',
+      text: 'Tu solicitud fue registrada con éxito.',
+      timer: 3000,
+      showConfirmButton: false
+    });
+  </script>
+  {% endif %}
+
+</body>
 </html>

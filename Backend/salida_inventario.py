@@ -1,80 +1,60 @@
-from BD.conexion import conectar 
+from BD.conexion import conectar
+from datetime import datetime
+import mysql.connector
 
+class Venta:
+    def __init__(self):
+        self.conexion = conectar()
+        self.cursor = self.conexion.cursor(dictionary=True)
 
-class SalidaInventario:
-    def __init__(self, cliente_id=None, cantidad=None, descripcion=None, fecha_venta=None, encargado_id=None, monto=None, id_venta=None):
-        self.id_venta = id_venta
-        self.cliente_id = cliente_id
-        self.cantidad = cantidad
-        self.descripcion = descripcion
-        self.fecha_venta = fecha_venta
-        self.encargado_id = encargado_id
-        self.monto = monto
-
-    # ---- Registrar una nueva salida ----
-    def registrar(self):
-        conn = conectar()
-        cursor = conn.cursor()
-
-        sql = """
-        INSERT INTO salida_inventario (cliente_id, cantidad, descripcion, fecha_venta, encargado_id, monto)
-        VALUES (%s, %s, %s, %s, %s, %s)
-        """
-        valores = (self.cliente_id, self.cantidad, self.descripcion, self.fecha_venta, self.encargado_id, self.monto)
-        cursor.execute(sql, valores)
-        conn.commit()
-
-        self.id_venta = cursor.lastrowid  # obtener el ID generado automáticamente
-        cursor.close()
-        conn.close()
-        return self.id_venta
-
-    # ---- Listar todas las salidas ----
-    def listar_todas(self):
-        conn = conectar()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM salida_inventario")
-        resultados = cursor.fetchall()
-        cursor.close()
-        conn.close()
-        return resultados
-
-    # ---- Buscar una salida por ID ----
-    def buscar_por_id(self, id_venta):
-        conn = conectar()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM salida_inventario WHERE id_venta = %s", (id_venta,))
-        resultado = cursor.fetchone()
-        cursor.close()
-        conn.close()
-        return resultado
-
-    # ---- Actualizar una salida existente ----
-    def actualizar(self):
-        if not self.id_venta:
-            raise ValueError("Debe establecer un ID de venta para actualizar el registro.")
+    def cerrar(self):
+        self.cursor.close()
+        self.conexion.close()
         
-        conn = conectar()
-        cursor = conn.cursor()
-        sql = """
-        UPDATE salida_inventario
-        SET cliente_id=%s, cantidad=%s, descripcion=%s, fecha_venta=%s, encargado_id=%s, monto=%s
-        WHERE id_venta=%s
-        """
-        valores = (self.cliente_id, self.cantidad, self.descripcion, self.fecha_venta,
-                   self.encargado_id, self.monto, self.id_venta)
-        cursor.execute(sql, valores)
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return True
+    def ver_ventas(self):
+        try:
+            query = "SELECT * FROM venta;"
+            self.cursor.execute(query)
+            return self.cursor.fetchall()
+        except mysql.connector.Error as err:
+            print(f"Error al obtener ventas: {err}")
+            return []
 
-    # ---- Eliminar una salida ----
-    def eliminar(self, id_venta):
-        conn = conectar()
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM salida_inventario WHERE id_venta = %s", (id_venta,))
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return True
+    def obtener_producto(self, id_producto):
+        try:
+            query = "SELECT * FROM producto WHERE id_producto = %s;"
+            self.cursor.execute(query, (id_producto,))
+            return self.cursor.fetchone()
+        except mysql.connector.Error as err:
+            print(f"Error al obtener producto: {err}")
+            return None
+
+    def registrar_venta(self, cliente_id, id_producto, cantidad, encargado_id, descripcion, garantia_dias):
+        try:
+            producto = self.obtener_producto(id_producto)
+            if not producto:
+                print("Producto no encontrado.")
+                return False
+
+            precio_unitario = producto["precio"]
+            monto = precio_unitario * cantidad
+            fecha_actual = datetime.now().date()
+
+            query = """
+                INSERT INTO venta (cliente_id, cantidad, descripcion, fecha_venta, encargado_id, monto)
+                VALUES (%s, %s, %s, %s, %s, %s);
+            """
+            values = (cliente_id, cantidad, descripcion, fecha_actual, encargado_id, monto)
+            self.cursor.execute(query, values)
+            self.conexion.commit()
+
+            nueva_cantidad = producto["cantidad"] - cantidad
+            query_update = "UPDATE producto SET cantidad = %s WHERE id_producto = %s;"
+            self.cursor.execute(query_update, (nueva_cantidad, id_producto))
+            self.conexion.commit()
+
+            print(f"✅ Venta registrada: {producto['nombre']} - Total: {monto}")
+            return True
+        except mysql.connector.Error as err:
+            print(f"❌ Error al registrar venta: {err}")
+            return False

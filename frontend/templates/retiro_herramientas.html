@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salida de Herramienta</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='inventario_herramientas.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body>
-    <h1>Salida de Herramienta</h1>
-    <a href="javascript:history.back()">← Volver a la página anterior</a>
 
+    <a href="{{ back_button_url }}" class="volver" title="Volver">
+    <i class="fa-solid fa-arrow-left"></i>
+    </a>
+    <h1>Salida de Herramienta</h1>
     <form action="/retiro_herramienta" method="post">
-        <label for="id_herr">Nombre de la Herramienta:</label>
-        <input type="text" id="id_herr" name="id_herr" required>
+        <label for="id_herr">ID de la Herramienta:</label>
+        <input type="number" id="id_herr" name="id_herr" required>
 
         <label for="cantidad_salida">Cantidad a Salir:</label>
         <input type="number" id="cantidad_salida" name="cantidad_salida" required>
