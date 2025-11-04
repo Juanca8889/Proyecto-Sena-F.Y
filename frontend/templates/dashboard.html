@@ -6,13 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
-    <header class="dash-header">
-         <a href="{{ url_for('admin') }}" class="btn-volver" title="Volver al menú"> ←
+<header class="dash-header">
+        <!-- Volver al menú (Admin/Empleado/Login) sin JS -->
+     {% set _menu = url_for('admin') %}
+        <a class="btn-volver" href="{{ _menu }}" title="Volver al menú">
             <i class="fa-solid fa-arrow-left"></i>
         </a>
-        <h1 class="dash-title">{{ page_title or 'Dashboard' }}</h1>
+        <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <div class="titulo">
+            <h1  class="dash-title">DASHBOARD</h1>
+        </div>
     </header>
 
     <main class="dash-main">
@@ -117,5 +124,8 @@
             </article>
         </section>
     </main>
+    <script>
+    feather.replace();
+    </script>
 </body>
 </html>

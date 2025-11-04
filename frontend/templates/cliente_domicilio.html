@@ -7,16 +7,11 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='cliente_domicilio.css') }}" />
 </head>
 <body>
-
-    
     <header>
-        
-     {% set _menu = url_for('admin') %}
-
-        <a class="volver" href="{{ _menu }}" title="Volver al menú">
+        <a class="volver" href="{{ url_for('volver') }}" title="Volver al menú">
             <i class="fa-solid fa-arrow-left"></i>
         </a>
-
+        <h2 class="SERVIMAQ">SERVIMAQ</h2>
         <div class="titulo">
             <i class="fa-solid fa-users"></i>
             <h1>Clientes Domicilio</h1>
@@ -29,7 +24,7 @@
         </div>
     </header>
 
-    
+    <!-- MENSAJES FLASH -->
     <section class="flashes">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

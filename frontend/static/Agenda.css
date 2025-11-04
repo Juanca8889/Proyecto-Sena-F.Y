@@ -1,3 +1,112 @@
+@import url('variables.css');
+
+
+/* =========================
+     Header
+     ========================= */
+
+.SERVIMAQ {
+    margin-left:5px;
+    position: absolute;
+    left:60px;
+    
+
+}
+
+
+header {
+    background: var(--color-azul) ;
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: center; /* centramos el título */
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    position: relative;
+    height: 70px;
+}
+
+header .salir {
+    font-size: 22px;
+    color: #fff;
+    text-decoration: none;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: color .2s ease, transform .1s ease;
+    border-radius: 6px; /* para foco visible */
+}
+
+header .volver:hover { color: var(--accent); }
+header .volver:focus-visible {
+    outline: 3px solid rgba(66, 66, 65, 0.5);
+    outline-offset: 2px;
+}
+
+header .titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header .titulo h1 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--accent);
+}
+
+header .acciones {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+  /* Botón/Link principal en header y reutilizable */
+.btn-agregar,
+  header .acciones button,
+  header .acciones .btn {
+    padding: 10px 16px;
+    background: #fafafa;
+    border: none;
+    border-radius: 6px;
+    color: #070707;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background .2s ease, transform .1s ease;
+}
+
+.btn-agregar:hover,
+  header .acciones button:hover,
+  header .acciones .btn:hover {
+    background: var(--accent);
+    transform: scale(1.05);
+  }
+
+.btn-agregar:focus-visible,
+  header .acciones button:focus-visible,
+  header .acciones .btn:focus-visible {
+    outline: 3px solid #6b6b6b;
+    outline-offset: 2px;
+  }
+
+  /* Variante de éxito si se necesitara */
+  .btn-success {
+    background: var(--success);
+    color: #fff;
+  }
+.btn-success:hover { background: var(--success-2); }
+
+
+
+
+
 .general_agenda {
 
     position: relative;

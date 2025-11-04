@@ -7,24 +7,32 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link rel="stylesheet" href="{{ url_for('static', filename='Gestion_tickets.css') }}"/>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
 </head>
 
-<body>
-  <a class="volver" href="{{ _menu }}" title="Volver al menú">
-    <i class="fa-solid fa-arrow-left"></i>
-  </a>
 
+<header>
+    <a class="salir" href="{{ url_for('admin') }}"><i data-feather="arrow-left"></i></a>
+    <h2 class="SERVIMAQ">SERVIMAQ</h2>
+    <div class="titulo">
+      <h1 class="titulo-header">REGISTRO DE SALIDA DE INVENTARIO</h1>
+    </div>  
+   
+  </header>
+
+
+<body>
   <div class="contenedor">
     <form id="ticketForm" action="/gestion_tickets" method="POST">
-      <h1>Gestión de Tickets</h1>
+      <h1 class="titulo-contenedor">Gestión de Tickets</h1>
 
       <label for="ticket_problema">Problema u error:</label><br>
       <input type="text" id="ticket_problema" name="ticket_problema"
-             placeholder="No carga el módulo de agenda" required><br>
+            placeholder="No carga el módulo de agenda" required><br>
 
       <label for="ticket_Descripcion">Descripción:</label><br>
       <input type="text" id="ticket_Descripcion" name="ticket_Descripcion"
-             placeholder="Intento ingresar pero..." required><br>
+            placeholder="Intento ingresar pero..." required><br>
 
       <button type="submit">Enviar Ticket</button>
     </form>
@@ -41,6 +49,11 @@
     });
   </script>
   {% endif %}
+
+  <script>
+    feather.replace();
+  </script>
+
 
 </body>
 </html>

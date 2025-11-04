@@ -5,98 +5,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Órdenes de Servicio</title>
   <link rel="stylesheet" href="../static/ordenes.css">
-
+  <script src="https://unpkg.com/feather-icons"></script>
 </head>
+
 <body>
-  <header>
-    <div>
-      <a href="/"><button>&larr;</button></a>
-      <h2>Órdenes de Servicio</h2>
-    </div>
-    <div>
-      <button onclick="window.location.reload()">&#8635;</button>
-    </div>
-  </header>
+<header>
+    <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+    <h2 class="SERVIMAQ">SERVIMAQ</h2>
+    <div class="titulo">
+        <h1>REGISTAR SERVICIOS</h1>
+        <div class="create-order">
+        <button class="btn-orden" id="abrirModal">Crear Orden</button>
+        </div>
 
-  <div class="filters">
-    <select>
-      <option>Hoy</option>
-      <option>Ayer</option>
-      <option>Últimos 7 días</option>
-      <option>Último mes</option>
-      <option>DD/MM/AA</option>
-    </select>
-    <select>
-      <option>Filtrar</option>
-      <option>Instalaciones</option>
-      <option>Reparaciones</option>
-      <option>Revisiones</option>
-    </select>
-  </div>
-
-  <div class="create-order">
-    <button class="btn-orden" id="abrirModal">Crear Orden</button>
-  </div>
-
-  <div class="section-title">Órdenes</div>
-  <div class="cards">
-    {% for orden in ordenes %}
-    <div class="card">
-      <h4>Servicio</h4>
-      <p><b>Modelo:</b> {{ orden.modelo }}</p>
-      <p><b>Servicio:</b> {{ orden.servicio }}</p>
-      <p><b>Fecha y hora:</b> {{ orden.fecha_hora }}</p>
-      <p><b>Responsable:</b> {{ orden.responsable }}</p>
-      <p><b>Detalles:</b> {{ orden.detalles }}</p>
-      <span class="garantia">{{ orden.garantia }}</span>
     </div>
+</header>
+
+<!-- ✅ Filtros REALMENTE funcionales -->
+<div class="filters">
+  <form method="GET" action="{{ url_for('ordenes') }}">
+      <select name="fecha">
+        <option value="">Fecha</option>
+        <option value="hoy"  {% if fecha=='hoy' %}selected{% endif %}>Hoy</option>
+        <option value="ayer" {% if fecha=='ayer' %}selected{% endif %}>Ayer</option>
+        <option value="7dias" {% if fecha=='7dias' %}selected{% endif %}>Últimos 7 días</option>
+        <option value="mes" {% if fecha=='mes' %}selected{% endif %}>Último mes</option>
+      </select>
+
+      <select name="tipo">
+        <option value="">Tipo</option>
+        <option value="taller" {% if tipo=='taller' %}selected{% endif %}>Taller</option>
+        <option value="domicilio" {% if tipo=='domicilio' %}selected{% endif %}>Domicilio</option>
+      </select>
+
+      <button type="submit" class="btn-orden">Filtrar</button>
+  </form>
+</div>
+
+
+
+
+
+<table class="tabla-servicios">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Descripción</th>
+      <th>Tipo</th>
+      <th>Fecha</th>
+      <th>Cliente ID</th>
+      <th>Usuario ID</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for s in servicios %}
+    <tr>
+      <td>{{ s.id_servicio }}</td>
+      <td>{{ s.descripcion }}</td>
+      <td>{{ s.tipo }}</td>
+      <td>{{ s.fecha }}</td>
+      <td>{{ s.cliente_id }}</td>
+      <td>{{ s.usuario_id }}</td>
+    </tr>
     {% endfor %}
+  </tbody>
+</table>
+
+<!-- MODAL -->
+<div class="modal" id="miModal">
+  <div class="modal-content">
+    <span class="close" id="cerrarModal">&times;</span>
+    <h2>Crear Orden</h2>
+
+    <form method="POST" action="{{ url_for('ordenes') }}">
+      <label>Descripción:</label>
+      <textarea name="descripcion" required></textarea>
+
+      <label>Tipo:</label>
+      <select name="tipo">
+        <option value="taller">Taller</option>
+        <option value="domicilio">Domicilio</option>
+      </select>
+
+      <label>Fecha:</label>
+      <input type="date" name="fecha" required>
+
+      <label>ID Cliente:</label>
+      <input type="number" name="cliente_id" required>
+
+      <label>ID Usuario:</label>
+      <input type="number" name="usuario_id" required>
+
+      <button type="submit">Crear Orden</button>
+    </form>
   </div>
+</div>
 
-  <!-- MODAL -->
-  <div class="modal" id="miModal">
-    <div class="modal-content">
-      <span class="close" id="cerrarModal">&times;</span>
-      <h2>Crear Orden</h2>
-      <form method="POST" action="ordenes_servicio">
-        <label>Modelo:</label>
-        <input type="text" name="modelo" required>
+<script>
+  // Modal abrir/cerrar
+  document.getElementById("abrirModal").onclick = () =>
+    document.getElementById("miModal").style.display = "flex";
 
-        <label>Servicio:</label>
-        <input type="text" name="servicio" required>
+  document.getElementById("cerrarModal").onclick = () =>
+    document.getElementById("miModal").style.display = "none";
 
-        <label>Fecha y hora:</label>
-        <input type="datetime-local" name="fecha_hora" required>
-
-        <label>Responsable:</label>
-        <input type="text" name="responsable" required>
-
-        <label>Detalles:</label>
-        <textarea name="detalles" required></textarea>
-
-        <label>Garantía:</label>
-        <input type="text" name="garantia">
-
-        <button type="submit">Crear Orden</button>
-      </form>
-    </div>
-  </div>
-
-  <script>
-    // Abrir modal
-    document.getElementById("abrirModal").addEventListener("click", function() {
-      document.getElementById("miModal").style.display = "flex";
-    });
-    // Cerrar modal
-    document.getElementById("cerrarModal").addEventListener("click", function() {
+  window.onclick = (e) => {
+    if (e.target == document.getElementById("miModal"))
       document.getElementById("miModal").style.display = "none";
-    });
-    // Cerrar si clickea fuera
-    window.addEventListener("click", function(e) {
-      if (e.target == document.getElementById("miModal")) {
-        document.getElementById("miModal").style.display = "none";
-      }
-    });
-  </script>
+  };
+
+  feather.replace();
+</script>
+
 </body>
 </html>

@@ -1,178 +1,220 @@
- body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      background: #f9f9f9;
-    }
+@import url('variables.css');
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px;
-      background: #003366;
-      COLOR: white;
-    }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: #f5f5f5;
+}
 
-    header h2 {
-      margin: 0;
-    }
+/* =========================
+    Header
+   ========================= */
+header {
+  background: var(--color-azul, #003366);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  height: 70px;
+}
 
-    .filters {
-      display: flex;
-      gap: 10px;
-      margin: 20px;
-    }
+header .salir {
+  position: absolute;
+  left: 20px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
-    select {
-        margin-top: 20px;
-      padding: 6px;
-      font-size: 14px;
-      background-color: #003366;
-      color: #eee;
-    }
-    select:hover{
-        background-color: white;
-        color:#0A0F1C
-    }
+header .SERVIMAQ {
+  position: absolute;
+  left: 60px;
+  font-weight: 600;
+}
 
-    .create-order {
-      display: flex;
-      justify-content: flex-end;
-      margin: 20px;
-    }
+header .titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-    .create-order button {
-      padding: 10px 20px;
-      border: white;
-      background: #28a745;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      border-radius: 4px;
-    }
-    button:hover {
-      background-color: #218838;       
-    }
-    
+header .titulo h1 {
+  font-size: 22px;
+  margin: 0;
+  color: #fff;
+}
 
-    .section-title {
-      margin: 20px;
-      font-weight: bold;
-    }
+/* =========================
+   Filtros y Botones
+   ========================= */
+.filters {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
 
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin: 0 20px 30px;
-    }
+.filters select {
+  padding: 6px 10px;
+  font-size: 14px;
+  background-color: #003366;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
 
-    .card {
-      border: 1px solid ;
-      width: 180px;
-      padding: 10px;
-      background: #003366;
-      color: white;
-    }
+.filters button {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
 
-    .card h4 {
-      margin: 0 0 10px;
-    }
+.filters button:hover {
+  background-color: #218838;
+}
 
-    .card p {
-      margin: 5px 0;
-      font-size: 14px;
-    }
+.create-order {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 20px 0 0;
+}
 
-    .garantia {
-      margin-top: 10px;
-      padding: 5px 10px;
-      border: 1px solid #000;
-      font-size: 12px;
-      display: inline-block;
-      background: #eee;
-      border-radius: 3px;
-    }
+.create-order .btn-orden {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  left: 1350px;
+  top: 40px;
+}
 
-    /* Hover para resaltar tarjetas */
-    .card:hover {
-      background: white;
-      transform: scale(1.02);
-      transition: 0.2s;
-      cursor: pointer;
-      color: black;
-    }
+.create-order .btn-orden:hover {
+  background-color: #218838;
+}
 
+/* =========================
+   Tabla de servicios
+   ========================= */
+.section-title {
+  margin: 20px;
+  font-weight: bold;
+  font-size: 18px;
+}
 
+table.tabla-servicios {
+  width: 95%;
+  margin: 0 auto 30px;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
+table.tabla-servicios th,
+table.tabla-servicios td {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
 
-    /* MODALl */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.4);
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-    }
-    .modal-content {
-      background: #003366;
-      padding: 20px;
-      border: 1px solid black;
-      width: 400px;
-      max-width: 90%;
-    }
-    .modal-content h2 {
-      text-align: center;
-      margin-bottom: 15px;
-      color: white;
-    }
-    .modal-content label {
-      display: block;
-      margin-top: 10px;
-    }
-    .modal-content input, 
-    .modal-content textarea {
-      width: 95%;
-      padding: 5px;
-      margin-top: 5px;
-      border: 1px solid black;
-    }
-    .modal-content button {
-      display: block;
-      margin: 15px auto 0;
-      padding: 10px 20px;
-      background-color: #28a745;
-      color: #0A0F1C;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-      }
+table.tabla-servicios th {
+  background-color: #003366;
+  color: white;
+  font-weight: 600;
+}
+
+table.tabla-servicios tr:hover {
+  background-color: #f0f8ff;
+}
+
+/* =========================
+   MODAL
+   ========================= */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #003366;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+}
+
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 10px;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+  width: 100%;
+  padding: 6px;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.modal-content button {
+  margin-top: 15px;
+  width: 100%;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .modal-content button:hover {
   background-color: #218838;
-  
 }
-      
-    .close {
-      float: right;
-      cursor: pointer;
-      font-weight: bold;
-    }
 
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
 
+/* =========================
+   Responsivo
+   ========================= */
+@media (max-width: 768px) {
+  header .titulo h1 {
+    font-size: 18px;
+  }
 
-
-       @media (max-width: 768px) {
-    body {
-        font-size: 14px;
-    }
-    .container {
-        padding: 10px;
-    }
+  table.tabla-servicios th,
+  table.tabla-servicios td {
+    font-size: 13px;
+    padding: 8px;
+  }
 }

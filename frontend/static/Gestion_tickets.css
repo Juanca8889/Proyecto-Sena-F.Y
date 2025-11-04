@@ -1,14 +1,50 @@
-:root {
-  --color-verde: #28a745;
-  --color-azul: #003366;
-  --color-rojo: #ff0000;
-  --fuente-principal: sans-serif;
+@import url('variables.css');
+
+
+
+
+.SERVIMAQ {
+  margin-left: 5px;
+  position: absolute;
+  left: 50px;
+}
+
+header {
+  background: var(--color-azul);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  height: 70px;
+
+}
+
+.salir {
+  position: absolute;
+  left: 10px;
+  color: white;
+}
+
+.titulo-header {
+  font-size: 22px;
+}
+
+.add-btn {
+  position: absolute;
+  right: 30px;
+  background-color: var(--color-verde);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
 }
 
 body {
   font-family: var(--fuente-principal);
   background-color: white;
-  /* Fondo blanco */
   margin: 0;
   padding: 0;
 }
@@ -32,7 +68,7 @@ body {
   border-radius: 8px;
 }
 
-h1 {
+.titulo-contenedor {
   text-align: center;
   color: white;
 }
@@ -63,8 +99,4 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 15px;
-}
-
-button:active {
-  background-color: #218838;
 }

@@ -2,19 +2,24 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Gestión de Clientes</title>
+    <title>Agenda de mantenimiento</title>
     <link rel="stylesheet" href="./static/style.css" />
     <link rel="stylesheet" href="./static/Agenda.css" />
     <script src="https://unpkg.com/feather-icons"></script>
   </head>
   <body>
+    <header>
+      <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+      <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <div class="titulo">
+            <i class="fa-solid fa-users"></i>
+            <h1>AGENDA DE MANTENIMIENTO</h1>
+        </div>
+    </header>
       
         <!-- Contenido de la agenda-->
         <div class="general_agenda">
-          <a class="salir" href="./admin"><i data-feather="arrow-left"></i></a>
-          <h2 class="titulo_agenda">Agenda de mantenimiento</h2>
-
-          <!-- Selector de vista -->
+          
           <div class="selector">
             <form method="get" action="{{ url_for('agenda') }}">
               <button

@@ -7,14 +7,25 @@
     <script src="https://unpkg.com/feather-icons"></script>
   </head>
   <body>
-    
+    <header>
+         <a class="volver" href="{{ url_for('volver') }}" title="Volver al menú">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <div class="titulo">
+            <i class="fa-solid fa-users"></i>
+            <h1>CESTION DE CLIENTES</h1>
+        </div>
+
+        <div class="acciones">
+            <a class="btn-agregar" href="{{ url_for('form_cliente') }}">
+                <i class="fa-solid fa-plus"></i> Agregar Cliente
+            </a>
+        </div>
+    </header>
+
         <div class="window">
-          <header>
-            <div class="window-name">SERVIMAQ</div>
-            <div class="window-controls">
-              <span onclick="window.location.href='{{ url_for('admin') }}'"><i data-feather="arrow-left"></i></span>
-            </div>
-          </header>
+          
           <main>
             <h1>Gestión de Clientes</h1>
             <p class="subtitle">

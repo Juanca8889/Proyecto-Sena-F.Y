@@ -4,6 +4,11 @@ from flask import Blueprint, render_template
 import matplotlib.pyplot as plt
 import os
 import sys
+import matplotlib
+matplotlib.use('Agg')  # Evita errores GUI en Flask
+import matplotlib.pyplot as plt
+
+
 
 # Aseguramos importar desde BD/
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))

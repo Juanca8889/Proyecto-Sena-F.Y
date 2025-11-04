@@ -4,18 +4,19 @@
     <meta charset="UTF-8" />
     <title>Reporte de Ventas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='reporteventas.css') }}" />
+        <script src="https://unpkg.com/feather-icons"></script>
   </head>
   <body>
-    <div class="window">
-      <header>
-        <div class="window-name">SERVIMAQ</div>
-        <div class="window-controls">
-          <a href="/"><button class="btn-retroceso">&larr;</button></a>
-        </div>
-      </header>
 
+    <header>
+      <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+      <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <div class="titulo">
+            <h1>REPORTE DE VENTAS</h1>
+        </div>
+    </header>
+    <div class="window">
       <main>
-        <h1>Reporte de Ventas</h1>
         <p class="subtitle">
           Reporte disponible solo para administradores. Muestra únicamente las transacciones completadas.
         </p>
@@ -73,7 +74,9 @@
         </div>
       </main>
     </div>
-
+    <script>
+      feather.replace();
+    </script>
     
   </body>
 </html>

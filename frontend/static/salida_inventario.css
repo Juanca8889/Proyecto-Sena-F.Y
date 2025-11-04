@@ -1,3 +1,16 @@
+/* ==========================
+   Importar variables globales
+========================== */
+@import url('variables.css');
+
+/* ==========================
+   ESTILOS GENERALES
+========================== */
+
+
+
+
+
 body {
     font-family: Arial, sans-serif;
     background: #f4f4f4;
@@ -13,31 +26,48 @@ body {
     border-radius: 8px;
 }
 
+/* ==========================
+    HEADER PRINCIPAL
+========================== */
+
+.SERVIMAQ {
+    margin-left: 5px;
+    position: absolute;
+    left: 50px;
+}
+
 header {
+    background: var(--color-azul);
+    color: white;
+    padding: 16px 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    height: 70px;
 }
 
-header h1 {
-    font-size: 18px;
-    flex: 1;
-    text-align: center;
-}
-
-header select,
-header button {
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.add-btn {
-    background: #444;
+.salir {
+    position: absolute;
+    left: 10px;
     color: white;
 }
 
+
+.add-btn {
+    position: absolute;
+    right: 30px;
+    background-color: var(--color-verde);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+/* ==========================
+    TABLAS Y CONTENIDO
+========================== */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -55,6 +85,9 @@ td {
     text-align: left;
 }
 
+/* ==========================
+   FOOTER Y PAGINACIÓN
+========================== */
 footer {
     margin-top: 15px;
     text-align: center;
@@ -67,9 +100,39 @@ footer {
     background: #f9f9f9;
 }
 
+/* ==========================
+   BOTONES VARIOS
+========================== */
+
+
 .btn-volver {
     font-size: 20px;
     color: #333;
     text-decoration: none;
     margin-right: 10px;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    header .titulo {
+        margin-left: 0;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    header .titulo h1 {
+        font-size: 1rem;
+    }
+
+    header .add-btn {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
 }

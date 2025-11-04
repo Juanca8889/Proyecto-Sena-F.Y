@@ -3,6 +3,8 @@ import sys
 import os
 import pandas as pd
 from fpdf import FPDF
+from functools import wraps
+from datetime import date, datetime,timedelta
 
 
 
@@ -22,10 +24,19 @@ from Backend.dashboard import dashboard_bp
 from Backend.Recuperacion_contraseña import recuperacion_contraseña
 from Backend.Recuperacion_contraseña import  actualizar_contrasena_usuario
 from Backend.Encuestas import Encuestas
-from datetime import date
 from Backend.inventario_herramientas import Herramientas
 from Backend.salida_inventario import Venta
 from Backend.Tickets import Tickets
+from Backend.ordenes import Servicio
+
+from Backend.control_sesiones import (
+    obtener_todas_sesiones_activas, 
+    obtener_usuarios_con_sesiones,
+    cerrar_sesion_forzada_individual,
+    cerrar_todas_sesiones_usuario,
+    bloquear_usuario, 
+    registrar_nueva_sesion
+)
 
 app = Flask(__name__)
 app.secret_key = 'wjson'  
@@ -33,6 +44,31 @@ app.secret_key = 'wjson'
 gestor_compras = GestorCompras()
 gestor_stock = GestorStock()
 app.register_blueprint(dashboard_bp)
+
+
+
+
+# ==========================================
+# LÓGICA DE SEGURIDAD Y ROLES
+# ==========================================
+def get_current_admin_id():
+    """Obtiene el ID del usuario logueado (necesario para auditoría)."""
+    return session.get('usuario_id', 0) 
+
+def is_admin():
+    """Verifica si el usuario logueado tiene el rol de administrador (rol_id = 1)."""
+    return session.get('rol') == 1
+
+def admin_required(f):
+    """Decorador para restringir el acceso solo a administradores (Restricción 1)."""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not is_admin():
+            flash("Acceso denegado: Se requiere rol de Administrador.", "danger")
+            return redirect(url_for('admin' if session.get('rol') else 'login')) 
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 # ------------------------------------------
 # Helper global: URL del menú según la sesión
@@ -261,13 +297,44 @@ def notificaciones():
 # ==========================================
 # RUTAS DE CLIENTES A DOMICILIO 
 # ==========================================
-@app.route('/clientes_domicilio')
+
+
+
+
+
+@app.route('/clientes_domicilio', methods=['GET', 'POST'])
 def listar_clientes():
-    cliente = Cliente()
-    clientes = cliente.listar_clientes()
-    cliente.cerrar()
-    destino = 'admin' if session.get('rol') == 1 else ('empleado' if session.get('rol') else 'login')
-    return render_template("cliente_domicilio.html", clientes=clientes, menu_url=url_for(destino))
+    servicio = Servicio()
+
+    # Si se envía el formulario, registrar domicilio
+    if request.method == 'POST':
+        cliente_id = request.form['cliente_id']
+        servicio_id = request.form['servicio_id']
+        fecha = request.form['fecha']
+        monto = request.form['monto']
+        usuario_id = request.form['usuario_id']
+
+        try:
+            servicio.cliente_id = cliente_id
+            servicio.id_servicio = servicio_id
+            servicio.fecha = fecha
+            servicio.monto = monto
+            servicio.usuario_id = usuario_id
+            servicio.insertar_domicilio()
+            flash("Domicilio registrado correctamente", "success")
+        except Exception as e:
+            print("Error al registrar domicilio:", e)
+            flash("Error al registrar domicilio", "error")
+
+        return redirect(url_for('clientes_domicilio'))
+
+    # Mostrar todos los domicilios
+    domicilios = servicio.mostrar_domicilios()
+    servicio.cerrar()
+
+    return render_template('cliente_domicilio.html', domicilios=domicilios)
+
+
 
 @app.route('/form_cliente', endpoint="form_cliente")
 def form_cliente():
@@ -317,7 +384,7 @@ def login():
                 # La ruta de admin tiene endpoint="admin"
                 return redirect(url_for('admin'))
             else:
-                return redirect(url_for('admin'))
+                return redirect(url_for('empleado'))
         else:
             flash("Usuario o contraseña incorrectos", "danger")
 
@@ -382,9 +449,9 @@ def register():
 def home():
     return render_template('index.html')
 
-@app.route('/Empleado')
+@app.route('/empleado')
 def empleado():
-    return render_template('index.html')
+    return render_template('empleado.html')
 
 # ==========================================
 # RUTAS DE GESTIÓN DE CLIENTES camilo
@@ -793,10 +860,70 @@ def registrar_material():
 # -----------------------------------------
 # ÓRDENES DE SERVICIO
 # -----------------------------------------
+
+
+
 @app.route("/ordenes", methods=["GET", "POST"])
 def ordenes():
+    servicio = Servicio()
 
-    return render_template("ordenes.html")
+    # ------ Crear Orden (POST) ------
+    if request.method == "POST":
+        descripcion = request.form.get("descripcion")
+        tipo = request.form.get("tipo")
+        fecha = request.form.get("fecha")
+        cliente_id = request.form.get("cliente_id")
+        usuario_id = request.form.get("usuario_id")
+
+        nuevo = Servicio(
+            descripcion=descripcion,
+            tipo=tipo,
+            fecha=fecha,
+            cliente_id=cliente_id,
+            usuario_id=usuario_id
+        )
+
+        nuevo.insertar_servicio()
+        nuevo.cerrar()
+        return redirect(url_for("ordenes"))
+
+    # ------ Filtros (GET) ------
+    fecha_filtro = request.args.get("fecha")
+    tipo_filtro = request.args.get("tipo")
+
+    servicios = servicio.mostrar_servicios()  # trae todos
+
+    # Filtrar manualmente en Python (suficiente para empezar)
+    if fecha_filtro:
+        hoy = datetime.today().date()
+
+        if fecha_filtro == "hoy":
+            servicios = [s for s in servicios if s["fecha"] == hoy]
+
+        elif fecha_filtro == "ayer":
+            ayer = hoy - timedelta(days=1)
+            servicios = [s for s in servicios if s["fecha"] == ayer]
+
+        elif fecha_filtro == "7dias":
+            limite = hoy - timedelta(days=7)
+            servicios = [s for s in servicios if s["fecha"] >= limite]
+
+        elif fecha_filtro == "mes":
+            limite = hoy - timedelta(days=30)
+            servicios = [s for s in servicios if s["fecha"] >= limite]
+
+    if tipo_filtro:
+        servicios = [s for s in servicios if s["tipo"] == tipo_filtro]
+
+    servicio.cerrar()
+
+    return render_template(
+        "ordenes.html",
+        servicios=servicios,
+        fecha=fecha_filtro,
+        tipo=tipo_filtro
+    )
+
 
 
 # -----------------------------------------
@@ -846,16 +973,102 @@ class BusquedaInventario:
         self.cursor.close()
         self.conexion.close()
 
+
+
+# ==========================================
+# RUTAS DE CONTROL DE SESIONES 
+# ==========================================
+
+
+# 4. RUTAS DE SESIONES (Se dejan donde estaban)
+@app.route('/admin/control_sesiones', methods=['GET'])
+@admin_required
+def control_sesiones():
+    """Ruta para cargar la vista HTML del panel de control."""
+    return render_template(
+        'control_sesiones.html', 
+        menu_url=_menu_url(),
+        current_date=datetime.now()
+    )
+
+@app.route('/api/sesiones_activas', methods=['GET'])
+@admin_required
+def api_sesiones_activas():
+    """API para el Polling de la tabla principal (Restricción 3)."""
+    sesiones = obtener_todas_sesiones_activas()
+    
+    for sesion in sesiones:
+        if isinstance(sesion.get('hora_inicio'), datetime):
+            sesion['hora_inicio'] = sesion['hora_inicio'].strftime('%I:%M %p').replace(' 0', ' ').lower()
+        
+        sesion['es_sospechosa'] = sesion['ip'] in ['0.0.0.0', '127.0.0.1'] 
+        
+    return jsonify(sesiones)
+
+@app.route('/api/usuarios_activos', methods=['GET'])
+@admin_required
+def api_usuarios_activos():
+    """API para cargar el dropdown de 'Selección de Usuario'."""
+    usuarios = obtener_usuarios_con_sesiones()
+    return jsonify(usuarios)
+
+
+@app.route('/admin/cerrar_sesion', methods=['POST'])
+@admin_required
+def cerrar_sesion_endpoint():
+    """Endpoint para el cierre forzado (individual o por usuario_id)."""
+    data = request.get_json()
+    id_admin = get_current_admin_id()
+
+    if 'id_sesion' in data:
+        id_sesion = data['id_sesion']
+        if cerrar_sesion_forzada_individual(id_sesion, id_admin):
+            return jsonify({'message': 'Sesión individual cerrada con éxito'}), 200
+        else:
+            return jsonify({'error': 'Error al cerrar sesión individual'}), 500
+
+    elif 'usuario_id' in data:
+        usuario_id = data['usuario_id']
+        if cerrar_todas_sesiones_usuario(usuario_id, id_admin):
+            return jsonify({'message': f'Todas las sesiones del usuario {usuario_id} cerradas con éxito'}), 200
+        else:
+            return jsonify({'error': 'Error al cerrar todas las sesiones del usuario'}), 500
+    
+    return jsonify({'error': 'Parámetros inválidos'}), 400
+
+
+@app.route('/admin/bloquear_usuario', methods=['POST'])
+@admin_required
+def bloquear_usuario_endpoint():
+    """Endpoint para bloquear a un usuario."""
+    data = request.get_json()
+    usuario_id = data.get('usuario_id')
+    id_admin = get_current_admin_id()
+
+    if usuario_id and bloquear_usuario(usuario_id, id_admin):
+        return jsonify({'message': 'Usuario bloqueado con éxito'}), 200
+    
+    return jsonify({'error': 'Error al bloquear el usuario o ID no proporcionado'}), 400
+
+
+
+
 # -----------------------------------------
 #  Botón "Volver"
 # -----------------------------------------
 
-@app.context_processor
-def inject_back_button():
-    from flask import request, url_for
-    # Si existe una página previa, úsala; si no, vuelve al admin
-    prev = request.referrer or url_for('admin')
-    return {"back_button_url": prev}
+@app.route('/volver')
+def volver():
+    rol = session.get('rol', 'login')
+
+    if rol == 1:
+        return redirect(url_for('admin'))
+    elif rol == 2 or 3:
+        return redirect(url_for('empleado'))
+    elif rol == 4 or 5:
+        return redirect(url_for('empleado'))
+    else:
+        return redirect(url_for('login'))
 
 
 # -----------------------------------------

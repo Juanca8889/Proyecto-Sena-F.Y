@@ -6,60 +6,51 @@
   <title>Registro de Salidas de Inventario</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='salida_inventario.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+  <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
-  <div class="container">
-    <header>
-    <a href="{{ "/" }}" class="volver" title="Volver">
-    <i class="fa-solid fa-arrow-left btn-volver"></i>
-    </a>
-      <select>
-        <option>Todo</option>
-      </select>
-      <h1>Registro de salidas de inventario</h1>
-      <button class="add-btn" onclick="window.location.href='{{ url_for('venta_form') }}'">+ Registar Venta</button>
-    </header>
+  <header>
+    <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+    <h2 class="SERVIMAQ">SERVIMAQ</h2>
+    <div class="titulo">
+      <h1>REGISTRO DE SALIDA DE INVENTARIO</h1>
+    </div>
+    <button class="add-btn" onclick="window.location.href='{{ url_for('venta_form') }}'">+ Registrar Venta</button>
+  </header>
 
+  <div class="container">
     <table id="tabla-registros">
       <thead>
         <tr>
-                <th>Fecha</th>
-                <th>ID Venta</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Descripción</th>
-                <th>Monto</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for v in ventas %}
-            <tr>
-                <td>{{ v['fecha_venta'] }}</td>
-                <td>{{ v['id_venta'] }}</td>
-                <td>{{ v['producto'] }}</td>
-                <td>{{ v['cantidad'] }}</td>
-                <td>{{ v['descripcion'] }}</td>
-                <td>${{ v['monto'] }}</td>
-            </tr>
-            {% else %}
+          <th>Fecha</th>
+          <th>ID Venta</th>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Descripción</th>
+          <th>Monto</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in ventas %}
+        <tr>
+          <td>{{ v['fecha_venta'] }}</td>
+          <td>{{ v['id_venta'] }}</td>
+          <td>{{ v['producto'] }}</td>
+          <td>{{ v['cantidad'] }}</td>
+          <td>{{ v['descripcion'] }}</td>
+          <td>${{ v['monto'] }}</td>
+        </tr>
+        {% else %}
         <tr><td colspan="6">No hay registros todavía.</td></tr>
         {% endfor %}
       </tbody>
     </table>
 
-    <footer>
-      <div class="pagination">
-        <button>&lt;</button>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>&gt;</button>
-      </div>
-    </footer>
+   
   </div>
 
-
-    </div>
-  </div>
+  <script>
+    feather.replace();
+  </script>
+</body>
 </html>

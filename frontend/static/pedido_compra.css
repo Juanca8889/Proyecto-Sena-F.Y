@@ -1,48 +1,18 @@
 /* =========================================================
-   VARIABLES GLOBALES
-   ========================================================= */
-@import '../styles/variables.css';
-
-:root {
-  --color-fondo: #ffffff;
-  /* Fondo principal blanco */
-  --color-fondo-secundario: #777777;
-  /* Fondos suaves de tarjetas */
-  --color-encabezado: #050505;
-  /* Encabezado oscuro */
-  --color-texto: #080808;
-  /* Texto gris oscuro */
-  --color-gris: #757171;
-  /* Gris medio */
-  --color-gris-hover: #706f6f;
-  /* Gris más oscuro en hover */
-  --color-borde: #cccccc;
-  /* Bordes sutiles */
-
-  --fuente-principal: 'Segoe UI', sans-serif;
-  --fuente-titulos: 'Merriweather', serif;
-}
-
-/* =========================================================
    ESTILOS BASE
    ========================================================= */
 body {
-  font-family: var(--fuente-principal);
-  background-color: var(--color-fondo);
-  color: var(--color-texto);
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #ffffff;
+  color: #000000;
   margin: 0;
   padding: 0;
   line-height: 1.6;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--fuente-titulos);
-  color: var(--color-encabezado);
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Merriweather', serif;
+  color: #003366;
   margin-bottom: 0.5em;
 }
 
@@ -50,7 +20,7 @@ h6 {
    ENCABEZADO
    ========================================================= */
 header {
-  background: linear-gradient(90deg, #707070, #444444);
+  background-color: #003366; /* Header de un solo color */
   color: #ffffff;
   padding: 15px 0;
   text-align: center;
@@ -83,7 +53,7 @@ main {
    ========================================================= */
 .filtros {
   flex: 1 1 200px;
-  background-color: var(--color-fondo-secundario);
+  background-color: #f2f2f2;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
@@ -94,18 +64,18 @@ main {
   font-weight: 600;
   display: block;
   margin-bottom: 8px;
-  color: var(--color-texto);
+  color: #000000;
 }
 
 .filtros select {
   width: 100%;
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid var(--color-borde);
+  border: 1px solid #cccccc;
   font-size: 1em;
   cursor: pointer;
   background-color: #ffffff;
-  color: var(--color-texto);
+  color: #000000;
 }
 
 /* =========================================================
@@ -120,7 +90,7 @@ main {
 
 .material {
   background-color: #ffffff;
-  border: 1px solid var(--color-borde);
+  border: 1px solid #cccccc;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
@@ -133,13 +103,13 @@ main {
   font-weight: 700;
   font-size: 1.2em;
   margin-bottom: 8px;
-  color: var(--color-encabezado);
+  color: #003366;
 }
 
 .material p {
   margin: 4px 0;
   font-size: 0.95em;
-  color: var(--color-texto);
+  color: #000000;
 }
 
 .material input[type="number"],
@@ -147,16 +117,16 @@ main {
 .material input[type="date"] {
   padding: 6px;
   border-radius: 4px;
-  border: 1px solid var(--color-borde);
+  border: 1px solid #cccccc;
   font-size: 1em;
   width: 100%;
   background-color: #ffffff;
-  color: var(--color-texto);
+  color: #000000;
 }
 
 /* Botón dentro de cada tarjeta */
 .material button {
-  background-color: var(--color-encabezado);
+  background-color: #28a745;
   border: none;
   color: #ffffff;
   padding: 10px;
@@ -167,7 +137,7 @@ main {
 }
 
 .material button:hover {
-  background-color: var(--color-gris-hover);
+  background-color: #1f7a38;
 }
 
 /* =========================================================
@@ -175,7 +145,7 @@ main {
    ========================================================= */
 .sugerencias {
   flex: 1 1 250px;
-  background-color: var(--color-fondo-secundario);
+  background-color: #f2f2f2;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
@@ -184,18 +154,18 @@ main {
 
 .sugerencias h3 {
   margin-top: 0;
-  color: var(--color-encabezado);
+  color: #003366;
   font-weight: 700;
 }
 
 .sugerencia-item {
   background-color: #ffffff;
-  border: 1px solid var(--color-borde);
+  border: 1px solid #cccccc;
   margin-bottom: 12px;
   padding: 10px 15px;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  color: var(--color-texto);
+  color: #000000;
 }
 
 /* =========================================================
@@ -209,7 +179,7 @@ main {
 }
 
 .botones-principales button {
-  background-color: var(--color-encabezado);
+  background-color: #28a745;
   border: none;
   color: #ffffff;
   padding: 12px 25px;
@@ -220,7 +190,7 @@ main {
 }
 
 .botones-principales button:hover {
-  background-color: var(--color-gris-hover);
+  background-color: #1f7a38;
 }
 
 /* =========================================================
@@ -233,13 +203,13 @@ main {
   background-color: #ffffff;
   padding: 30px;
   border-radius: 8px;
-  border: 1px solid var(--color-borde);
+  border: 1px solid #cccccc;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .formulario-pedido h2,
 .ver-pedidos h2 {
-  color: var(--color-encabezado);
+  color: #003366;
   margin-bottom: 25px;
   font-weight: 700;
   text-align: center;
@@ -250,15 +220,15 @@ main {
   width: 100%;
   padding: 8px;
   border-radius: 5px;
-  border: 1px solid var(--color-borde);
+  border: 1px solid #cccccc;
   font-size: 1em;
   background-color: #ffffff;
-  color: var(--color-texto);
+  color: #000000;
   margin-bottom: 15px;
 }
 
 .formulario-pedido form button {
-  background-color: var(--color-encabezado);
+  background-color: #28a745;
   color: #ffffff;
   font-weight: 700;
   padding: 12px;
@@ -270,7 +240,7 @@ main {
 }
 
 .formulario-pedido form button:hover {
-  background-color: var(--color-gris-hover);
+  background-color: #1f7a38;
 }
 
 /* =========================================================
@@ -282,7 +252,7 @@ main {
   justify-content: center;
   width: 100%;
   padding: 12px 0;
-  background-color: var(--color-gris);
+  background-color: #ff0000;
   color: #ffffff;
   font-weight: 600;
   font-size: 1rem;
@@ -295,7 +265,7 @@ main {
 }
 
 .btn-volver:hover {
-  background-color: var(--color-gris-hover);
+  background-color: #cc0000;
 }
 
 /* =========================================================
@@ -309,9 +279,9 @@ main {
 .ver-pedidos ul li {
   padding: 10px 15px;
   margin-bottom: 12px;
-  background-color: var(--color-fondo-secundario);
+  background-color: #f2f2f2;
   border-radius: 6px;
-  color: var(--color-texto);
+  color: #000000;
   font-weight: 600;
 }
 
@@ -327,13 +297,13 @@ main {
 
 .alert-success {
   background-color: #eafbea;
-  color: #2d6a2d;
+  color: #28a745;
   border: 1px solid #c9e6c9;
 }
 
 .alert-danger {
   background-color: #fdeaea;
-  color: #992d2d;
+  color: #ff0000;
   border: 1px solid #f1c0c0;
 }
 
@@ -356,7 +326,7 @@ main {
 }
 
 /* =========================================================
-   TITULO CON FLECHA
+   TÍTULO CON FLECHA
    ========================================================= */
 .titulo-con-flecha {
   display: flex;
@@ -367,9 +337,12 @@ main {
 
 .titulo-con-flecha h1 {
   margin: 0;
-  font-family: var(--fuente-titulos);
+  font-family: 'Merriweather', serif;
   font-size: 2em;
-  color: var(--color-encabezado);
+  color: #ffffff;
+  background-color: #003366;
+  padding: 10px 20px;
+  border-radius: 4px;
 }
 
 .volver {
@@ -378,11 +351,11 @@ main {
   top: 50%;
   transform: translateY(-50%);
   font-size: 22px;
-  color: var(--color-encabezado);
+  color: #003366;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .volver:hover {
-  color: var(--color-gris);
+  color: #757171;
 }

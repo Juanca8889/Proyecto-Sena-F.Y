@@ -1,3 +1,13 @@
+/* ========================= 
+   Variables base
+   ========================= */
+:root {
+  --color-verde: #28a745;
+  --color-azul: #003366;
+  --color-rojo: #ff0000;
+  --fuente-principal: sans-serif;
+}
+
 /* Base y accesibilidad */
 *,
 *::before,
@@ -7,11 +17,11 @@
 
 /* Fuentes y colores base */
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #6b6b6b;
+  font-family: 'Segoe UI', var(--fuente-principal);
+  background-color: var(--color-azul);
   color: #FFFFFF;
   margin: 0;
-  padding: 40px 20px; /* consolidado */
+  padding: 40px 20px;
   line-height: 1.6;
   display: flex;
   justify-content: center;
@@ -20,14 +30,14 @@ body {
 }
 
 .form-container {
-  background: #FFFFFF; /* Fondo blanco */
+  background: #FFFFFF;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 480px;
   padding: 40px 50px;
   box-sizing: border-box;
-  color: #000000; /* Texto azul oscuro */
+  color: #000000;
 }
 
 /* Título principal */
@@ -35,10 +45,10 @@ body {
   font-family: 'Merriweather', serif;
   font-weight: 700;
   font-size: 28px;
-  color: #000000; /* Azul oscuro */
+  color: #000000;
   margin-bottom: 8px;
   text-transform: uppercase;
-  border-bottom: 2px solid #6d6d6d; /* Línea amarilla */
+  border-bottom: 2px solid var(--color-verde);
   padding-bottom: 6px;
 }
 
@@ -61,17 +71,17 @@ body {
   color: #000000;
 }
 
-/* Inputs: text, email, tel */
+/* Inputs */
 .formulario input[type="text"],
 .formulario input[type="email"],
 .formulario input[type="tel"] {
   width: 100%;
   padding: 12px 16px;
-  border: 1.5px solid #CCCCCC; /* borde gris */
+  border: 1.5px solid #CCCCCC;
   border-radius: 8px;
   font-size: 15px;
-  color: #333333; /* texto gris oscuro */
-  background-color: #FFFFFF; /* fondo blanco */
+  color: #333333;
+  background-color: #FFFFFF;
   transition: border-color 0.3s ease;
   outline: none;
   box-sizing: border-box;
@@ -80,7 +90,7 @@ body {
 .formulario input[type="text"]::placeholder,
 .formulario input[type="email"]::placeholder,
 .formulario input[type="tel"]::placeholder {
-  color: #888888; /* placeholder gris */
+  color: #888888;
   font-style: italic;
 }
 
@@ -90,27 +100,27 @@ body {
 .formulario input[type="tel"]:focus-visible,
 button.guardar:focus-visible,
 a.volver:focus-visible {
-  outline: 3px solid #6b6b6b;
+  outline: 3px solid var(--color-azul);
   outline-offset: 2px;
 }
 
-/* Focus sin cambio drástico de estilos */
+/* Focus */
 .formulario input[type="text"]:focus,
 .formulario input[type="email"]:focus,
 .formulario input[type="tel"]:focus {
-  border-color: #6b6b6b; /* borde azul oscuro */
+  border-color: var(--color-azul);
   box-shadow: none;
 }
 
-/* Estados de validación (sin JS) */
+/* Validaciones */
 .formulario input:required:invalid {
-  border-color: #e74c3c;
+  border-color: var(--color-rojo);
 }
 .formulario input:required:valid {
-  border-color: #2ecc71;
+  border-color: var(--color-verde);
 }
 
-/* Mensajes flash (Flask) */
+/* Mensajes flash */
 .flashes {
   margin: 0 0 12px;
 }
@@ -127,10 +137,10 @@ a.volver:focus-visible {
   color: #fff;
   font-size: 14px;
 }
-.flash.success { background: #27ae60; }
-.flash.danger  { background: #e74c3c; }
-.flash.warning { background: #6b6b6b; color: #020202; }
-.flash.info    { background: #3498db; }
+.flash.success { background: var(--color-verde); }
+.flash.danger  { background: var(--color-rojo); }
+.flash.warning { background: #ffcc00; color: #000; }
+.flash.info    { background: var(--color-azul); }
 
 /* Botonera */
 .botones {
@@ -147,34 +157,34 @@ a.volver {
   border-radius: 10px;
   padding: 12px 28px;
   font-size: 16px;
-  background-color: #6b6b6b; /* amarillo */
-  color: #000000; /* azul oscuro */
+  background-color: var(--color-verde);
+  color: #fff;
   border: none;
   text-decoration: none;
   display: flex;
   align-items: center;
   gap: 8px;
   box-shadow: none;
-  transition: none;
+  transition: background-color 0.2s ease;
 }
 
-/* Hover neutral (sin cambios) */
+/* Hover */
 button.guardar:hover,
 a.volver:hover {
-  background-color: #888887;
-  color: #000000;
+  background-color: #34d058;
+  color: #fff;
   transform: none;
   box-shadow: none;
 }
 
-/* Estados deshabilitado (por si se usa) */
+/* Deshabilitado */
 button.guardar:disabled {
-  background-color: #000000;
+  background-color: var(--color-azul);
   cursor: not-allowed;
   opacity: 0.85;
 }
 
-/* Utilidad de accesibilidad: ocultar visualmente conservando lectura */
+/* Accesibilidad */
 .sr-only {
   position: absolute !important;
   width: 1px !important;
@@ -204,7 +214,7 @@ button.guardar:disabled {
   }
 }
 
-/* Respeta preferencias de movimiento reducido */
+/* Reduce motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

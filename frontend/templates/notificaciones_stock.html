@@ -4,27 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Notificaciones</title>
-
-    <!-- Font Awesome (CDN) -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
-
-    <!-- CSS externo -->
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='notificaciones_stock.css') }}"
-    />
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='notificaciones_stock.css') }}"/>
+    <script src="https://unpkg.com/feather-icons"></script>
   </head>
+
+   <header class="header" >
+      <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+      <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <div class="titulo">
+            <h1><i class="fa-regular fa-bell"></i> Notificaciones</h1>
+        </div>
+    </header>
   <body>
-    <div class="header">
-      <h1><i class="fa-regular fa-bell"></i> Notificaciones</h1>
-      <div class="actions">
-        <a  class="btn"><i class="fa-solid fa-table"></i> Ver stock</a>
-        <a href="{{ url_for('admin') }}" class="btn"><i class="fa-solid fa-house"></i> Inicio</a>
-      </div>
-    </div>
 
     <div class="content">
       <div class="card">
@@ -85,5 +77,8 @@
         </div>
       </div>
     </div>
+     <script>
+      feather.replace();
+    </script>
   </body>
 </html>
