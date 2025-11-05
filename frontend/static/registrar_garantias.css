@@ -1,0 +1,179 @@
+/* VARIABLES */
+:root {
+  --color-verde: #28a745;
+  --color-azul: #003366;
+  --color-rojo: #ff0000;
+  --fuente-principal: sans-serif;
+}
+
+/* ESTILO GENERAL */
+body {
+  font-family: var(--fuente-principal);
+  background: #f6f6f6;
+  margin: 0;
+  padding: 0;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.window {
+  max-width: 900px;
+  margin: 30px auto;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* ENCABEZADO */
+header {
+  background: var(--color-azul);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  border-radius: 10px 10px 0 0;
+}
+
+.window-name {
+  font-weight: bold;
+  font-size: 1.2em;
+  letter-spacing: 1px;
+}
+
+.window-controls span {
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+/* CUERPO PRINCIPAL */
+main {
+  padding: 25px;
+}
+
+h1 {
+  color: var(--color-azul);
+  text-align: center;
+}
+
+.subtitle {
+  color: #555;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* FORMULARIO */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+label {
+  font-weight: bold;
+  color: var(--color-azul);
+}
+
+input, textarea, select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* BOTONES */
+.btn-registrar {
+  background: var(--color-verde);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-registrar:hover {
+  background: #218838;
+}
+
+/* TABLA */
+.tabla-contenedor {
+  margin-top: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th {
+  background: var(--color-azul);
+  color: white;
+  padding: 10px;
+  text-align: left;
+}
+
+td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+  background: #f2f2f2;
+}
+
+/* BOTÓN VER */
+.btn-ver {
+  background: var(--color-azul);
+  color: white;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.9em;
+}
+
+.btn-ver:hover {
+  background: #002850;
+}
+
+/* ACCIONES EXPORTAR */
+.acciones-exportar {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btn-exportar {
+  background: var(--color-verde);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  margin: 0 5px;
+  transition: 0.3s;
+}
+
+.btn-exportar:hover {
+  background: #218838;
+}
+
+/* PIE DE PÁGINA */
+.cerrar-sesion {
+  text-align: center;
+  margin: 25px 0;
+}
+
+.cerrar-sesion a {
+  text-decoration: none;
+  color: var(--color-rojo);
+  font-weight: bold;
+}
+
+.cerrar-sesion a:hover {
+  text-decoration: underline;
+}

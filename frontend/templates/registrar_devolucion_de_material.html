@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Registro de Devoluciones</title>
+    <link rel="stylesheet" href="../static/devoluciones.css" />
+  </head>
+  <body>
+    <div class="window">
+      <header>
+        <div class="window-name">SERVIMAQ</div>
+        <div class="window-controls">
+          <span>&larr;</span>
+        </div>
+      </header>
+
+      <main>
+        <h1>Registro de Devoluciones de Material</h1>
+        <p class="subtitle">
+          Módulo exclusivo para registrar devoluciones por parte de clientes o por incidencias de inventario.
+        </p>
+
+        <div class="contenedor-principal">
+          <!-- LADO IZQUIERDO: Búsqueda y listado -->
+          <section class="panel-izquierdo">
+            <form method="get" action="/devoluciones" class="busqueda">
+              <label for="buscar">Buscar devolución:</label>
+              <input type="text" id="buscar" name="buscar" placeholder="Buscar por producto o responsable" />
+
+              <label for="filtro">Filtrar por:</label>
+              <select id="filtro" name="filtro">
+                <option value="">-- Seleccionar --</option>
+                <option value="fecha">Fecha</option>
+                <option value="razon">Razón</option>
+                <option value="responsable">Responsable</option>
+                <option value="alfabetico">Orden alfabético</option>
+              </select>
+
+              <button type="submit" class="btn-filtrar">Aplicar</button>
+            </form>
+
+            <!-- Listado de devoluciones -->
+            <div class="listado-devoluciones">
+              {% for devolucion in devoluciones %}
+              <div class="tarjeta-devolucion">
+                <p><strong>Producto:</strong> {{ devolucion.producto }}</p>
+                <p><strong>Razón:</strong> {{ devolucion.razon }}</p>
+                <p><strong>Fecha:</strong> {{ devolucion.fecha }}</p>
+                <a href="/ver_devolucion/{{ devolucion.id }}" class="btn-ver">Ver</a>
+              </div>
+              {% endfor %}
+            </div>
+          </section>
+
+          <!-- LADO DERECHO: Formulario de registro -->
+          <section class="panel-derecho">
+            <h2>Registrar nueva devolución</h2>
+            <form method="post" action="/registrar_devolucion" class="form-devolucion">
+              <label for="codigo">Código del producto:</label>
+              <input type="text" id="codigo" name="codigo" required />
+
+              <label for="producto">Nombre del material o producto:</label>
+              <input type="text" id="producto" name="producto" required />
+
+              <label for="responsable">Usuario o responsable:</label>
+              <input type="text" id="responsable" name="responsable" required />
+
+              <label for="razon">Razón de la devolución:</label>
+              <select id="razon" name="razon" required>
+                <option value="">-- Seleccionar --</option>
+                <option value="Daño">Daño</option>
+                <option value="No pagó">No pagó</option>
+                <option value="Caducado">Caducado</option>
+                <option value="Error de registro">Error de registro</option>
+              </select>
+
+              <label for="descripcion">Descripción detallada:</label>
+              <textarea id="descripcion" name="descripcion" rows="5" placeholder="Detalles adicionales sobre la devolución..."></textarea>
+
+              <button type="submit" class="btn-registrar">Registrar</button>
+            </form>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <footer class="cerrar-sesion">
+      <a href="/logout">Cerrar sesión</a>
+    </footer>
+  </body>
+</html>

@@ -1,6 +1,8 @@
+@import url('variables.css');
+
 /* Estilo general */
 body {
-  font-family: Arial, sans-serif;
+  font-family: var(--fuente-principal);
   background: #f6f6f6;
   margin: 0;
   padding: 0;
@@ -27,17 +29,20 @@ header {
 .window-name {
   font-size: 18px;
   font-weight: bold;
+  color: var(--color-azul);
 }
 
 .window-controls span {
   font-size: 22px;
   margin: 0 4px;
+  color: var(--color-azul);
 }
 
 /* Títulos */
 h1 {
   text-align: center;
   margin-top: 0;
+  color: var(--color-azul);
 }
 
 .subtitle {
@@ -66,14 +71,14 @@ h1 {
 }
 
 .filtros button {
-  background-color: #1c1f26;
+  background-color: var(--color-azul);
   color: white;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .filtros button:hover {
-  background-color: #333945;
+  background-color: #002244;
 }
 
 /* Tabla */
@@ -123,31 +128,31 @@ th {
   transition: background-color 0.2s;
 }
 
+/* Verde */
 .btn-ver {
-  background-color: #4caf50;
+  background-color: var(--color-verde);
   color: white;
 }
-
 .btn-ver:hover {
-  background-color: #45a049;
+  background-color: #1e7e34;
 }
 
+/* Azul */
 .btn-imprimir {
-  background-color: #2196f3;
+  background-color: var(--color-azul);
   color: white;
 }
-
 .btn-imprimir:hover {
-  background-color: #1976d2;
+  background-color: #002244;
 }
 
+/* Rojo (para exportar) */
 .btn-exportar {
-  background-color: #ff9800;
+  background-color: var(--color-rojo);
   color: white;
 }
-
 .btn-exportar:hover {
-  background-color: #e68900;
+  background-color: #cc0000;
 }
 
 /* Acciones exportar */
@@ -162,7 +167,7 @@ th {
   padding: 15px 30px;
   font-size: 1.1rem;
   cursor: pointer;
-  color: #1c1f26;
+  color: var(--color-azul);
 }
 
 .cerrar-sesion a {
@@ -171,5 +176,6 @@ th {
 }
 
 .cerrar-sesion:hover {
-  color: red;
+  color: var(--color-rojo);
 }
+  

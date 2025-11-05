@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Editar Materiales</title>
+    <link rel="stylesheet" href="../static/editarmateriales.css" />
+  </head>
+  <body>
+    <div class="window">
+      <header>
+        <div class="window-name">SERVIMAQ</div>
+        <div class="window-controls">
+          <span>&larr;</span>
+        </div>
+      </header>
+
+      <main>
+        <h1>Editar Materiales</h1>
+        <p class="subtitle">
+          Interfaz exclusiva para administradores. Permite modificar los datos de materiales registrados.
+        </p>
+
+        <div class="contenedor">
+          <!-- Panel Izquierdo -->
+          <section class="panel-izquierdo">
+            <h2>Material Seleccionado</h2>
+            <div class="info-material">
+              <p><strong>Nombre:</strong> Parche</p>
+              <p><strong>Código:</strong> #00000</p>
+            </div>
+
+            <form method="post" action="/editar_material">
+              <label for="nombre">Nombre:</label>
+              <input type="text" id="nombre" name="nombre" value="Parche" required />
+
+              <label for="cantidad">Cantidad:</label>
+              <input type="number" id="cantidad" name="cantidad" min="0" required />
+
+              <label for="precio">Precio:</label>
+              <input type="number" id="precio" name="precio" step="0.01" min="0" required />
+
+              <label for="tipo">Tipo:</label>
+              <input type="text" id="tipo" name="tipo" placeholder="Ej. Herramienta" required />
+
+              <label for="fecha">Fecha de ingreso:</label>
+              <input type="date" id="fecha" name="fecha" required />
+
+              <button type="submit" class="btn-guardar">Guardar</button>
+            </form>
+          </section>
+
+          <!-- Panel Derecho -->
+          <section class="panel-derecho">
+            <h2>Historial de Materiales</h2>
+
+            <form class="busqueda" method="get" action="/buscar_material">
+              <input type="text" name="query" placeholder="Buscar material..." />
+              <button type="submit" class="btn-buscar">Buscar</button>
+            </form>
+
+            <div class="tabla-contenedor">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Código</th>
+                    <th>Tipo / Proveedor</th>
+                    <th>Precio</th>
+                    <th>Fecha de Ingreso</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for material in materiales %}
+                  <tr>
+                    <td>{{ material.nombre }}</td>
+                    <td>{{ material.cantidad }}</td>
+                    <td>{{ material.codigo }}</td>
+                    <td>{{ material.tipo }}</td>
+                    <td>{{ material.precio }}</td>
+                    <td>{{ material.fecha_ingreso }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <footer class="cerrar-sesion">
+      <a href="/logout">Cerrar sesión</a>
+    </footer>
+  </body>
+</html>

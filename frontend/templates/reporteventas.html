@@ -3,26 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <title>Reporte de Ventas</title>
-    <link rel="stylesheet" href= "../static/reporteventas" />
+    <link rel="stylesheet" href="../static/reporteventas.css" />
   </head>
   <body>
-    <div class="window">
+    <div class="excel-window">
       <header>
-        <div class="window-name">SERVIMAQ</div>
+        <div class="window-name">📊 SERVIMAQ — Reporte de Ventas</div>
         <div class="window-controls">
-          <span>&larr;</span>
+          <a href="/" class="btn-volver">&larr; Volver</a>
         </div>
       </header>
 
       <main>
         <h1>Reporte de Ventas</h1>
         <p class="subtitle">
-          Reporte disponible solo para administradores. Muestra únicamente las transacciones completadas.
+          Vista tipo Excel — reporte solo para administradores.  
+          Muestra únicamente las transacciones completadas.
         </p>
 
-        <!-- Filtro de fecha y orden -->
+        <!-- Filtros -->
         <form method="get" action="/reporteventas" class="filtros">
-          <label for="fecha">Seleccionar fecha:</label>
+          <label for="fecha">Fecha:</label>
           <input type="date" id="fecha" name="fecha" />
 
           <label for="orden">Ordenar:</label>
@@ -35,18 +36,18 @@
           <button type="submit" class="btn-filtrar">Aplicar</button>
         </form>
 
-        <!-- Tabla de ventas -->
-        <div class="tabla-contenedor">
+        <!-- Tabla estilo Excel -->
+        <div class="tabla-excel">
           <table>
             <thead>
               <tr>
-                <th>Cantidad</th>
-                <th>Producto / Servicio</th>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th>Responsable</th>
-                <th>Descripción</th>
-                <th>Acciones</th>
+                <th style="width: 80px;">Cantidad</th>
+                <th style="width: 180px;">Producto / Servicio</th>
+                <th style="width: 120px;">Fecha</th>
+                <th style="width: 100px;">Hora</th>
+                <th style="width: 150px;">Responsable</th>
+                <th style="width: 200px;">Descripción</th>
+                <th style="width: 100px;">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -59,8 +60,8 @@
                 <td>{{ venta.responsable }}</td>
                 <td>{{ venta.descripcion }}</td>
                 <td>
-                  <a href="/ver_venta/{{ venta.id }}" class="btn-ver">Ver</a>
-                  <a href="/imprimir_venta/{{ venta.id }}" class="btn-imprimir">Imprimir</a>
+                  <a href="/ver_venta/{{ venta.id }}" class="btn-accion">👁️</a>
+                  <a href="/imprimir_venta/{{ venta.id }}" class="btn-accion">🖨️</a>
                 </td>
               </tr>
               {% endfor %}
@@ -68,16 +69,16 @@
           </table>
         </div>
 
-        <!-- Exportar datos -->
-        <div class="acciones-exportar">
-          <a href="/exportar_excel" class="btn-exportar">Exportar a Excel</a>
-          <a href="/exportar_csv" class="btn-exportar">Exportar a CSV</a>
+        <!-- Acciones -->
+        <div class="acciones">
+          <a href="/exportar_excel" class="btn-exportar">📥 Exportar a Excel</a>
+          <a href="/exportar_csv" class="btn-exportar">📄 Exportar a CSV</a>
         </div>
       </main>
-    </div>
 
-    <footer class="cerrar-sesion">
-      <a href="/logout">Cerrar sesión</a>
-    </footer>
+      <footer>
+        <a href="/logout" class="btn-salir">Cerrar sesión</a>
+      </footer>
+    </div>
   </body>
 </html>
