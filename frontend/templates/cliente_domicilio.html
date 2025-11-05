@@ -1,83 +1,79 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Clientes Domicilio</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='cliente_domicilio.css') }}" />
+  <meta charset="UTF-8">
+  <title>Domicilios</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='cliente_domicilio.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <a class="volver" href="{{ url_for('volver') }}" title="Volver al menú">
-            <i class="fa-solid fa-arrow-left"></i>
-        </a>
-        <h2 class="SERVIMAQ">SERVIMAQ</h2>
-        <div class="titulo">
-            <i class="fa-solid fa-users"></i>
-            <h1>Clientes Domicilio</h1>
-        </div>
 
-        <div class="acciones">
-            <a class="btn-agregar" href="{{ url_for('form_cliente') }}">
-                <i class="fa-solid fa-plus"></i> Agregar Cliente
-            </a>
-        </div>
-    </header>
+<header>
+  <a class="volver" href="{{ url_for('volver') }}"><i class="fa-solid fa-arrow-left"></i></a>
+  <h2 class="SERVIMAQ">SERVIMAQ</h2>
+  <div class="titulo">
+    <h1>REGISTRO DE DOMICILIOS</h1>
+  </div>
+</header>
 
-    <!-- MENSAJES FLASH -->
-    <section class="flashes">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class="flash-list">
-                {% for category, message in messages %}
-                    <li class="flash {{ category }}">{{ message }}</li>
-                {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
-    </section>
+<section class="formulario">
+  <h3>Registrar nuevo domicilio</h3>
+  <form method="POST" action="{{ url_for('domicilios') }}">
+    <label>Cliente:</label>
+    <select name="cliente_id" required>
+      {% for c in clientes %}
+      <option value="{{ c.id_cliente }}">{{ c.nombre }}</option>
+      {% endfor %}
+    </select>
 
-    <!-- CONTENIDO -->
-    <main>
-        {% if clientes and clientes|length > 0 %}
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Celular</th>
-                    <th>Correo</th>
-                    <th>Dirección</th>
-                    <th>Placa</th>
-                    <th>Modelo</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for c in clientes %}
-                <tr>
-                    <td>{{ c.id_cliente }}</td>
-                    <td>{{ c.nombre }}</td>
-                    <td>{{ c.apellido }}</td>
-                    <td>{{ c.celular }}</td>
-                    <td>{{ c.correo }}</td>
-                    <td>{{ c.direccion }}</td>
-                    <td>{{ c.placa }}</td>
-                    <td>{{ c.modelo }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-            <div class="estado-vacio">
-                <i class="fa-regular fa-face-meh"></i>
-                <p>No hay clientes registrados aún.</p>
-                <a class="btn-agregar" href="{{ url_for('form_cliente') }}">
-                    <i class="fa-solid fa-plus"></i> Registrar el primero
-                </a>
-            </div>
-        {% endif %}
-    </main>
+    <label>Servicio:</label>
+    <select name="servicio_id" required>
+      {% for s in servicios %}
+      <option value="{{ s.id_servicio }}">{{ s.descripcion }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Fecha:</label>
+    <input type="date" name="fecha" required>
+
+    <label>Monto:</label>
+    <input type="number" name="monto" step="0.01" required>
+
+    <button type="submit" class="btn-agregar">Registrar Domicilio</button>
+  </form>
+</section>
+
+<main>
+  <h3>Lista de Domicilios</h3>
+  {% if domicilios %}
+  <table>
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>Dirección</th>
+        <th>Servicio</th>
+        <th>Fecha</th>
+        <th>Monto</th>
+        <th>Registrado por</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in domicilios %}
+      <tr>
+        <td>{{ d.nombre_cliente }}</td>
+        <td>{{ d.direccion }}</td>
+        <td>{{ d.descripcion_servicio }}</td>
+        <td>{{ d.fecha }}</td>
+        <td>${{ "%.2f"|format(d.monto) }}</td>
+        <td>{{ d.usuario_registro }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No hay domicilios registrados aún.</p>
+  {% endif %}
+</main>
 
 </body>
 </html>

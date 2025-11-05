@@ -9,6 +9,21 @@
   left: 50px;
 }
 
+.ticket_Descripcion {
+  height: 100px;
+
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+
+
 header {
   background: var(--color-azul);
   color: white;
@@ -80,13 +95,7 @@ label {
   font-weight: bold;
 }
 
-input[type="text"] {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+
 
 button {
   display: block;

@@ -1,77 +1,60 @@
-/* ========================= 
-     Variables y base
-     ========================= */
 :root {
   --color-verde: #28a745;
   --color-azul: #003366;
   --color-rojo: #ff0000;
   --fuente-principal: sans-serif;
-
-  --bg: #ecf0f1;
-  --text: #000000;
-  --primary: var(--color-azul);
-  --accent: #ffffff;
-  --panel: #ffffff;
-  --muted: #f9f9f9;
-  --muted-2: #f1f1f1;
-  --border: #d9d9d9;
-  --border-strong: #7e7d7d;
-  --success: var(--color-verde);
-  --success-2: #34d058;
-  --danger: var(--color-rojo);
-  --warning: #ffcc00;
-  --info: #003366;
 }
 
-* { box-sizing: border-box; }
-
-body {
-  font-family: var(--fuente-principal);
-  background: var(--bg);
+/* ======== ESTILOS GENERALES ======== */
+* {
   margin: 0;
   padding: 0;
-  color: var(--text);
+  box-sizing: border-box;
+  font-family: var(--fuente-principal);
 }
 
-/* =========================
-   Header
-   ========================= */
-.SERVIMAQ {
-    margin-left:5px;
-    position: absolute;
-    left:60px;
-    
-
+body {
+  background-color: #f2f4f8;
+  color: #333;
+  min-height: 100vh;
 }
 
+/* ======== HEADER ======== */
 header {
-    background: var(--color-azul) ;
-    color: white;
-    padding: 16px 20px;
-    display: flex;
-    justify-content: center; /* centramos el título */
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    position: relative;
-    height: 70px;
+  background-color: var(--color-azul);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  height: 70px;
+}
+
+.SERVIMAQ {
+  position: absolute;
+  left: 60px;
+  padding:
 }
 
 header .volver {
+  color: white;
   font-size: 22px;
-  color: #fff;
   text-decoration: none;
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: color .2s ease, transform .1s ease;
-  border-radius: 6px;
+  transition: transform 0.2s ease, color 0.3s ease;
 }
 
-header .volver:hover { color: var(--accent); }
-header .volver:focus-visible {
-  outline: 3px solid rgba(66, 66, 65, 0.5);
-  outline-offset: 2px;
+header .volver:hover {
+  transform: scale(1.1);
+  color: var(--color-verde);
+}
+
+header .SERVIMAQ {
+  font-weight: bold;
+  font-size: 22px;
+  letter-spacing: 1px;
+  color: white;
+  margin: 0 20px;
 }
 
 header .titulo {
@@ -80,202 +63,170 @@ header .titulo {
   gap: 10px;
 }
 
+
+
 header .titulo h1 {
-  margin: 0;
   font-size: 22px;
-  color: var(--accent);
-}
-
-header .acciones {
+  color: white;
   position: absolute;
-  right: 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  left: 40%;
+ 
 }
 
-/* Botón/Link principal en header y reutilizable */
-.btn-agregar,
-header .acciones button,
-header .acciones .btn {
-  padding: 10px 16px;
-  background: #fafafa;
-  border: none;
-  border-radius: 6px;
-  color: #070707;
-  font-size: 15px;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: background .2s ease, transform .1s ease;
-}
-
-.btn-agregar:hover,
-header .acciones button:hover,
-header .acciones .btn:hover {
-  background: var(--accent);
-  transform: scale(1.05);
-}
-
-.btn-agregar:focus-visible,
-header .acciones button:focus-visible,
-header .acciones .btn:focus-visible {
-  outline: 3px solid var(--color-azul);
-  outline-offset: 2px;
-}
-
-/* Variante de éxito si se necesitara */
-.btn-success {
-  background: var(--success);
-  color: #fff;
-}
-.btn-success:hover { background: var(--success-2); }
-
-/* =========================
-   Contenido
-   ========================= */
-main {
-  background: var(--panel);
-  margin: 20px auto;
-  padding: 20px;
+/* ======== FORMULARIO ======== */
+.formulario {
+  background: white;
+  margin: 40px auto;
+  padding: 25px;
   width: 90%;
-  max-width: 1200px;
-  border-radius: 10px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* =========================
-   Tabla
-   ========================= */
+.formulario h3 {
+  margin-bottom: 20px;
+  color: var(--color-azul);
+  font-size: 1.3rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.formulario form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formulario label {
+  font-weight: 600;
+  color: var(--color-azul);
+}
+
+.formulario select,
+.formulario input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: border 0.3s;
+}
+
+.formulario select:focus,
+.formulario input:focus {
+  border-color: var(--color-verde);
+  outline: none;
+}
+
+.btn-agregar {
+  background-color: var(--color-verde);
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s;
+  font-weight: bold;
+}
+
+.btn-agregar:hover {
+  background-color: #218838;
+  transform: scale(1.02);
+}
+
+/* ======== TABLA ======== */
+main {
+  width: 90%;
+  margin: 0 auto 40px;
+}
+
+main h3 {
+  font-size: 1.3rem;
+  color: var(--color-azul);
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
-  overflow: hidden;
+  background-color: white;
   border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
 thead {
-  background: var(--primary);
-  color: var(--accent);
+  background-color: var(--color-azul);
+  color: white;
 }
 
-th, td {
-  padding: 12px 15px;
-  text-align: center;
-  border-bottom: 1px solid var(--border-strong);
-  word-break: break-word;
+thead th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
 }
 
-tbody tr:nth-child(even) { background: var(--muted); }
+tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
 
 tbody tr:hover {
-  background: rgba(0, 51, 102, 0.1);
-  transition: background .2s ease;
+  background-color: #e8f5e9;
 }
 
-/* =========================
-   Flashes (mensajes)
-   ========================= */
-.flashes {
-  width: 90%;
-  margin: 12px auto 0;
-  max-width: 1200px;
+tbody td {
+  padding: 12px;
+  font-size: 0.95rem;
+  color: #333;
 }
 
-.flash-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 12px;
-  display: grid;
-  gap: 8px;
-}
-
-.flash {
-  padding: 10px 14px;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 14px;
-}
-
-.flash.success { background: var(--success); }
-.flash.danger  { background: var(--danger); }
-.flash.warning { background: var(--warning); color: #000; }
-.flash.info    { background: var(--info); }
-
-/* =========================
-   Estado vacío
-   ========================= */
-.estado-vacio {
-  padding: 28px 12px;
+/* ======== MENSAJE VACÍO ======== */
+main p {
   text-align: center;
-  color: var(--text);
+  color: #666;
+  font-style: italic;
+  margin-top: 15px;
 }
 
-.estado-vacio i {
-  font-size: 42px;
-  color: var(--border-strong);
-  display: block;
-  margin-bottom: 8px;
-}
-
-.estado-vacio .btn-agregar {
-  margin-top: 10px;
-}
-
-/* =========================
-   Utilidades de accesibilidad
-   ========================= */
-.sr-only {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
-
-/* =========================
-   Reduce motion
-   ========================= */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* =========================
-   Responsive tweaks
-   ========================= */
+/* ======== RESPONSIVE ======== */
 @media (max-width: 768px) {
-  main { width: 95%; padding: 16px; }
+  header {
+    flex-direction: column;
+    gap: 10px;
+  }
 
-  th, td { padding: 10px 8px; font-size: 14px; }
-
-  header { padding: 12px 16px; }
-  header .volver { left: 12px; }
-  header .acciones { right: 12px; }
+  .formulario,
+  main {
+    width: 95%;
+  }
 
   table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
+    font-size: 0.9rem;
   }
 
-  thead, tbody, th, td, tr {
-    white-space: nowrap;
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  tbody td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  tbody td:last-child {
+    border-bottom: none;
   }
 }

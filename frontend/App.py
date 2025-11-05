@@ -28,6 +28,7 @@ from Backend.inventario_herramientas import Herramientas
 from Backend.salida_inventario import Venta
 from Backend.Tickets import Tickets
 from Backend.ordenes import Servicio
+from Backend.domicilio import Domicilio
 
 from Backend.control_sesiones import (
     obtener_todas_sesiones_activas, 
@@ -299,40 +300,38 @@ def notificaciones():
 # ==========================================
 
 
+@app.route('/domicilios', methods=['GET', 'POST'])
+def domicilios():
+    if 'id_usuario' not in session:
+        flash("Debes iniciar sesión primero.", "error")
+        return redirect(url_for('login'))
 
+    conexion = conectar()
+    domicilio_model = Domicilio(conexion)
 
-
-@app.route('/clientes_domicilio', methods=['GET', 'POST'])
-def listar_clientes():
-    servicio = Servicio()
-
-    # Si se envía el formulario, registrar domicilio
     if request.method == 'POST':
         cliente_id = request.form['cliente_id']
         servicio_id = request.form['servicio_id']
         fecha = request.form['fecha']
         monto = request.form['monto']
-        usuario_id = request.form['usuario_id']
+        usuario_id = session['id_usuario']
 
-        try:
-            servicio.cliente_id = cliente_id
-            servicio.id_servicio = servicio_id
-            servicio.fecha = fecha
-            servicio.monto = monto
-            servicio.usuario_id = usuario_id
-            servicio.insertar_domicilio()
-            flash("Domicilio registrado correctamente", "success")
-        except Exception as e:
-            print("Error al registrar domicilio:", e)
-            flash("Error al registrar domicilio", "error")
+        domicilio_model.registrar(cliente_id, servicio_id, fecha, monto, usuario_id)
+        flash("Domicilio registrado exitosamente", "success")
+        return redirect(url_for('domicilios'))
 
-        return redirect(url_for('clientes_domicilio'))
+    domicilios = domicilio_model.obtener_todos()
 
-    # Mostrar todos los domicilios
-    domicilios = servicio.mostrar_domicilios()
-    servicio.cerrar()
+    # Para los select del formulario
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("SELECT id_cliente, nombre FROM cliente")
+    clientes = cursor.fetchall()
+    cursor.execute("SELECT id_servicio, descripcion FROM servicio")
+    servicios = cursor.fetchall()
+    cursor.close()
 
-    return render_template('cliente_domicilio.html', domicilios=domicilios)
+    return render_template('cliente_domicilio.html', domicilios=domicilios, clientes=clientes, servicios=servicios)
+
 
 
 
@@ -377,11 +376,11 @@ def login():
         usuario = verificar_usuario(username, password)
 
         if usuario:
+            session['id_usuario'] = usuario['id_usuario']
             session['usuario'] = usuario['nombre']
             session['rol'] = usuario['rol_id']
 
             if usuario['rol_id'] == 1:
-                # La ruta de admin tiene endpoint="admin"
                 return redirect(url_for('admin'))
             else:
                 return redirect(url_for('empleado'))

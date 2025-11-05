@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8" />
     <title>Compra de material</title>
-    <!-- Vinculamos la hoja de estilos CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='pedido_compra.css') }}" />
-    <!-- Librería de íconos Font Awesome (sirve para mostrar íconos como cajas, carritos, camiones, etc.) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
-  <header class="encabezado">
-    {% set _menu = url_for('admin') %}
+<header class="encabezado">
+    
     <div class="titulo-con-flecha">
-        <!-- Flecha Volver al menú -->
-        <a class="volver" href="{{ _menu }}" title="Volver al menú">
-            <i class="fa-solid fa-arrow-left"></i>
-        </a>
+        <a class="flecha" href="{{ url_for('volver') }}" title="Volver al menú">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
         <h1>Compra de material</h1>
     </div>
 </header>
@@ -218,4 +216,7 @@
     </section>
     {% endif %}
 </body>
+<script>
+    feather.replace();
+</script>
 </html>

@@ -6,23 +6,23 @@
     <title>Inventario de Herramientas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='inventario_herramientas.css') }}">  
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
 
-    <a href="{{ "/" }}" class="volver" title="Volver">
-    <i class="fa-solid fa-arrow-left"></i>
-    </a>
+    <header>
+    <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+    <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <div class="titulo">
+            <h1>INVENTARIO DE HERRAMIENTAS</h1>
+        </div>
+        <div class="acciones" >
+        <a href="{{ url_for('retiro_herramienta') }}" class="button">Ir a Retiro</a>
+        <a href="{{ url_for('reintegro') }}" class="button">Ir a Reintegro</a>
+        </div>
+    </header>
 
-
-    <h1>Gestión de Inventario de Herramientas</h1>
-    
-    <div style="margin-bottom: 20px;">
-    <a href="{{ url_for('retiro_herramienta') }}" class="button">Ir a Retiro</a>
-    <a href="{{ url_for('reintegro') }}" class="button">Ir a Reintegro</a>
-    </div>
-
-
-    <!-- Formulario r -->
+    <br><br>
     <h2>Agregar Herramienta</h2>
     <form  class="Form_Agregar" action="/agregar_herramienta" method="post">
 
@@ -37,7 +37,7 @@
 
         <label for="estado">Estado:</label>
         <input type="text" id="estado" name="estado" required>
-o
+
         <label for="usuario_id">ID de Usuario:</label>
         <input type="number" id="usuario_id" name="usuario_id" required>
 
@@ -52,7 +52,6 @@ o
         <button type="submit">Buscar</button>
     </form>
 
-    <!-- Tabla para mostrar los resultados de la base de datos -->
     <h2>Resultados de Inventario</h2>
     <table>
         <thead>
@@ -84,5 +83,9 @@ o
             {% endif %}
         </tbody>
     </table>
+
+    <script>
+        feather.replace()
+    </script>
 </body>
 </html>

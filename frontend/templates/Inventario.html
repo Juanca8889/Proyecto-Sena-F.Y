@@ -5,21 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Búsqueda y filtrado de material</title>
   <link rel="stylesheet" href="../static/filtro.css">
+  <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
-  <header>
-    <div class="left">
-      <a href="/"><button class="btn-retroceso">&larr;</button></a>
-      <input type="text" placeholder="Buscar material">
-      <h2>Búsqueda y filtrado de material</h2>
-    </div>
+
+
+    <header>
+      <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+      <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <div class="titulo">
+            <i class="fa-solid fa-users"></i>
+            <h1>INVENTARIO</h1>
     <div class="right">
       <button  onclick="window.location.href='{{ url_for('exportar') }}'" class="btn-orden">Importar/Exportar</button>
       <button  onclick="window.location.href='{{ url_for('registrar_material') }}'" class="btn-orden">Registrar Material</button>
       <button  onclick="window.location.href='{{ url_for('crear_referencia') }}'" class="btn-orden">Crear Referencia</button>
-
     </div>
-  </header>
+        </div>
+    </header>
+
 
   <main>
     <table>
@@ -48,6 +52,8 @@
     </table>
   </main>
 
-  
+  <script>
+    feather.replace()
+  </script>
 </body>
 </html>

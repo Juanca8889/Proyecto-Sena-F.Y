@@ -1,9 +1,86 @@
+@import url('variables.css');
+
 body {
-  font-family: Arial, sans-serif;
-  background: #f6f6f6;
+  font-family: var(--fuente-principal, Arial, sans-serif);
+  background: #f4f4f4;
   margin: 0;
   padding: 0;
 }
+
+/* =========================
+   HEADER
+   ========================= */
+header {
+  background: var(--color-azul);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  height: 70px;
+ 
+}
+
+header .volver {
+  font-size: 22px;
+  color: white;
+  text-decoration: none;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: color 0.2s ease;
+}
+
+header .volver:hover {
+  color: var(--color-verde);
+}
+
+.SERVIMAQ {
+  position: absolute;
+  left: 60px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+header .titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .titulo h1 {
+  margin: 0;
+  font-size: 22px;
+  color: white;
+  letter-spacing: 1px;
+}
+
+header .acciones {
+  position: absolute;
+  right: 20px;
+}
+
+header .btn-agregar {
+  background: var(--color-verde);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+header .btn-agregar:hover {
+  background: #218838;
+}
+
+/* =========================
+   CONTENIDO
+   ========================= */
 
 .window {
   max-width: 1200px;
@@ -15,31 +92,16 @@ body {
   padding: 24px;
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.window-name {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.window-controls span {
-  font-size: 22px;
-  margin: 0 4px;
-}
-
 h1 {
   text-align: center;
-  margin-top: 0;
+  color: #222;
+  margin-bottom: 10px;
 }
 
 .subtitle {
   text-align: center;
-  color: #6f3232;
-  margin-bottom: 16px;
+  color: #555;
+  margin-bottom: 20px;
 }
 
 .clientes-actions {
@@ -48,271 +110,63 @@ h1 {
 }
 
 select {
-  padding: 6px;
+  padding: 8px;
   font-size: 14px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background-color: white;
+}
+
+/* =========================
+   TABLA
+   ========================= */
+
+.tabla-contenedor {
+  max-height: 350px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 12px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 th,
 td {
-  border: 1px solid #ddd;
-  padding: 7px 10px;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
   text-align: left;
 }
 
 th {
-  background: #eee;
-  font-weight: bold;
-}
-
-.actions-icons {
-  text-align: right;
-  font-size: 22px;
-}
-
-.actions-icons span {
-  margin-left: 14px;
-  cursor: pointer;
-}
-
-.tabla-contenedor {
-  max-height: 300px;
-  /* alto fijo */
-  overflow-y: auto;
-  /* scroll vertical si se llena */
-  border: 1px solid #ddd;
-}
-
-/* para que el encabezado quede fijo */
-.tabla-contenedor table thead th {
+  background: var(--color-azul);
+  color: white;
   position: sticky;
   top: 0;
-  background: #f4f4f4;
-  z-index: 2;
 }
 
-
-/* Estilos para navegacion */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: sans-serif;
+tr:nth-child(even) {
+  background: #f9f9f9;
 }
 
+/* =========================
+   BOTONES
+   ========================= */
 
-body {
-  background-color: #f0f0f0;
-}
-
-
-.contenedor {
-  display: flex;
-  height: 100vh;
-}
-
-
-.sidebar {
-  background-color: #1c1f26;
-  color: white;
-  width: 250px;
-  padding: 20px;
-}
-
-
-.sidebar h2 {
-  margin-bottom: 30px;
-  font-size: 1.2rem;
-}
-
-
-.sidebar ul {
-  list-style: none;
-}
-
-
-.sidebar button {
-  background: none;
-  color: white;
+.btn-encuesta {
+  background: var(--color-verde);
   border: none;
-  padding: 12px 0;
-  text-align: left;
-  width: 100%;
-  font-size: 1rem;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 12px;
   transition: background 0.2s;
 }
 
-
-.sidebar button:hover {
-  background-color: #2c2f36;
-  border-radius: 6px;
-}
-
-
-.sidebar i {
-  width: 20px;
-  height: 20px;
-  stroke-width: 2;
-}
-
-
-.contenido {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-
-.barra-superior {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #11151d;
-  color: white;
-  padding: 15px 20px;
-}
-
-
-.nav-iconos {
-  display: flex;
-  gap: 18px;
-  align-items: center;
-}
-
-
-.nav-iconos span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-
-.nav-iconos span:hover {
-  color: #ffd700;
-}
-
-
-.nav-iconos i {
-  width: 18px;
-  height: 18px;
-  stroke-width: 2;
-}
-
-
-.buscar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-
-.buscador {
-  width: 250px;
-  padding: 8px 12px 8px 38px;
-  /* espacio para la lupa */
-  border-radius: 24px;
-  border: 1px solid #dcdcdc;
-  outline: none;
-  font-size: 1rem;
-  box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
-  transition: box-shadow 0.3s ease;
-  background-color: white;
-}
-
-
-.buscador:focus {
-  box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
-  border-color: #4285f4;
-}
-
-
-.icono-busqueda {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  stroke-width: 2;
-  color: #999;
-  pointer-events: none;
-}
-
-
-.icono-usuario {
-  width: 22px;
-  height: 22px;
-  stroke-width: 2;
-  color: white;
-  cursor: pointer;
-}
-
-
-.mensaje {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-}
-
-
-.caja-bienvenida {
-  border: 1px solid #ccc;
-  padding: 25px 50px;
-  border-radius: 10px;
-  background-color: white;
-  font-size: 1.1rem;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-
-.caja-bienvenida p {
-  margin-bottom: 10px;
-}
-
-
-.caja-bienvenida button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #1c1f26;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: background-color 0.2s;
-}
-
-
-.caja-bienvenida button:hover {
-  background-color: #333945;
-}
-
-
-.cerrar-sesion {
-  text-align: right;
-  padding: 15px 30px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #1c1f26;
-}
-
-
-.cerrar-sesion:hover {
-  color: red;
+.btn-encuesta:hover {
+  background: #218838;
 }

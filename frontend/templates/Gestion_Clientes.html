@@ -3,84 +3,86 @@
   <head>
     <meta charset="UTF-8" />
     <title>Gestión de Clientes</title>
-    <link rel="stylesheet" href="./static/Gestion_clientes.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='Gestion_clientes.css') }}" />
+    <link 
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
     <script src="https://unpkg.com/feather-icons"></script>
   </head>
   <body>
     <header>
-         <a class="volver" href="{{ url_for('volver') }}" title="Volver al menú">
-            <i class="fa-solid fa-arrow-left"></i>
-        </a>
-        <h2 class="SERVIMAQ">SERVIMAQ</h2>
-        <div class="titulo">
-            <i class="fa-solid fa-users"></i>
-            <h1>CESTION DE CLIENTES</h1>
-        </div>
+      <!-- Botón Volver -->
+      <a class="volver" href="{{ url_for('volver') }}" title="Volver al menú">
+        <i class="fa-solid fa-arrow-left"></i>
+      </a>
 
-        <div class="acciones">
-            <a class="btn-agregar" href="{{ url_for('form_cliente') }}">
-                <i class="fa-solid fa-plus"></i> Agregar Cliente
-            </a>
-        </div>
+      <h2 class="SERVIMAQ">SERVIMAQ</h2>
+
+      <div class="titulo">
+        <i class="fa-solid fa-users"></i>
+        <h1>GESTIÓN DE CLIENTES</h1>
+      </div>
+
+      <div class="acciones">
+        <a class="btn-agregar" href="{{ url_for('form_cliente') }}">
+          <i class="fa-solid fa-plus"></i> Agregar Cliente
+        </a>
+      </div>
     </header>
 
-        <div class="window">
-          
-          <main>
-            <h1>Gestión de Clientes</h1>
-            <p class="subtitle">
-              Visualiza y almacena los datos de los clientes, incluyendo sus
-              contactos y transaccion
-            </p>
-            <div class="clientes-actions">
-              <select onchange="location.href='/clientes?orden=' + this.value">
-                <option value="">Buscar clientes…</option>
-                <option value="az">A-Z</option>
-                <option value="recientes">Recientes</option>
-                <option value="antiguos">Antiguos</option>
-              </select>
-            </div>
-            <div class="tabla-contenedor">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Teléfono</th>
-                    <th>Modelo</th>
-                    <th>Placa</th>
-                    <th>ID</th>
-                    <th>Encuestas</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for usuario in usuarios %}
-                  <tr>
-                    <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
-                    <td>{{ usuario.correo }}</td>
-                    <td>{{ usuario.celular }}</td>
-                    <td>{{ usuario.modelo }}</td>
-                    <td>{{ usuario.placa }}</td>
-                    <td>{{ usuario.id_cliente }}</td>
-                    <td>
-                      <form action="{{ url_for('enviar_encuesta') }}" method="POST" style="display:inline;">
-                        <input type="hidden" name="correo" value="{{ usuario.correo }}">
-                        <button type="submit" style="margin-left:30px">
-                          <i data-feather="inbox"></i>
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-            <div  class="actions-icons"></div>
-          </main>
+    <div class="window">
+      <main>
+
+  
+
+        <div class="clientes-actions">
+          <select onchange="location.href='/clientes?orden=' + this.value">
+            <option value="">Buscar clientes…</option>
+            <option value="az">A-Z</option>
+            <option value="recientes">Recientes</option>
+            <option value="antiguos">Antiguos</option>
+          </select>
         </div>
 
+        <div class="tabla-contenedor">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Modelo</th>
+                <th>Placa</th>
+                <th>ID</th>
+                <th>Encuestas</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for usuario in usuarios %}
+              <tr>
+                <td>{{ usuario.nombre }} {{ usuario.apellido }}</td>
+                <td>{{ usuario.correo }}</td>
+                <td>{{ usuario.celular }}</td>
+                <td>{{ usuario.modelo }}</td>
+                <td>{{ usuario.placa }}</td>
+                <td>{{ usuario.id_cliente }}</td>
+                <td>
+                  <form action="{{ url_for('enviar_encuesta') }}" method="POST" style="display:inline;">
+                    <input type="hidden" name="correo" value="{{ usuario.correo }}">
+                    <button type="submit" class="btn-encuesta">
+                      <i class="fa-solid fa-envelope"></i>
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </main>
     </div>
+
     <script>
       feather.replace();
     </script>
