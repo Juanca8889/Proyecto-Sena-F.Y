@@ -29,6 +29,8 @@ from Backend.salida_inventario import Venta
 from Backend.Tickets import Tickets
 from Backend.ordenes import Servicio
 from Backend.domicilio import Domicilio
+from Backend.busqueda import BusquedaInventario
+from Backend.Guardar_material import Guardar_material
 
 from Backend.control_sesiones import (
     obtener_todas_sesiones_activas, 
@@ -643,6 +645,7 @@ def registrar_venta():
         venta.cerrar()
         return "Error al registrar la venta"
 
+
 # ==========================================
 #  Buscar producto 
 # ==========================================
@@ -656,6 +659,37 @@ def buscar_producto(id_producto):
         return jsonify(producto)
     else:
         return jsonify({'error': 'Producto no encontrado'})
+    
+    
+# ==========================================
+#  Formulario para registrar material
+# ==========================================
+@app.route('/material_form', methods=['GET'])
+def material_form():
+    return render_template('Guardar_material.html')  
+
+
+
+
+
+# ==========================================
+#  Registrar material (sumar cantidad)
+# ==========================================
+@app.route('/registrar_material', methods=['POST'])
+def registrar_material():
+    id_producto = int(request.form['id_producto'])
+    cantidad = int(request.form['cantidad'])
+
+    material = Guardar_material()
+    exito = material.sumar_cantidad(id_producto, cantidad)
+    material.cerrar()
+
+    if exito:
+        return redirect(url_for('material_form'))
+    else:
+        return "Error al registrar el material", 500
+    
+
 
 
 
@@ -677,7 +711,6 @@ def reporte_ventas():
     conexion = conectar()
     cursor = conexion.cursor(dictionary=True)
 
-    # Consulta base: solo transacciones completadas y sin duplicados
     query = """
         SELECT  id_venta, cliente_id, cantidad, descripcion, fecha_venta, encargado_id, monto
         FROM venta
@@ -793,14 +826,12 @@ def importar_excel():
             return redirect(request.url)
 
         try:
-            # Leer el archivo Excel con pandas
+
             df = pd.read_excel(archivo)
 
-            # Conectarse a la base de datos
             conn = conectar()
             cursor = conn.cursor()
 
-            # Iterar sobre las filas del DataFrame e insertarlas
             for _, fila in df.iterrows():
                 query = """
                     INSERT INTO producto (nombre, descripcion, cantidad, categoria_id, precio)
@@ -828,32 +859,6 @@ def importar_excel():
 
     return render_template('importar_excel.html')
 
-# -----------------------------------------
-# REGISTRAR MATERIALESS
-# -----------------------------------------
-@app.route("/registrar_material", methods=["GET", "POST"])
-def registrar_material():
-    conn = conectar()
-    cursor = conn.cursor(dictionary=True)
-
-    if request.method == "POST":
-        nombre = request.form.get("nombre")
-        codigo = request.form.get("codigo")
-        tipo = request.form.get("tipo")
-        fecha = request.form.get("fecha")
-        descripcion = request.form.get("descripcion")
-        cantidad = request.form.get("cantidad")
-        precio = request.form.get("precio")
-
-        cursor.execute("""Update  producto set cantidad = sum(cantidad + '%s') where nombre == '%s' and codigo == '%s'""")
-        ( cantidad, nombre, codigo,)
-        conn.commit()
-
-    cursor.execute("SELECT * FROM InventarioProductos ORDER BY id_inve_produ DESC")
-    historial = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return render_template("registrarmat.html", historial=historial)
 
 
 # -----------------------------------------
@@ -950,36 +955,12 @@ def filtro():
 
 
 
-# -----------------------------------------
-# CLASE DE BÚSQUEDA
-# -----------------------------------------
-class BusquedaInventario:
-    def __init__(self):
-        self.conexion = conectar()
-        self.cursor = self.conexion.cursor(dictionary=True)
-
-    def buscar(self, **criterios):
-        query = "SELECT * FROM producto WHERE 1=1"
-        valores = []
-        for campo, valor in criterios.items():
-            query += f" AND {campo} LIKE %s"
-            valores.append(f"%{valor}%")
-        self.cursor.execute(query, valores)
-        resultados = self.cursor.fetchall()
-        return resultados
-
-    def cerrar(self):
-        self.cursor.close()
-        self.conexion.close()
-
-
 
 # ==========================================
 # RUTAS DE CONTROL DE SESIONES 
 # ==========================================
 
 
-# 4. RUTAS DE SESIONES (Se dejan donde estaban)
 @app.route('/admin/control_sesiones', methods=['GET'])
 @admin_required
 def control_sesiones():

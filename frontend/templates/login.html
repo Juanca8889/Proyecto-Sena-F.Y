@@ -4,14 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Login</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='login.css') }}"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <div class="login-container">
@@ -64,5 +59,21 @@
         togglePassword.classList.toggle("fa-eye-slash");
       });
     </script>
+
+
+      {% with mensajes = get_flashed_messages(with_categories=true) %}
+    {% if mensajes %}
+      <script>
+        {% for categoria, mensaje in mensajes %}
+          Swal.fire({
+            icon: '{{ categoria }}',  // success, error, warning, etc.
+            title: '{{ mensaje }}',
+            showConfirmButton: false,
+            timer: 2000
+          });
+        {% endfor %}
+      </script>
+    {% endif %}
+  {% endwith %}
   </body>
 </html>

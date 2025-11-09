@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Material</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='venta.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <a href="{{ url_for('filtro') }}" class="volver" title="Volver">
+    <i class="fa-solid fa-arrow-left btn-volver"></i>
+    </a>
+
+    <div class="container">
+        <h1>Registrar Material</h1>
+
+        <form id="materialForm">
+            <div class="form-group">
+                <label for="id_producto">Código del Producto</label>
+                <input type="number" id="id_producto" name="id_producto" required>
+                <button type="button" id="buscarBtn">Buscar</button>
+            </div>
+
+            <div class="form-group">
+                <label>Nombre del Producto</label>
+                <input type="text" id="nombre" name="nombre" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Precio Unitario</label>
+                <input type="text" id="precio" name="precio" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Descripción</label>
+                <textarea id="descripcion" name="descripcion" readonly></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Cantidad a Agregar</label>
+                <input type="number" id="cantidad" name="cantidad" required min="1">
+            </div>
+
+            <button type="submit" class="btn">Guardar Material</button>
+        </form>
+    </div>
+
+    <script>
+        // Buscar producto
+        document.getElementById("buscarBtn").addEventListener("click", async () => {
+            const id = document.getElementById("id_producto").value;
+            if (!id) return;
+
+            const res = await fetch(`/buscar_producto/${id}`);
+            const data = await res.json();
+
+            if (data.error) {
+                Swal.fire("Error", "Producto no encontrado", "error");
+                document.getElementById("nombre").value = "";
+                document.getElementById("precio").value = "";
+                document.getElementById("descripcion").value = "";
+            } else {
+                document.getElementById("nombre").value = data.nombre;
+                document.getElementById("precio").value = data.precio;
+                document.getElementById("descripcion").value = data.descripcion;
+            }
+        });
+
+        // Registrar material
+        document.getElementById("materialForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            const res = await fetch("/registrar_material", {
+                method: "POST",
+                body: formData
+            });
+
+            if (res.ok) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Cantidad actualizada",
+                    text: "El material fue actualizado correctamente",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                e.target.reset();
+            } else {
+                Swal.fire("Error", "Hubo un problema al registrar el material", "error");
+            }
+        });
+    </script>
+</body>
+</html>
