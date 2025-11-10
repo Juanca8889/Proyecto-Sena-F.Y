@@ -22,7 +22,7 @@ from Backend.stock_inicial import GestorStock
 from Backend.cliente_domicilio import Cliente
 from Backend.dashboard import dashboard_bp
 from Backend.Recuperacion_contraseña import recuperacion_contraseña
-from Backend.Recuperacion_contraseña import  actualizar_contrasena_usuario
+from Backend.Recuperacion_contraseña import  actualizar_contrasena_usuario 
 from Backend.Encuestas import Encuestas
 from Backend.inventario_herramientas import Herramientas
 from Backend.salida_inventario import Venta
@@ -411,12 +411,25 @@ def olvidaste_contraseña():
 @app.route("/recuperar_contraseña", methods=["GET", "POST"])
 def recuperar_contraseña():
     if request.method == 'POST':
-        usuario = request.form.get('usuario')
-        new_password = request.form.get('new-password')
-    
-        actualizar_contrasena_usuario(usuario, new_password)
-    else:
-        pass
+        nombre = request.form.get('usuario')
+        celular = request.form.get('celular')
+        nueva_contrasena = request.form.get('new-password')
+
+      
+        if not nombre or not celular or not nueva_contrasena:
+            flash("Por favor, complete todos los campos.", "warning")
+            return redirect(url_for('recuperar_contraseña'))
+
+     
+        resultado = actualizar_contrasena_usuario(celular, nombre, nueva_contrasena)
+
+        if resultado:
+            flash("Contraseña actualizada correctamente.", "success")
+            return redirect(url_for('login'))  
+        else:
+            flash("Usuario o celular incorrecto.", "danger")
+            return redirect(url_for('recuperar_contraseña'))
+
     return render_template('Recuperacion_contraseña.html')
         
 # -----------------------

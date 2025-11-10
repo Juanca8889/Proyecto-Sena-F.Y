@@ -9,6 +9,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
+
+    {% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
+
     <div class="login-container">
       <div class="forma"></div>
       <div class="login">

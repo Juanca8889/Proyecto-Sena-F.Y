@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}"/>
   </head>
   <body>
+    
+    {% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
+    
     <div class="login-container">
       <form action="/register" method="post">
         <h2>REGISTRARSE</h2><br />
