@@ -9,6 +9,9 @@
 </head>
 
 <body>
+      {% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
+
 <header>
     <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
     <h2 class="SERVIMAQ">SERVIMAQ</h2>

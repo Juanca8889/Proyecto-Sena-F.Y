@@ -7,7 +7,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+    {% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
 
+    
 <header>
   <a class="volver" href="{{ url_for('volver') }}"><i class="fa-solid fa-arrow-left"></i></a>
   <h2 class="SERVIMAQ">SERVIMAQ</h2>

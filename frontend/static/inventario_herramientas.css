@@ -31,6 +31,15 @@ header {
 
 }
 
+.salir {
+    font-size: 22px;
+    color: #000000;
+    text-decoration: none;
+    position: absolute;
+    left: 20px;
+    top: 10px;
+}
+
 header .salir {
     font-size: 22px;
     color: #fff;

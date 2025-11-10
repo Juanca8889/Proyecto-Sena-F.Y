@@ -39,6 +39,7 @@ class Servicio:
         values = (self.descripcion, self.tipo, self.fecha, self.cliente_id, self.usuario_id)
         self.cursor.execute(query, values)
         self.conexion.commit()
+        return True
 
     def mostrar_servicios(self, orden=None):
         """Devuelve todos los servicios con filtros opcionales"""

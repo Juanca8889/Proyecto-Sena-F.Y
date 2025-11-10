@@ -10,7 +10,10 @@
 </head>
 <body>
 
-    <a href="{{ back_button_url }}" class="volver" title="Volver">
+        {% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
+
+    <a href="agregar_herramienta" class="salir" title="Volver">
     <i class="fa-solid fa-arrow-left"></i>
     </a>
     <h1>Salida de Herramienta</h1>

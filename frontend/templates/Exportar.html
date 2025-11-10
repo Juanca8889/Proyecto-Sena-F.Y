@@ -22,7 +22,6 @@
       </form>
     </div>
 
-    <!-- Exportar -->
     <div class="card">
       <h2>Exportación de Inventario</h2>
       <div class="export-buttons">
@@ -31,32 +30,7 @@
       </div>
     </div>
 
-    <!-- Tabla de inventario -->
-    <h3>Reporte Generado</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Código</th>
-          <th>Nombre</th>
-          <th>Tipo</th>
-          <th>Cantidad</th>
-          <th>Precio Unitario</th>
-          <th>Fecha Ingreso</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for fila in tables %}
-        <tr>
-          <td>{{ fila.Codigo }}</td>
-          <td>{{ fila.Nombre }}</td>
-          <td>{{ fila.Tipo }}</td>
-          <td>{{ fila.Cantidad }}</td>
-          <td>{{ fila.PrecioUnitario }}</td>
-          <td>{{ fila.FechaIngreso }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+   
   </div>
 </body>
 </html>

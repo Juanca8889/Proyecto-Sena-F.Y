@@ -364,7 +364,7 @@ def guardar_cliente():
     nuevo_cliente.cerrar()
 
     flash("✅ Cliente registrado correctamente" if ok else "❌ No se pudo registrar el cliente", "success" if ok else "danger")
-    return redirect(url_for('listar_clientes'))
+    return redirect(url_for('clientes'))
 
 # ==========================================
 # LOGIN 
@@ -472,7 +472,9 @@ def enviar_encuesta():
     encuesta.enviar_correo()
     if not correo:
         flash("No se encontró el correo del usuario", "error")
-    return redirect(url_for("clientes"))  # o la ruta de gestión clientes
+    else:
+        flash("Encuesta enviada correctamente", "success")
+    return redirect(url_for("clientes")) 
 
 
 
@@ -542,9 +544,11 @@ def agregar_herramienta():
         )
         
         if nueva_herramienta.insertar_herramienta():
+            flash("Herramienta registrada correctamente", "success")
             return redirect(url_for('agregar_herramienta'))
+            
         else:
-            return "Error al registrar herramienta"
+            return flash("Error al registrar herramienta", "danger")
 
     items = herramienta.mostrar_herramientas()
     return render_template('inventario_herramientas.html', items=items)
@@ -563,10 +567,11 @@ def retiro_herramienta():
         herramienta = Herramientas()
         if herramienta.salida(nombre, cantidad_salida):
             herramienta.cerrar()
+            flash("Retiro de herramienta registrada correctamente", "success")
             return redirect(url_for('inventario'))
         else:
             herramienta.cerrar()
-            return "Error al registrar la salida de la herramienta"
+            return flash("Error al registrar el retiro de la herramienta") 
 
     return render_template('retiro_herramientas.html')
 
@@ -583,10 +588,11 @@ def reintegro():
         herramienta = Herramientas()
         if herramienta.reintegro(id_herr, cantidad_reintegro):
             herramienta.cerrar()
+            flash("Reintegro de herramienta registrado correctamente", "success")
             return redirect(url_for('inventario'))
         else:
             herramienta.cerrar()
-            return "Error al reintegrar la herramienta"
+            return flash("Error al registrar el reintegro de la herramienta")
 
     return render_template('reintegro_herramientas.html')
 
@@ -598,6 +604,7 @@ def buscar_herramienta():
     if nombre:
         items = herramienta.buscar_herramienta(nombre)
     else:
+        flash("Por favor ingrese un nombre de herramienta para buscar.", "warning")
         items = herramienta.mostrar_herramientas()  
 
     return render_template('inventario_herramientas.html', items=items)
@@ -685,9 +692,10 @@ def registrar_material():
     material.cerrar()
 
     if exito:
+        flash("Material registrado correctamente", "success")
         return redirect(url_for('material_form'))
     else:
-        return "Error al registrar el material", 500
+        return flash("Error al registrar el material", "danger")
     
 
 
@@ -779,7 +787,7 @@ def exportar_pdf():
         # Conectar a la BD
         conn = conectar()
         cursor = conn.cursor()
-        cursor.execute("SELECT id_inve_produ, producto_id, cantidad, categoria_id, rol_id FROM inventarioproductos")
+        cursor.execute("SELECT * FROM inventarioproductos")
         resultados = cursor.fetchall()
 
         # Crear el PDF
@@ -871,7 +879,6 @@ def importar_excel():
 def ordenes():
     servicio = Servicio()
 
-    # ------ Crear Orden (POST) ------
     if request.method == "POST":
         descripcion = request.form.get("descripcion")
         tipo = request.form.get("tipo")
@@ -887,9 +894,14 @@ def ordenes():
             usuario_id=usuario_id
         )
 
-        nuevo.insertar_servicio()
-        nuevo.cerrar()
-        return redirect(url_for("ordenes"))
+        if nuevo.insertar_servicio():
+            nuevo.cerrar()
+            flash("✅ Orden de servicio creada correctamente", "success")
+            return redirect(url_for("ordenes"))
+        
+        else:
+            flash("❌ Error al crear la orden de servicio", "danger")
+            return  redirect(url_for("ordenes"))
 
     # ------ Filtros (GET) ------
     fecha_filtro = request.args.get("fecha")
