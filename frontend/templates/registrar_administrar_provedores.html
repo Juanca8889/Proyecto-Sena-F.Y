@@ -1,59 +1,54 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestión de Proveedores</title>
-  <link rel="stylesheet" href="../static/registrar_administrar_provedores" />
+  <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <button class="back-btn">⟵</button>
-      <h1>Proveedor</h1>
-      <button class="refresh-btn">⟳</button>
-    </header>
 
-    <div class="actions">
-      <button class="create-btn">+ Nuevo Proveedor</button>
-    </div>
+  <nav>
+    <button onclick="history.back()">⬅</button>
+    <h1>Proveedor</h1>
+    <button onclick="location.reload()">🔄</button>
+  </nav>
 
-    <main class="tickets-grid">
-      <!-- Tarjetas de proveedores -->
-      <div class="ticket-card">
-        <h3>Proveedor 1</h3>
-        <p><strong>Nombre:</strong> Juan Pérez</p>
-        <p><strong>Celular:</strong> 3001234567</p>
-        <p><strong>Correo:</strong> juanperez@email.com</p>
-        <button class="details-btn">Detalles</button>
+  <div class="contenedor">
+    <button class="btn-agregar" onclick="document.getElementById('formProveedor').scrollIntoView()">➕ Nuevo Proveedor</button>
+
+    <form id="formProveedor">
+      <h2>Registrar Proveedor</h2>
+
+      <label for="nombre">Nombre del proveedor *</label>
+      <input type="text" id="nombre" name="nombre" required placeholder="Ej. Suministros Globales S.A.">
+
+      <label for="nit">NIT / Identificación *</label>
+      <input type="text" id="nit" name="nit" required placeholder="Ej. 900123456-7">
+
+      <label for="correo">Correo electrónico</label>
+      <input type="email" id="correo" name="correo" placeholder="Ej. contacto@proveedor.com">
+
+      <label for="telefono">Teléfono</label>
+      <input type="tel" id="telefono" name="telefono" placeholder="Ej. +57 310 555 1234">
+
+      <label for="direccion">Dirección</label>
+      <textarea id="direccion" name="direccion" rows="2" placeholder="Ej. Calle 45 #12-34, Bogotá"></textarea>
+
+      <label for="tipo">Tipo de proveedor *</label>
+      <select id="tipo" name="tipo" required>
+        <option value="">Seleccione...</option>
+        <option value="insumos">Insumos</option>
+        <option value="servicios">Servicios</option>
+        <option value="tecnologia">Tecnología</option>
+      </select>
+
+      <div class="acciones">
+        <button type="submit">Guardar</button>
+        <button type="reset" class="cancelar">Cancelar</button>
       </div>
-
-      <div class="ticket-card">
-        <h3>Proveedor 2</h3>
-        <p><strong>Nombre:</strong> María Gómez</p>
-        <p><strong>Celular:</strong> 3109876543</p>
-        <p><strong>Correo:</strong> mariagomez@email.com</p>
-        <button class="details-btn">Detalles</button>
-      </div>
-
-      <!-- Puedes replicar hasta el proveedor 10 -->
-      <div class="ticket-card">
-        <h3>Proveedor 3</h3>
-        <p><strong>Nombre:</strong> Distribuciones XYZ</p>
-        <p><strong>Celular:</strong> 3112223344</p>
-        <p><strong>Correo:</strong> contacto@xyz.com</p>
-        <button class="details-btn">Detalles</button>
-      </div>
-
-      <div class="ticket-card">
-        <h3>Proveedor 4</h3>
-        <p><strong>Nombre:</strong> Proveedor ABC</p>
-        <p><strong>Celular:</strong> 3123344556</p>
-        <p><strong>Correo:</strong> ventas@abc.com</p>
-        <button class="details-btn">Detalles</button>
-      </div>
-
-      <!-- … hasta el 10 -->
-    </main>
+    </form>
   </div>
+
 </body>
 </html>

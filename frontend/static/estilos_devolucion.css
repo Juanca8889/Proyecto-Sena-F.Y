@@ -1,0 +1,153 @@
+:root {
+  --color-verde: #28a745;
+  --color-azul: #003366;
+  --color-rojo: #ff0000;
+  --fuente-principal: sans-serif;
+}
+
+body {
+  font-family: var(--fuente-principal);
+  margin: 0;
+  background-color: #f4f6f8;
+  color: #333;
+}
+
+/* Encabezado */
+header {
+  background-color: var(--color-azul);
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+/* Contenedor principal */
+.contenedor {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Panel izquierdo */
+.panel-izquierdo {
+  background-color: white;
+  flex: 1.2;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.panel-izquierdo h2 {
+  color: var(--color-azul);
+  border-bottom: 2px solid var(--color-azul);
+  padding-bottom: 5px;
+}
+
+.busqueda {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.busqueda input, .busqueda select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Tarjetas */
+.tarjetas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.tarjeta {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.tarjeta h3 {
+  color: var(--color-azul);
+}
+
+.tarjeta button {
+  background-color: var(--color-verde);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.tarjeta button:hover {
+  background-color: #218838;
+}
+
+/* Panel derecho */
+.panel-derecho {
+  background-color: white;
+  flex: 1;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.panel-derecho h2 {
+  color: var(--color-azul);
+  border-bottom: 2px solid var(--color-azul);
+  padding-bottom: 5px;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background-color: var(--color-azul);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+button:hover {
+  background-color: #00264d;
+}
+
+.estado {
+  color: var(--color-verde);
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Pie de página */
+footer {
+  background-color: #e8ebef;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+footer h3 {
+  color: var(--color-azul);
+}

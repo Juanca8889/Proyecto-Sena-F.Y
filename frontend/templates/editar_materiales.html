@@ -2,95 +2,101 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>Editar Materiales</title>
-    <link rel="stylesheet" href="../static/editarmateriales.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Materiales | SERVIMAK</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='editar_materiales.css') }}">
   </head>
   <body>
-    <div class="window">
-      <header>
-        <div class="window-name">SERVIMAQ</div>
-        <div class="window-controls">
-          <span>&larr;</span>
+
+    <!-- ===== ENCABEZADO SUPERIOR ===== -->
+    <header class="main-header">
+      <button class="back-btn" onclick="window.history.back()">←</button>
+      <h1>SERVIMAK</h1>
+    </header>
+
+    <!-- ===== TÍTULO PRINCIPAL ===== -->
+    <h2 class="page-title">Editar Materiales</h2>
+
+    <div class="container">
+      <!-- PANEL IZQUIERDO -->
+      <div class="edit-panel">
+        <h3>Material Seleccionado</h3>
+        <p><strong>Nombre:</strong> Parche</p>
+        <p><strong>Código:</strong> #00000</p>
+
+        <form action="{{ url_for('editar_material', id_producto=producto.id_producto) }}" method="POST">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" value="{{ producto.nombre }}">
+
+          <label for="descripcion">Descripción</label>
+          <textarea id="descripcion" name="descripcion" rows="3">{{ producto.descripcion }}</textarea>
+
+          <label for="precio">Precio</label>
+          <input type="number" id="precio" name="precio" value="{{ producto.precio }}">
+
+          <label for="cantidad">Cantidad</label>
+          <input type="number" id="cantidad" name="cantidad" value="{{ producto.cantidad }}">
+
+          <label for="categoria_id">Categoría</label>
+          <select id="categoria_id" name="categoria_id">
+            {% for cat in categorias %}
+              <option value="{{ cat.id_categoria }}" {% if cat.id_categoria == producto.categoria_id %}selected{% endif %}>
+                {{ cat.nombre }}
+              </option>
+            {% endfor %}
+          </select>
+
+          <button type="submit">Guardar Cambios</button>
+        </form>
+      </div>
+
+      <!-- PANEL DERECHO -->
+      <div class="history-panel">
+        <h3>Historial de Materiales</h3>
+        <div class="search-bar">
+          <input type="text" placeholder="Buscar material...">
         </div>
-      </header>
 
-      <main>
-        <h1>Editar Materiales</h1>
-        <p class="subtitle">
-          Interfaz exclusiva para administradores. Permite modificar los datos de materiales registrados.
-        </p>
-
-        <div class="contenedor">
-          <!-- Panel Izquierdo -->
-          <section class="panel-izquierdo">
-            <h2>Material Seleccionado</h2>
-            <div class="info-material">
-              <p><strong>Nombre:</strong> Parche</p>
-              <p><strong>Código:</strong> #00000</p>
-            </div>
-
-            <form method="post" action="/editar_material">
-              <label for="nombre">Nombre:</label>
-              <input type="text" id="nombre" name="nombre" value="Parche" required />
-
-              <label for="cantidad">Cantidad:</label>
-              <input type="number" id="cantidad" name="cantidad" min="0" required />
-
-              <label for="precio">Precio:</label>
-              <input type="number" id="precio" name="precio" step="0.01" min="0" required />
-
-              <label for="tipo">Tipo:</label>
-              <input type="text" id="tipo" name="tipo" placeholder="Ej. Herramienta" required />
-
-              <label for="fecha">Fecha de ingreso:</label>
-              <input type="date" id="fecha" name="fecha" required />
-
-              <button type="submit" class="btn-guardar">Guardar</button>
-            </form>
-          </section>
-
-          <!-- Panel Derecho -->
-          <section class="panel-derecho">
-            <h2>Historial de Materiales</h2>
-
-            <form class="busqueda" method="get" action="/buscar_material">
-              <input type="text" name="query" placeholder="Buscar material..." />
-              <button type="submit" class="btn-buscar">Buscar</button>
-            </form>
-
-            <div class="tabla-contenedor">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Cantidad</th>
-                    <th>Código</th>
-                    <th>Tipo / Proveedor</th>
-                    <th>Precio</th>
-                    <th>Fecha de Ingreso</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for material in materiales %}
-                  <tr>
-                    <td>{{ material.nombre }}</td>
-                    <td>{{ material.cantidad }}</td>
-                    <td>{{ material.codigo }}</td>
-                    <td>{{ material.tipo }}</td>
-                    <td>{{ material.precio }}</td>
-                    <td>{{ material.fecha_ingreso }}</td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
-      </main>
+        <table>
+          <tr>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Código</th>
+            <th>Tipo</th>
+            <th>Precio</th>
+            <th>Fecha de Ingreso</th>
+          </tr>
+          {% for mat in materiales %}
+          <tr>
+            <td>{{ mat.nombre }}</td>
+            <td>{{ mat.cantidad }}</td>
+            <td>{{ mat.codigo }}</td>
+            <td>{{ mat.tipo }}</td>
+            <td>${{ mat.precio }}</td>
+            <td>{{ mat.fecha_ingreso }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
     </div>
 
-    <footer class="cerrar-sesion">
-      <a href="/logout">Cerrar sesión</a>
-    </footer>
+    <!-- SECCIÓN DE INFORMACIÓN -->
+    <div class="info-section">
+      <h3>Controles y Restricciones</h3>
+      <p>
+        1. Guardar Producto: El sistema debe mandar la información a la base de datos y guardar correctamente.<br>
+        2. Verificación de Rol: Solo el administrador puede editar materiales.<br>
+        3. Validación: Solo se pueden modificar la descripción, cantidad y precio.
+      </p>
+
+      <h3>Criterios de Aceptación</h3>
+      <p>
+        1. El sistema debe actualizar el producto de forma instantánea.<br>
+        2. Todos los campos deben estar llenos.<br>
+        3. Debe mostrar una alerta con los cambios.<br>
+        4. Los cambios deben registrarse en el historial.
+      </p>
+    </div>
+
   </body>
 </html>
