@@ -79,12 +79,20 @@ header .acciones {
 .right {
   position: absolute;
   right: 20px;
+
 }
 
 
 .btn-retroceso {
   background-color: #ffffff;
   color: black;
+
+}
+
+.btn-orden {
+  width: 130px;
+  height: 30px;
+  margin: 5px;
 
 }
 

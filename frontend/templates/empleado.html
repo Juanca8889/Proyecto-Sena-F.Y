@@ -10,11 +10,11 @@
   <body>
     <div class="contenedor">
       <aside class="sidebar">
-        <h2>🚗 Montallantas.F.Y</h2>
+          <div class="logo"><img src="../static/img/logo.png" alt="Descripción de la imagen"></div>
         <nav>
           <ul>
             <li>
-              <button  onclick="window.location.href='{{ url_for('clientes') }}'"><i data-feather="truck"></i> Domicilios</button>
+              <button  onclick="window.location.href='{{ url_for('domicilios') }}'"><i data-feather="truck"></i> Domicilios</button>
             </li>
             <li>
                     <div class="menu">
@@ -23,9 +23,6 @@
             </li>
             <li>
               <button onclick="window.location.href='{{ url_for('clientes') }}'" ><i data-feather="users"></i> Clientes</button>
-            </li>
-            <li>
-              <button onclick="window.location.href='{{ url_for('control_sesiones') }}'" ><i data-feather="briefcase"></i> Empleado</button>
             </li>
             <li>
               <button onclick="window.location.href='{{ url_for('agregar_herramienta') }}'"><i data-feather="tool"></i> Herramientas</button>

@@ -15,7 +15,7 @@ if BASE_DIR not in sys.path:
 
 # Imports de base de datos y backend
 from BD.conexion import verificar_usuario, conectar
-from Backend.Clientes import ConexionClientes  # se mantiene si sigues usando la vista de gestión masiva
+from Backend.Clientes import ConexionClientes 
 from Backend.Usuario import ConexionUsuario
 from Backend.pedido_compra import GestorCompras
 from Backend.stock_inicial import GestorStock
@@ -31,6 +31,9 @@ from Backend.ordenes import Servicio
 from Backend.domicilio import Domicilio
 from Backend.busqueda import BusquedaInventario
 from Backend.Guardar_material import Guardar_material
+from Backend.devoluciones import Devolucion
+from Backend.proveedores import ConexionProveedor 
+from Backend.material import ConexionMaterial
 
 from Backend.control_sesiones import (
     obtener_todas_sesiones_activas, 
@@ -103,21 +106,37 @@ def root():
 # ==========================================
 @app.route("/pedido_compra")
 def pedido_compra():
-    filtro = request.args.get("filtro", "MAS VENDIDO")
-    productos = gestor_compras.obtener_productos(filtro)
-    proveedores = gestor_compras.obtener_proveedores()
-    sugerencias = gestor_compras.sugerir_pedido_y_alertar()
+    
+    if is_admin():
+        filtro = request.args.get("filtro", "MAS VENDIDO")
+        productos = gestor_compras.obtener_productos(filtro)
+        proveedores = gestor_compras.obtener_proveedores()
+        sugerencias = gestor_compras.sugerir_pedido_y_alertar()
 
-    return render_template(
-        "pedido_compra.html",
-        vista="lista_materiales",
-        productos=productos,
-        proveedores=proveedores,
-        sugerencias=sugerencias,
-        filtro=filtro,
-        menu_url=_menu_url(),  # para la flecha Volver
-    )
+        return render_template(
+            "pedido_compra.html",
+            vista="lista_materiales",
+            productos=productos,
+            proveedores=proveedores,
+            sugerencias=sugerencias,
+            filtro=filtro,
+            menu_url=_menu_url(),  # para la flecha Volver
+        )
+    else:
+        filtro = request.args.get("filtro", "MAS VENDIDO")
+        productos = gestor_compras.obtener_productos(filtro)
+        proveedores = gestor_compras.obtener_proveedores()
+        sugerencias = gestor_compras.sugerir_pedido_y_alertar()
 
+        return render_template(
+            "pedido_compra (EMPLEADO).html",
+            vista="lista_materiales",
+            productos=productos,
+            proveedores=proveedores,
+            sugerencias=sugerencias,
+            filtro=filtro,
+            menu_url=_menu_url(),  # para la flecha Volver
+        )
 # ==========================================
 # RUTA: FORMULARIO PARA REALIZAR PEDIDO
 # ==========================================
@@ -734,14 +753,14 @@ def reporte_ventas():
 
     query = """
         SELECT  id_venta, cliente_id, cantidad, descripcion, fecha_venta, encargado_id, monto
-        FROM venta
+        FROM venta where 1=1
         
     """
     valores = []
 
     # Si hay filtro por fecha
     if fecha:
-        query += " AND fecha = %s"
+        query += " AND fecha_venta = %s"
         valores.append(fecha)
 
     # Ordenar según filtro
@@ -956,26 +975,47 @@ def ordenes():
 
 
 # -----------------------------------------
-# FILTRO DE PRODUCTOS
+# INVENTARIO
 # -----------------------------------------
 @app.route("/filtro", methods=["GET", "POST"])
 def filtro():
-    materiales = []
-    if request.method == "POST":
-        criterio = request.form.get("criterio")
-        valor = request.form.get("valor")
-        busqueda = BusquedaInventario()
-        materiales = busqueda.buscar(**{criterio: valor})
-        busqueda.cerrar()
-    else:
-        conexion = conectar()
-        cursor = conexion.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM producto")
-        materiales = cursor.fetchall()
-        cursor.close()
-        conexion.close()
+    
+    if is_admin():
+        
+        materiales = []
+        if request.method == "POST":
+            criterio = request.form.get("criterio")
+            valor = request.form.get("valor")
+            busqueda = BusquedaInventario()
+            materiales = busqueda.buscar(**{criterio: valor})
+            busqueda.cerrar()
+        else:
+            conexion = conectar()
+            cursor = conexion.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM producto")
+            materiales = cursor.fetchall()
+            cursor.close()
+            conexion.close()
 
-    return render_template("inventario.html", materiales=materiales)
+        return render_template("inventario.html", materiales=materiales)
+    
+    else:
+        materiales = []
+        if request.method == "POST":
+            criterio = request.form.get("criterio")
+            valor = request.form.get("valor")
+            busqueda = BusquedaInventario()
+            materiales = busqueda.buscar(**{criterio: valor})
+            busqueda.cerrar()
+        else:
+            conexion = conectar()
+            cursor = conexion.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM producto")
+            materiales = cursor.fetchall()
+            cursor.close()
+            conexion.close()
+
+        return render_template("inventario (EMPLEADO).html", materiales=materiales)
 
 
 
@@ -1074,6 +1114,192 @@ def volver():
         return redirect(url_for('empleado'))
     else:
         return redirect(url_for('login'))
+
+
+# -----------------------------------------
+# LAURA
+# -----------------------------------------
+
+# -----------------------------
+# DEVOLUCION DE MATERIAL
+# -----------------------------
+
+@app.route("/devolucion_de_material", methods=["GET", "POST"])
+def devoluciones():
+    if request.method == "POST":
+        compra_id = request.form.get("compra_id")
+        razon = request.form.get("razon")
+        fecha = date.today().strftime("%Y-%m-%d")
+        estado = 1  
+
+        try:
+            # Crear instancia de la clase Devolucion
+            nueva_devolucion = Devolucion(
+                compra_id=compra_id,
+                razon=razon,
+                estado=estado,
+                fecha=fecha
+            )
+
+            # Llamar al método que guarda la devolución en BD
+            nueva_devolucion.registrar_devolucion()
+
+            flash("✅ Devolución registrada correctamente.", "success")
+            return redirect(url_for("devoluciones"))
+
+        except Exception as e:
+            print(f"Error al registrar devolución: {e}")
+            flash(f"❌ Error al registrar devolución: {e}", "danger")
+
+    return render_template("devolucionmaterial.html")
+
+
+# -----------------------------
+# EDITAR MATERIALES
+# -----------------------------
+@app.route('/editar_material_form', methods=['GET'])
+def editar_material_form():
+    return render_template('editar_material.html')
+
+
+@app.route('/editar_material', methods=['POST'])
+def editar_material():
+    try:
+        id_producto = request.form.get('id_producto')
+        nombre = request.form.get('nombre_nuevo')
+        descripcion = request.form.get('descripcion_nuevo')
+        precio = request.form.get('precio_nuevo')
+
+        # Validaciones rápidas
+        if not id_producto or not nombre or not precio:
+            return jsonify({"error": "Faltan datos"}), 400
+
+        con = ConexionMaterial()
+        actualizado = con.actualizar_material(
+            id_producto=int(id_producto),
+            nombre_nuevo=nombre,
+            descripcion_nueva=descripcion,
+            precio_nuevo=float(precio)
+        )
+        con.cerrar()
+
+        if actualizado:
+            return jsonify({"success": True, "message": "Material actualizado correctamente"})
+        else:
+            return jsonify({"success": False, "message": "No se pudo actualizar el material"}), 400
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+# -----------------------------
+# REGISTRAR ADMINISTRAR PROVEEDORES
+# -----------------------------
+@app.route("/agregar_proveedor", methods=["GET", "POST"])
+def agregar_proveedor():
+    if request.method == "POST":
+        nombre = request.form.get("nombre")
+        telefono = request.form.get("telefono")
+        correo = request.form.get("correo")
+
+        proveedor = ConexionProveedor(nombre, telefono, correo)
+        if proveedor.agregar_proveedor():
+            flash("✅ Proveedor agregado correctamente.", "success")
+            return render_template("proveedores.html")
+        else:
+            flash("❌ Error al agregar el proveedor.", "danger")
+
+    return render_template("proveedores.html")
+
+# -----------------------------------------
+# exportar ventas a excel
+# -----------------------------------------
+
+@app.route("/exportar/ventas/excel")
+def exportar_ventas_excel():
+    fecha = request.args.get("fecha")
+    orden = request.args.get("orden")
+
+    conn = conectar()
+
+    query = """
+        SELECT id_venta, cliente_id, cantidad, descripcion, fecha_venta, encargado_id, monto
+        FROM venta WHERE 1=1
+    """
+
+    valores = []
+
+    if fecha:
+        query += " AND fecha_venta = %s"
+        valores.append(fecha)
+
+    if orden == "recientes":
+        query += " ORDER BY fecha_venta DESC"
+    elif orden == "antiguos":
+        query += " ORDER BY fecha_venta ASC"
+
+    df = pd.read_sql(query, conn, params=valores)
+    conn.close()
+
+    archivo_xlsx = "ventas.xlsx"
+    df.to_excel(archivo_xlsx, index=False)
+
+    return send_file(archivo_xlsx, as_attachment=True)
+
+
+
+@app.route("/exportar/ventas/pdf")
+def exportar_ventas_pdf():
+    fecha = request.args.get("fecha")
+    orden = request.args.get("orden")
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    query = """
+        SELECT id_venta, cliente_id, cantidad, descripcion, fecha_venta, encargado_id, monto
+        FROM venta WHERE 1=1
+    """
+
+    valores = []
+
+    if fecha:
+        query += " AND fecha_venta = %s"
+        valores.append(fecha)
+
+    if orden == "recientes":
+        query += " ORDER BY fecha_venta DESC"
+    elif orden == "antiguos":
+        query += " ORDER BY fecha_venta ASC"
+
+    cursor.execute(query, valores)
+    ventas = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", "B", 10)
+
+    columnas = ["ID", "Cliente", "Cantidad", "Descripción", "Fecha", "Encargado", "Monto"]
+
+    for col in columnas:
+        pdf.cell(28, 10, col, 1, 0, "C")
+    pdf.ln()
+
+    pdf.set_font("Arial", "", 8)
+
+    for fila in ventas:
+        for dato in fila:
+            pdf.cell(28, 10, str(dato), 1, 0, "C")
+        pdf.ln()
+
+    archivo_pdf = "ventas.pdf"
+    pdf.output(archivo_pdf)
+
+    return send_file(archivo_pdf, as_attachment=True)
 
 
 # -----------------------------------------

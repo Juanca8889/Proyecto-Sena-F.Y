@@ -11,9 +11,8 @@
 </head>
 <body>
 <header class="dash-header">
-        <!-- Volver al menú (Admin/Empleado/Login) sin JS -->
-     {% set _menu = url_for('admin') %}
-        <a class="btn-volver" href="{{ _menu }}" title="Volver al menú">
+   
+        <a class="btn-volver" href="{{ url_for('volver') }}" title="Volver al menú">
             <i class="fa-solid fa-arrow-left"></i>
         </a>
         <h2 class="SERVIMAQ">SERVIMAQ</h2>

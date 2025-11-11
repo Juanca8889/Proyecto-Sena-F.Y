@@ -3,75 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gestión de Devoluciones</title>
-    <link rel="stylesheet" href="./static/devoluciones.css" />
+    <title>Registrar Devolución</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='devolucionmaterial.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <script src="https://unpkg.com/feather-icons"></script>
+    
   </head>
   <body>
-    <div class="container">
-      <header>
-        <h1>Gestión de Devoluciones</h1>
+
+    <header class="header" >
+      <a class="salir" href="pedido_compra"><i data-feather="arrow-left"></i></a>
+      <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <div class="titulo">
+            <h1> Devolucion de material</h1>
+        </div>
       </header>
 
-      <main class="main-content">
-        <!-- Panel Izquierdo: Búsqueda y listado -->
-        <section class="left-panel">
-          <div class="search-section">
-            <input type="text" placeholder="Buscar devolución..." />
-            <select>
-              <option value="">Filtrar por...</option>
-              <option value="fecha">Fecha</option>
-              <option value="razon">Razón</option>
-              <option value="responsable">Responsable</option>
-              <option value="alfabetico">Orden alfabético</option>
-            </select>
-          </div>
+    <div class="form-container">
+      <h1>Registrar Devolución</h1>
 
-          <div class="devoluciones-grid">
-            <div class="devolucion-card">
-              <h2>Devolución</h2>
-              <p><strong>Razón:</strong> Daño</p>
-              <p><strong>Descripción:</strong> Caja golpeada</p>
-              <p><strong>Fecha:</strong> 10/09/2025</p>
-              <button class="view-btn">Ver</button>
-            </div>
+      <!-- MENSAJES FLASH -->
+      <section class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </section>
 
-            <div class="devolucion-card">
-              <h2>Devolución</h2>
-              <p><strong>Razón:</strong> No pagó</p>
-              <p><strong>Descripción:</strong> Cliente no cumplió con pago</p>
-              <p><strong>Fecha:</strong> 12/09/2025</p>
-              <button class="view-btn">Ver</button>
-            </div>
-          </div>
-        </section>
+      <!-- FORMULARIO -->
+      <form action="{{ url_for('devoluciones') }}" method="POST">
+        <div class="form-group">
+          <label for="compra_id">Código de Compra</label>
+          <input type="text" id="compra_id" name="compra_id" placeholder="Ej: 10234" required />
+        </div>
 
-        <!-- Panel Derecho: Formulario -->
-        <section class="right-panel">
-          <h2>Registrar Devolución</h2>
-          <form>
-            <label for="codigo">Código del Producto</label>
-            <input type="text" id="codigo" name="codigo" required />
+        <div class="form-group">
+          <label for="razon">Razón de Devolución</label>
+          <select id="razon" name="razon" required>
+            <option value="">Seleccione una razón</option>
+            <option value="danio">Daño</option>
+            <option value="no_pago">No pagó</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
 
-            <label for="nombre">Nombre del Material/Producto</label>
-            <input type="text" id="nombre" name="nombre" required />
+        <div class="form-group">
+          <label for="descripcion">Descripción Detallada</label>
+          <textarea id="descripcion" name="descripcion" rows="5" placeholder="Describe brevemente el motivo de la devolución..."></textarea>
+        </div>
 
-            <label for="usuario">Usuario/Responsable</label>
-            <input type="text" id="usuario" name="usuario" required />
-
-            <label for="razon">Razón de Devolución</label>
-            <select id="razon" name="razon" required>
-              <option value="danio">Daño</option>
-              <option value="no_pago">No pagó</option>
-              <option value="otro">Otro</option>
-            </select>
-
-            <label for="descripcion">Descripción Detallada</label>
-            <textarea id="descripcion" name="descripcion" rows="5"></textarea>
-
-            <button type="submit" class="register-btn">Registrar</button>
-          </form>
-        </section>
-      </main>
+        <button type="submit" class="register-btn">Registrar Devolución</button>
+      </form>
     </div>
+
+
+
+<script>
+      feather.replace();
+</script>
   </body>
 </html>

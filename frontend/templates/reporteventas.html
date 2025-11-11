@@ -69,8 +69,8 @@
 
         <!-- Exportar datos -->
         <div class="acciones-exportar">
-          <a href="/exportar_excel" class="btn-exportar">Exportar a Excel</a>
-          <a href="/exportar_csv" class="btn-exportar">Exportar a CSV</a>
+          <a href="{{ url_for('exportar_ventas_excel', fecha=request.args.get('fecha'), orden=request.args.get('orden')) }}" class="btn-exportar">Exportar a Excel</a>
+          <a href="{{ url_for('exportar_ventas_pdf', fecha=request.args.get('fecha'), orden=request.args.get('orden')) }}" class="btn-exportar">Exportar a PDF</a>
         </div>
       </main>
     </div>

@@ -1,177 +1,182 @@
+/* Fondo general */
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  background: #f5f7fa;
-  color: #222;
-}
-
-.window {
-  max-width: 1100px;
-  margin: 20px auto;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 1fr 380px; 
-  gap: 20px;
-}
-
-header {
-  grid-column: span 2;
-  background: #164b8f;
-  color: white;
+  background-color: #f4f6fa;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
   display: flex;
-  justify-content: space-between;
-  padding: 12px 20px;
+  flex-direction: column;
   align-items: center;
 }
 
-.window-name {
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-main {
-  padding: 20px;
-  display: contents; 
-}
-
-
-.panel-left {
-  padding: 20px;
-  border-right: 1px solid #e1e5eb;
-}
-
-.panel-left h2 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: #164b8f;
-}
-
-
-.devoluciones-actions {
+/* Encabezado superior con SERVIMAK */
+header {
+  width: 100%;
+  background-color: #0d3b82;
+  color: white;
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 0;
+  position: relative;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.devoluciones-actions input,
-.devoluciones-actions select {
-  flex: 1;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+.SERVIMAQ {
+  margin-left: 5px;
+  position: absolute;
+  left: 60px;
+
+
 }
 
 
-.grid-devoluciones {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
 
-.card {
-  background: #f9fafc;
-  border: 1px solid #e1e5eb;
-  border-radius: 8px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.card h3 {
-  margin: 0 0 5px 0;
-  font-size: 1rem;
-  color: #164b8f;
-}
-
-.card .razon {
-  font-weight: bold;
-  color: #444;
-  margin-bottom: 5px;
-}
-
-.card .fecha {
-  font-size: 0.85rem;
-  color: #666;
-}
-
-.card button {
-  margin-top: 10px;
-  padding: 8px;
-  border-radius: 5px;
-  border: none;
-  background: #164b8f;
+header .salir {
+  font-size: 22px;
   color: #fff;
-  cursor: pointer;
-}
-
-.card button:hover {
-  background: #123a70;
-}
-
-
-.panel-right {
+  text-decoration: none;
+  position: absolute;
+  left: 10px;
+  top: 17px;
+  border-radius: 6px;
   padding: 20px;
-  background: #f1f5fb;
-  border-left: 1px solid #dce3ef;
+
 }
 
-.panel-right h2 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: #164b8f;
+header .volver:hover {
+  color: var(--accent);
 }
 
-.form-devolucion {
+header .volver:focus-visible {
+  outline: 3px solid rgba(66, 66, 65, 0.5);
+  outline-offset: 2px;
+}
+
+header .titulo {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  height: 70px;
+}
+
+header .titulo h1 {
+  margin: 0;
+  font-size: 22px;
+  color: var(--accent);
+}
+
+header .acciones {
+  position: absolute;
+  right: 20px;
+  display: flex;
+  align-items: center;
   gap: 12px;
+}
+
+
+header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Flecha para regresar */
+.back-button {
+  position: absolute;
+  left: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.back-button:hover {
+  transform: scale(1.2);
+}
+
+/* Contenedor principal centrado */
+.form-container {
+  background-color: white;
+  margin-top: 60px;
+  padding: 40px 50px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 420px;
+  text-align: left;
+}
+
+/* Título del formulario */
+.form-container h1 {
+  text-align: center;
+  color: #0d3b82;
+  margin-bottom: 25px;
+}
+
+/* Etiquetas e inputs */
+.form-group {
+  margin-bottom: 20px;
 }
 
 label {
   font-weight: bold;
-  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 6px;
 }
 
-input, select, textarea {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+input,
+select,
+textarea {
   width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
 textarea {
-  resize: vertical;
-  min-height: 80px;
+  resize: none;
 }
 
-button.btn {
-  background: #164b8f;
+/* Botón principal */
+.register-btn {
+  width: 100%;
+  background-color: #0d3b82;
   color: white;
-  font-weight: bold;
   border: none;
-  border-radius: 5px;
-  padding: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
 }
 
-button.btn:hover {
-  background: #123a70;
+.register-btn:hover {
+  background-color: #0b2f6d;
 }
 
+/* Mensajes Flash */
+.flash-messages {
+  margin-bottom: 15px;
+}
 
-@media (max-width: 900px) {
-  .window {
-    grid-template-columns: 1fr;
-  }
-  header {
-    grid-column: span 1;
-  }
-  .panel-left {
-    border-right: none;
-    border-bottom: 1px solid #e1e5eb;
-  }
+.alert {
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.alert.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert.danger {
+  background-color: #f8d7da;
+  color: #721c24;
 }
