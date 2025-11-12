@@ -6,22 +6,23 @@
      ========================= */
 
 .SERVIMAQ {
-    margin-left:5px;
+    margin-left: 5px;
     position: absolute;
-    left:60px;
-    
+    left: 60px;
+
 
 }
 
 
 header {
-    background: var(--color-azul) ;
+    background: var(--color-azul);
     color: white;
     padding: 16px 20px;
     display: flex;
-    justify-content: center; /* centramos el título */
+    justify-content: center;
+    /* centramos el título */
     align-items: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     position: relative;
     height: 70px;
 }
@@ -35,10 +36,14 @@ header .salir {
     top: 50%;
     transform: translateY(-50%);
     transition: color .2s ease, transform .1s ease;
-    border-radius: 6px; /* para foco visible */
+    border-radius: 6px;
+    /* para foco visible */
 }
 
-header .volver:hover { color: var(--accent); }
+header .volver:hover {
+    color: var(--accent);
+}
+
 header .volver:focus-visible {
     outline: 3px solid rgba(66, 66, 65, 0.5);
     outline-offset: 2px;
@@ -64,10 +69,10 @@ header .acciones {
     gap: 12px;
 }
 
-  /* Botón/Link principal en header y reutilizable */
+/* Botón/Link principal en header y reutilizable */
 .btn-agregar,
-  header .acciones button,
-  header .acciones .btn {
+header .acciones button,
+header .acciones .btn {
     padding: 10px 16px;
     background: #fafafa;
     border: none;
@@ -83,28 +88,27 @@ header .acciones {
 }
 
 .btn-agregar:hover,
-  header .acciones button:hover,
-  header .acciones .btn:hover {
+header .acciones button:hover,
+header .acciones .btn:hover {
     background: var(--accent);
     transform: scale(1.05);
-  }
+}
 
 .btn-agregar:focus-visible,
-  header .acciones button:focus-visible,
-  header .acciones .btn:focus-visible {
+header .acciones button:focus-visible,
+header .acciones .btn:focus-visible {
     outline: 3px solid #6b6b6b;
     outline-offset: 2px;
-  }
-
-  /* Variante de éxito si se necesitara */
-  .btn-success {
-    background: var(--success);
-    color: #fff;
-  }
-.btn-success:hover { background: var(--success-2); }
+}
 
 
 
+
+
+
+form {
+    width: 100%;
+}
 
 
 .general_agenda {
@@ -173,11 +177,47 @@ header .acciones {
     border: 2px solid #444;
     border-radius: 15px;
     padding: 12px;
+    width: 420px;
+    height: 550px;
     position: absolute;
-    z-index: 2;
-    width: 220px;
-    top: 200px;
-    left: 480px;
+    top: 2%;
+    left: 32%;
+
+}
+
+.boton-final {
+    background-color: var(--color-verde);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+
+}
+
+#buscarMaquina {
+    width: 90%;
+    padding: 5px;
+    margin: 2px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+}
+
+input,
+textarea {
+    width: 90%;
+    padding: 5px;
+    margin: 2px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
 }
 
 .mostrar {

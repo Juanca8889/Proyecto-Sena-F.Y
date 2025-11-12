@@ -34,6 +34,7 @@ from Backend.Guardar_material import Guardar_material
 from Backend.devoluciones import Devolucion
 from Backend.proveedores import ConexionProveedor 
 from Backend.material import ConexionMaterial
+from Backend.Agenda_Mantenimiento import Agenda 
 
 from Backend.control_sesiones import (
     obtener_todas_sesiones_activas, 
@@ -520,15 +521,41 @@ def agenda():
     dias = range(1, 32) if vista == 'mensual' else range(1, 8)
     return render_template('agenda.html', dias=dias, vista=vista, dia_seleccionado=dia_seleccionado, menu_url=_menu_url())
 
-@app.route('/agregar', methods=['POST'], endpoint="agregar")
-def agregar():
+@app.route('/buscar_maquina')
+def buscar_maquina():
+    id_maquina = request.args.get('id')
+    if not id_maquina:
+        return jsonify({"error": "ID no proporcionado"})
+
+    agenda = Agenda()
+    maquina = agenda.obtener_maquina(id_maquina)
+    agenda.cerrar()
+
+    if not maquina:
+        return jsonify({"error": "Máquina no encontrada"})
     
+    return jsonify(maquina)
+
+
+
+@app.route('/agregar', methods=['POST'])
+def agregar():
     dia = request.form.get('dia')
-    maquina = request.form.get('maquina')
-    personal = request.form.get('personal')
-    hora = request.form.get('hora')
     descripcion = request.form.get('descripcion')
-    flash("Actividad registrada (demo). Implementa persistencia en Backend.Agenda_Mantenimiento.", "info")
+    personal = request.form.get('personal')
+    maquina_id = request.form.get('id_maquina')
+    usuario_id = 1  # Puedes cambiarlo según el usuario logueado
+    costo = request.form.get('costo')
+
+    agenda = Agenda()
+    exito = agenda.registrar_mantenimiento(descripcion, personal, dia, maquina_id, usuario_id, costo)
+    agenda.cerrar()
+
+    if exito:
+        flash("✅ Mantenimiento registrado correctamente", "success")
+    else:
+        flash("❌ Error al registrar mantenimiento", "error")
+
     return redirect(url_for('agenda', vista='mensual'))
 
 # ==========================================
@@ -673,11 +700,13 @@ def registrar_venta():
     cliente_id = int(request.form['cliente_id'])
     cantidad = int(request.form['cantidad'])
     encargado_id = int(request.form['encargado_id'])
-    garantia_dias = int(request.form['garantia_dias'])
+    garantia = int(request.form['garantia'])
     descripcion = request.form['descripcion']
 
     venta = Venta()
-    if venta.registrar_venta(cliente_id, id_producto, cantidad, encargado_id, descripcion, garantia_dias):
+    
+    if venta.registrar_venta(cliente_id, id_producto, cantidad, encargado_id, descripcion, garantia):
+        print(garantia)
         venta.cerrar()
         return redirect(url_for('venta_form'))
     else:
