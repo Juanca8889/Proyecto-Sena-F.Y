@@ -35,6 +35,7 @@ from Backend.devoluciones import Devolucion
 from Backend.proveedores import ConexionProveedor 
 from Backend.material import ConexionMaterial
 from Backend.Agenda_Mantenimiento import Agenda 
+from Backend.maquinaria import ConexionMaquinaria
 
 from Backend.control_sesiones import (
     obtener_todas_sesiones_activas, 
@@ -430,27 +431,25 @@ def olvidaste_contraseña():
 
 @app.route("/recuperar_contraseña", methods=["GET", "POST"])
 def recuperar_contraseña():
-    if request.method == 'POST':
-        nombre = request.form.get('usuario')
-        celular = request.form.get('celular')
-        nueva_contrasena = request.form.get('new-password')
+    if request.method == "POST":
+        nombre = request.form.get("usuario")
+        celular = request.form.get("celular")
+        nueva_contrasena = request.form.get("new-password")
 
-      
         if not nombre or not celular or not nueva_contrasena:
             flash("Por favor, complete todos los campos.", "warning")
-            return redirect(url_for('recuperar_contraseña'))
+            return redirect(url_for("recuperar_contraseña"))
 
-     
-        resultado = actualizar_contrasena_usuario(celular, nombre, nueva_contrasena)
+        resultado = actualizar_contrasena_usuario(nombre, celular, nueva_contrasena)
 
         if resultado:
             flash("Contraseña actualizada correctamente.", "success")
-            return redirect(url_for('login'))  
+            return redirect(url_for("login"))
         else:
             flash("Usuario o celular incorrecto.", "danger")
-            return redirect(url_for('recuperar_contraseña'))
+            return redirect(url_for("recuperar_contraseña"))
 
-    return render_template('Recuperacion_contraseña.html')
+    return render_template("Recuperacion_contraseña.html")
         
 # -----------------------
 # REGISTRO DE USUARIO
@@ -679,10 +678,24 @@ def inventario():
 # ==========================================
 @app.route('/salida_inventario', methods=['GET'])
 def salida_inventario():
+    page = int(request.args.get('page', 1))
+    per_page = 6  # cantidad de cards por página
+    offset = (page - 1) * per_page
+
     venta = Venta()
-    ventas = venta.ver_ventas()
+    ventas = venta.ver_ventas(limit=per_page, offset=offset)
+    total = venta.contar_ventas()
     venta.cerrar()
-    return render_template('salida_inventario.html', ventas=ventas)
+
+    has_next = total > page * per_page
+
+    return render_template(
+        'salida_inventario.html',
+        ventas=ventas,
+        page=page,
+        has_next=has_next
+    )
+
 
 # ==========================================
 # RUTA: Mostrar formulario de venta
@@ -1330,6 +1343,41 @@ def exportar_ventas_pdf():
 
     return send_file(archivo_pdf, as_attachment=True)
 
+
+
+# -----------------------------------------
+# Maquinaria
+# -----------------------------------------
+@app.route('/maquinaria', methods=['GET'])
+def maquinaria():
+    conexion = ConexionMaquinaria()
+    maquinarias = conexion.mostrar_maquinarias()
+    conexion.cerrar()
+    return render_template('maquinaria.html', maquinarias=maquinarias)
+
+# --- Registrar nueva maquinaria ---
+@app.route('/registrar_maquinaria', methods=['GET', 'POST'])
+def registrar_maquinaria():
+    if request.method == 'POST':
+        nombre = request.form.get('nombre')
+        descripcion = request.form.get('descripcion')
+        estado = request.form.get('estado')
+
+        # Validar campos
+        if not nombre or not descripcion or not estado:
+            flash("Por favor complete todos los campos.", "warning")
+            return redirect(url_for('maquinaria'))
+
+        # Guardar en la base de datos
+        conexion = ConexionMaquinaria(nombre=nombre, descripcion=descripcion, estado=estado)
+        conexion.registrar_maquinaria()
+        conexion.cerrar()
+
+        flash("✅ Maquinaria registrada correctamente.", "success")
+        return redirect(url_for('maquinaria'))
+
+    # Si se accede por GET, redirigir al listado
+    return redirect(url_for('maquinaria'))
 
 # -----------------------------------------
 # ERRORES

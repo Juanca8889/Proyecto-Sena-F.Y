@@ -1,0 +1,228 @@
+@import url('./variables.css');
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+/* --- HEADER --- */
+.main-header {
+    background: var(--color-azul);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    height: 70px;
+    flex-wrap: wrap;
+    /* para ser responsive */
+}
+
+.SERVIMAQ {
+    margin-left: 5px;
+    position: absolute;
+    left: 60px;
+    TOP: 15px;
+
+}
+
+/* ===== IZQUIERDA (flecha volver) ===== */
+.header-back {
+    color: var(--accent);
+    font-size: 24px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.header-back:hover {
+    transform: scale(1.1);
+    color: var(--color-verde);
+}
+
+/* ===== CENTRO (títulos) ===== */
+.header-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    min-width: 200px;
+    text-align: center;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.page-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* ===== DERECHA (botones o acciones) ===== */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-header {
+    background: #fafafa;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-header:hover {
+    background: var(--color-verde);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .main-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: auto;
+        padding: 10px;
+    }
+
+    .header-center {
+        margin: 10px 0;
+    }
+
+    .header-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+
+.header h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.header nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+}
+
+.header nav a:hover {
+    text-decoration: underline;
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.contenedor {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* PANEL IZQUIERDO (CARDS) */
+.panel-izquierdo {
+    flex: 2;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    height: 80vh;
+    overflow-y: auto;
+}
+
+.panel-izquierdo h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 15px;
+}
+
+.card {
+    background-color: #e8ecf1;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.card p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.vacio {
+    color: #888;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+/* PANEL DERECHO (FORMULARIO) */
+.panel-derecho {
+    flex: 1;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+}
+
+.panel-derecho h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input,
+textarea,
+select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #34495e;
+}

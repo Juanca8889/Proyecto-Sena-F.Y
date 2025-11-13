@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Recuperación de Contraseña</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='recuperacion_contraseña.css') }}">
-
+  <meta charset="UTF-8">
+  <title>Recuperación de Contraseña</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='recuperacion_contraseña.css') }}">
 </head>
-
 <body>
-    <div class="centered-form">
-        <form method="post">
-            <label for="usuario">Nombre de usuario</label>
-            <input type="text" id="usuario" name="usuario" required>
+  <div class="centered-form">
+    <form method="POST">
+      <h2>Recuperar Contraseña</h2>
 
-            <label for="celular">Numero de celular</label>
-            <input type="number" id="celular" name="celular" required>
+      <label for="usuario">Nombre de usuario</label>
+      <input type="text" id="usuario" name="usuario" required>
 
-            <label for="new-password">Nueva contraseña</label>
-            <input type="password" id="new-password" name="new-password" required>
+      <label for="celular">Número de celular</label>
+      <input type="number" id="celular" name="celular" required>
 
-            <button type="submit">Recuperar contraseña</button>
-        </form>
-    </div>
+      <label for="new-password">Nueva contraseña</label>
+      <input type="password" id="new-password" name="new-password" required>
+
+      <button type="submit">Actualizar contraseña</button>
+    </form>
+  </div>
 </body>
-
 </html>

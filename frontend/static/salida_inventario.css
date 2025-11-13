@@ -1,138 +1,147 @@
-/* ==========================
-   Importar variables globales
-========================== */
 @import url('variables.css');
 
-/* ==========================
-   ESTILOS GENERALES
-========================== */
-
-
-
-
-
+/* ========================
+   GENERALES
+======================== */
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    margin: 0;
-    padding: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-    width: 90%;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
+  width: 90%;
+  margin: 20px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
 }
 
-/* ==========================
-    HEADER PRINCIPAL
-========================== */
-
+/* ========================
+   HEADER (SIN CAMBIOS)
+======================== */
 .SERVIMAQ {
-    margin-left: 5px;
-    position: absolute;
-    left: 50px;
+  margin-left: 5px;
+  position: absolute;
+  left: 50px;
 }
 
 header {
-    background: var(--color-azul);
-    color: white;
-    padding: 16px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    position: relative;
-    height: 70px;
+  background: var(--color-azul);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  height: 70px;
 }
 
 .salir {
-    position: absolute;
-    left: 10px;
-    color: white;
+  position: absolute;
+  left: 10px;
+  color: white;
 }
-
 
 .add-btn {
-    position: absolute;
-    right: 30px;
-    background-color: var(--color-verde);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
+  position: absolute;
+  right: 30px;
+  background-color: var(--color-verde);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-/* ==========================
-    TABLAS Y CONTENIDO
-========================== */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
+/* ========================
+   TARJETAS
+======================== */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
 }
 
-thead {
-    background: #e0e0e0;
+.card {
+  background: #fefefe;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
 }
 
-th,
-td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
+.card:hover {
+  transform: scale(1.03);
 }
 
-/* ==========================
-   FOOTER Y PAGINACIÓN
-========================== */
+.card h3 {
+  color: var(--color-azul);
+  margin-top: 0;
+}
+
+.card p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.no-data {
+  text-align: center;
+  font-size: 16px;
+  color: #555;
+}
+
+/* =====================
+   PAGINACIÓN ESTÉTICA
+===================== */
 footer {
-    margin-top: 15px;
+    margin-top: 25px;
     text-align: center;
 }
 
-.pagination button {
-    margin: 0 3px;
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    background: #f9f9f9;
-}
-
-/* ==========================
-   BOTONES VARIOS
-========================== */
-
-
-.btn-volver {
-    font-size: 20px;
-    color: #333;
+.pagination a,
+.pagination span {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 8px 14px;
+    border-radius: 5px;
+    font-weight: bold;
     text-decoration: none;
-    margin-right: 10px;
+    transition: all 0.2s ease;
 }
 
-/* ==========================
+.pagination a {
+    background-color: var(--color-verde);
+    color: #fff;
+    border: none;
+}
+
+.pagination a:hover {
+    background-color: #26a269; /* tono más oscuro del verde */
+    transform: translateY(-2px);
+}
+
+.pagination span {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+/* ========================
    RESPONSIVE
-========================== */
+======================== */
 @media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  header {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
 
-    header .titulo {
-        margin-left: 0;
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    header .titulo h1 {
-        font-size: 1rem;
-    }
-
-    header .add-btn {
-        font-size: 0.9rem;
-        padding: 6px 12px;
-    }
+  .add-btn {
+    position: static;
+    margin-top: 10px;
+  }
 }

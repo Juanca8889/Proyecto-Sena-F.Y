@@ -19,38 +19,37 @@
   </header>
 
   <div class="container">
-    <table id="tabla-registros">
-      <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>ID Venta</th>
-          <th>Producto</th>
-          <th>Cantidad</th>
-          <th>Descripción</th>
-          <th>Monto</th>
-        </tr>
-      </thead>
-      <tbody>
+    <div class="cards-container">
+      {% if ventas %}
         {% for v in ventas %}
-        <tr>
-          <td>{{ v['fecha_venta'] }}</td>
-          <td>{{ v['id_venta'] }}</td>
-          <td>{{ v['producto'] }}</td>
-          <td>{{ v['cantidad'] }}</td>
-          <td>{{ v['descripcion'] }}</td>
-          <td>${{ v['monto'] }}</td>
-        </tr>
-        {% else %}
-        <tr><td colspan="6">No hay registros todavía.</td></tr>
+        <div class="card">
+          <h3>Venta #{{ v.id_venta }}</h3>
+          <p><strong>Fecha:</strong> {{ v.fecha_venta }}</p>
+          <p><strong>Producto:</strong> {{ v.producto }}</p>
+          <p><strong>Cantidad:</strong> {{ v.cantidad }}</p>
+          <p><strong>Descripción:</strong> {{ v.descripcion }}</p>
+          <p><strong>Monto:</strong> ${{ v.monto }}</p>
+        </div>
         {% endfor %}
-      </tbody>
-    </table>
+      {% else %}
+        <p>No hay registros todavía.</p>
+      {% endif %}
+    </div>
 
-   
+    <!-- Paginación simple -->
+    <footer>
+      <div class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('salida_inventario', page=page-1) }}">&laquo; Anterior</a>
+        {% endif %}
+        <span>Página {{ page }}</span>
+        {% if has_next %}
+        <a href="{{ url_for('salida_inventario', page=page+1) }}">Siguiente &raquo;</a>
+        {% endif %}
+      </div>
+    </footer>
   </div>
 
-  <script>
-    feather.replace();
-  </script>
+  <script>feather.replace();</script>
 </body>
 </html>

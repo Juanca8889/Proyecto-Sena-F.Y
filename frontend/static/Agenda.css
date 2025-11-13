@@ -21,7 +21,7 @@ header {
     display: flex;
     justify-content: center;
     /* centramos el título */
-    align-items: center;
+
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     position: relative;
     height: 70px;
@@ -185,7 +185,8 @@ form {
 
 }
 
-.boton-final {
+.boton-final,
+.Maquinaria {
     background-color: var(--color-verde);
     color: white;
     border: none;
@@ -195,6 +196,14 @@ form {
     margin-top: 10px;
 
 }
+
+.Maquinaria {
+    position: absolute;
+    right: 15px;
+    margin-top: 5px;
+}
+
+
 
 #buscarMaquina {
     width: 90%;
