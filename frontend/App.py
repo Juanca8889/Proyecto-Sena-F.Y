@@ -515,11 +515,16 @@ def enviar_encuesta():
 # ==========================================
 @app.route('/Agenda', methods=['GET'], endpoint="agenda")
 def agenda():
-    vista = request.args.get('vista', 'mensual')
-    dia_seleccionado = request.args.get('dia')
-    dias = range(1, 32) if vista == 'mensual' else range(1, 8)
-    return render_template('agenda.html', dias=dias, vista=vista, dia_seleccionado=dia_seleccionado, menu_url=_menu_url())
-
+    if is_admin():
+        vista = request.args.get('vista', 'mensual')
+        dia_seleccionado = request.args.get('dia')
+        dias = range(1, 32) if vista == 'mensual' else range(1, 8)
+        return render_template('agenda.html', dias=dias, vista=vista, dia_seleccionado=dia_seleccionado, menu_url=_menu_url())
+    else:
+        vista = request.args.get('vista', 'mensual')
+        dia_seleccionado = request.args.get('dia')
+        dias = range(1, 32) if vista == 'mensual' else range(1, 8)
+        return render_template('Agenda (EMPLEADO).html', dias=dias, vista=vista, dia_seleccionado=dia_seleccionado, menu_url=_menu_url())
 @app.route('/buscar_maquina')
 def buscar_maquina():
     id_maquina = request.args.get('id')
@@ -1379,6 +1384,39 @@ def registrar_maquinaria():
     # Si se accede por GET, redirigir al listado
     return redirect(url_for('maquinaria'))
 
+
+
+
+# -----------------------------------------
+# Mantenimientos vista
+# -----------------------------------------
+
+@app.route('/mantenimientos', methods=['GET'])
+def mantenimientos():
+    agenda = Agenda()
+
+    # Obtener todos los mantenimientos
+    mantenimientos = agenda.ver_mantenimientos()
+    agenda.cerrar()
+
+    # Parámetros de paginación
+    por_pagina = 6   # cantidad de cards por página
+    pagina = request.args.get('page', 1, type=int)
+
+    total = len(mantenimientos)
+    inicio = (pagina - 1) * por_pagina
+    fin = inicio + por_pagina
+    mantenimientos_pagina = mantenimientos[inicio:fin]
+
+    # Total de páginas
+    total_paginas = (total + por_pagina - 1) // por_pagina
+
+    return render_template(
+        'mantenimiento.html',
+        mantenimientos=mantenimientos_pagina,
+        pagina_actual=pagina,
+        total_paginas=total_paginas
+    )
 # -----------------------------------------
 # ERRORES
 # -----------------------------------------

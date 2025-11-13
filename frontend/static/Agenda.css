@@ -186,7 +186,8 @@ form {
 }
 
 .boton-final,
-.Maquinaria {
+.Maquinaria,
+.mantenimientos {
     background-color: var(--color-verde);
     color: white;
     border: none;
@@ -195,6 +196,13 @@ form {
     cursor: pointer;
     margin-top: 10px;
 
+}
+
+
+.mantenimientos {
+    position: absolute;
+    right: 130px;
+    margin-top: 5px;
 }
 
 .Maquinaria {

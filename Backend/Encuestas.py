@@ -17,11 +17,19 @@ class Encuestas:
             password = os.getenv("PASSWORD")
             self.email_para
             
-            header ="JCGS"
-            cuerpo ="""Por favor te invitamos a responder una encuesta de satisfaccion,
-por medio del siguiente link :https://n9.cl/5as0hi.
+            header ="Tu opinión es muy importante para nosotros"
+            cuerpo ="""Hola,
 
-Gracias por tu tiempo y preferencia."""
+Gracias por confiar en nuestros servicios. Para nosotros es fundamental mejorar cada día y tu opinión nos ayuda a hacerlo.
+
+Te invitamos a responder una breve encuesta que no te tomará más de 2 minutos:
+
+https://n9.cl/5as0hi.
+
+Agradecemos mucho tu tiempo y tus comentarios.
+
+Saludos cordiales,
+Tu equipo de atención"""
 
 
             em = EmailMessage()
@@ -35,3 +43,9 @@ Gracias por tu tiempo y preferencia."""
             with smtplib.SMTP_SSL("smtp.gmail.com",465,context = context) as smtp:
                 smtp.login(email_MFY,password)
                 smtp.sendmail(email_MFY,self.email_para,em.as_string())
+                
+                
+                
+                
+                
+                

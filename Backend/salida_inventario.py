@@ -29,9 +29,10 @@ class Venta:
             print(f"Error al obtener producto: {err}")
             return None
 
-    def registrar_venta(self, cliente_id, id_producto, cantidad, encargado_id, descripcion, garantia_dias):
+    def registrar_venta(self, cliente_id, id_producto, cantidad, encargado_id, descripcion, garantia):
         try:
             producto = self.obtener_producto(id_producto)
+            
             if not producto:
                 print("Producto no encontrado.")
                 return False
@@ -41,10 +42,12 @@ class Venta:
             fecha_actual = datetime.now().date()
 
             query = """
-                INSERT INTO venta (cliente_id, cantidad, descripcion, fecha_venta, encargado_id, monto)
-                VALUES (%s, %s, %s, %s, %s, %s);
+            
+                
+                INSERT INTO Venta (cliente_id, cantidad, descripcion, fecha_venta, encargado_id, monto, garantias)
+                VALUES (%s, %s, %s, %s, %s, %s, %s);
             """
-            values = (cliente_id, cantidad, descripcion, fecha_actual, encargado_id, monto)
+            values = (cliente_id, cantidad, descripcion, fecha_actual, encargado_id, monto, garantia)
             self.cursor.execute(query, values)
             self.conexion.commit()
 
@@ -53,8 +56,31 @@ class Venta:
             self.cursor.execute(query_update, (nueva_cantidad, id_producto))
             self.conexion.commit()
 
-            print(f"✅ Venta registrada: {producto['nombre']} - Total: {monto}")
+            print(f"✅ Venta registrada: {producto['nombre']} - Total: {monto} garantia de {garantia} dias")
+            
             return True
         except mysql.connector.Error as err:
             print(f"❌ Error al registrar venta: {err}")
             return False
+        
+    def ver_ventas(self, limit=None, offset=None):
+        try:
+            query = "SELECT * FROM venta ORDER BY id_venta DESC"
+            if limit is not None and offset is not None:
+                query += " LIMIT %s OFFSET %s"
+                self.cursor.execute(query, (limit, offset))
+            else:
+                self.cursor.execute(query)
+            return self.cursor.fetchall()
+        except mysql.connector.Error as err:
+            print(f"Error al obtener ventas: {err}")
+            return []
+
+    def contar_ventas(self):
+        try:
+            self.cursor.execute("SELECT COUNT(*) AS total FROM venta;")
+            return self.cursor.fetchone()["total"]
+        except mysql.connector.Error:
+            return 0
+
+

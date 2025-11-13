@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Mantenimientos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='mantenimiento.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+
+  <header>
+    <a class="salir" href="{{ url_for('agenda') }}"><i data-feather="arrow-left"></i></a>
+    <h2 class="SERVIMAQ">SERVIMAQ</h2>
+    <div class="titulo">
+      <h1>LISTA DE MANTENIMIENTOS</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    {% if mantenimientos %}
+      <div class="cards-grid">
+        {% for m in mantenimientos %}
+        <div class="card">
+          <h3>🧰 Mantenimiento #{{ m['id_mantenimiento'] }}</h3>
+          <p><strong>Fecha:</strong> {{ m['fecha'] }}</p>
+          <p><strong>Personal:</strong> {{ m['personal'] }}</p>
+          <p><strong>Descripción:</strong> {{ m['descripcion'] }}</p>
+          <p><strong>ID Máquina:</strong> {{ m['maquina_id'] }}</p>
+          <p><strong>Usuario ID:</strong> {{ m['usuario_id'] }}</p>
+          <p><strong>Costo:</strong> ${{ m['costo'] }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="no-data">No hay mantenimientos registrados aún.</p>
+    {% endif %}
+  </div>
+
+  <footer>
+    <div class="pagination">
+      {% if pagina_actual > 1 %}
+        <a href="{{ url_for('mantenimientos', page=pagina_actual-1) }}">&laquo;</a>
+      {% endif %}
+
+      {% for num in range(1, total_paginas + 1) %}
+        <a href="{{ url_for('mantenimientos', page=num) }}" class="{% if num == pagina_actual %}active{% endif %}">
+          {{ num }}
+        </a>
+      {% endfor %}
+
+      {% if pagina_actual < total_paginas %}
+        <a href="{{ url_for('mantenimientos', page=pagina_actual+1) }}">&raquo;</a>
+      {% endif %}
+    </div>
+  </footer>
+
+  <script>feather.replace();</script>
+</body>
+</html>

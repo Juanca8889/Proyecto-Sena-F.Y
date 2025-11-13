@@ -49,13 +49,7 @@ class Proveedor:
         conexion.close()
 
 
-    @staticmethod
-    def eliminar(id_proveedor):
-        conexion = conectar()
-        cursor = conexion.cursor()
-        cursor.execute("DELETE FROM proveedores WHERE id_proveedor = %s", (id_proveedor,))
-        conexion.commit()
-        conexion.close()
+
 
 
 
