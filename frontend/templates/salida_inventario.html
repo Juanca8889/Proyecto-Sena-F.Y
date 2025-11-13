@@ -18,6 +18,12 @@
     <button class="add-btn" onclick="window.location.href='{{ url_for('venta_form') }}'">+ Registrar Venta</button>
   </header>
 
+<div class="filtros">
+  <a href="{{ url_for('salida_inventario', filtro='recientes') }}" class="btn-filtro">Más recientes</a>
+  <a href="{{ url_for('salida_inventario', filtro='antiguos') }}" class="btn-filtro">Más antiguos</a>
+</div>
+
+
   <div class="container">
     <div class="cards-container">
       {% if ventas %}

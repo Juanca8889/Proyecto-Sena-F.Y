@@ -63,9 +63,12 @@ class Venta:
             print(f"❌ Error al registrar venta: {err}")
             return False
         
-    def ver_ventas(self, limit=None, offset=None):
+    def ver_ventas(self, limit=None, offset=None, filtro='recientes'):
         try:
-            query = "SELECT * FROM venta ORDER BY id_venta DESC"
+            # Ordenar según el filtro
+            order = "DESC" if filtro == 'recientes' else "ASC"
+            query = f"SELECT * FROM venta ORDER BY fecha_venta {order}"
+            
             if limit is not None and offset is not None:
                 query += " LIMIT %s OFFSET %s"
                 self.cursor.execute(query, (limit, offset))
@@ -75,6 +78,7 @@ class Venta:
         except mysql.connector.Error as err:
             print(f"Error al obtener ventas: {err}")
             return []
+
 
     def contar_ventas(self):
         try:

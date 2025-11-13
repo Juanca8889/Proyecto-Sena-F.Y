@@ -1,24 +1,24 @@
+@import url('variables.css');
+
 body {
     background-color: whitesmoke;
     background-image: url("./img/fnd.png")
 }
 
-/*.login-container .forma {
+/*.forma-arriba-izquierda {
     position: absolute;
-    right: -600px;
-    top: -5px;
-    height: 1000px;
-    width: 1000px;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
     background: linear-gradient(45deg, #262493, #0b0a26);
-    transform: rotate(10deg) skew(40deg);
-    transform-origin: bottom right;
-
+    clip-path: polygon(0 0, 50% 50%, 0 50%);
+    z-index: 1;
 }
+
 */
-
-
 form {
-    background-color: #262493;
+    background-color: var(--color-azul);
     padding: 20px;
     border-radius: 8px;
     box-shadow: -6px 6px 5px 0px rgba(0, 0, 0, 0.75);

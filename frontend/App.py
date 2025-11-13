@@ -684,11 +684,12 @@ def inventario():
 @app.route('/salida_inventario', methods=['GET'])
 def salida_inventario():
     page = int(request.args.get('page', 1))
-    per_page = 6  # cantidad de cards por página
+    filtro = request.args.get('filtro', 'recientes')  # por defecto mostrar recientes
+    per_page = 6
     offset = (page - 1) * per_page
 
     venta = Venta()
-    ventas = venta.ver_ventas(limit=per_page, offset=offset)
+    ventas = venta.ver_ventas(limit=per_page, offset=offset, filtro=filtro)
     total = venta.contar_ventas()
     venta.cerrar()
 
@@ -698,7 +699,8 @@ def salida_inventario():
         'salida_inventario.html',
         ventas=ventas,
         page=page,
-        has_next=has_next
+        has_next=has_next,
+        filtro=filtro
     )
 
 
