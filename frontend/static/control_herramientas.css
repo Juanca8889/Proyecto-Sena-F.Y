@@ -1,0 +1,175 @@
+@import url('variables.css');
+
+/* ======= ESTILOS GENERALES ======= */
+
+/* ======= TABLA ======= */
+.tabla-herramientas {
+    width: 100%;
+    max-width: 1100px;
+    margin: 40px auto;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.tabla-herramientas thead {
+    background: #0052cc;
+    color: white;
+}
+
+.tabla-herramientas th, 
+.tabla-herramientas td {
+    padding: 14px;
+    text-align: center;
+    font-size: 16px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.tabla-herramientas tbody tr:hover {
+    background: #f0f4ff;
+}
+
+/* ===== INPUT DE CANTIDAD ===== */
+.input-cant {
+    width: 80px;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #d0d7e6;
+    border-radius: 6px;
+    transition: .2s;
+}
+
+.input-cant:focus {
+    border-color: #0052cc;
+    outline: none;
+}
+
+/* ===== BOTONES ===== */
+.btn-retirar {
+    background: #008c1a;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    font-size: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-retirar:hover {
+    background: #006f15;
+}
+
+
+
+
+
+
+.SERVIMAQ {
+  margin-left: 5px;
+  position: absolute;
+  left: 50px;
+}
+
+.ticket_Descripcion {
+  height: 100px;
+
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+
+
+header {
+  background: var(--color-azul);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  height: 70px;
+
+}
+
+.salir {
+  position: absolute;
+  left: 10px;
+  color: white;
+}
+
+.titulo-header {
+  font-size: 22px;
+}
+
+.add-btn {
+  position: absolute;
+  right: 30px;
+  background-color: var(--color-verde);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+body {
+  font-family: var(--fuente-principal);
+  background-color: white;
+  margin: 0;
+  padding: 0;
+}
+
+.volver {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 24px;
+  color: var(--color-azul);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Mantener exactamente igual tu contenedor anterior */
+.contenedor {
+  width: 450px;
+  margin: 100px auto;
+  padding: 30px;
+  background-color: var(--color-azul);
+  border-radius: 8px;
+}
+
+.titulo-contenedor {
+  text-align: center;
+  color: white;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  color: white;
+  font-weight: bold;
+}
+
+
+
+button {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: var(--color-verde);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+}

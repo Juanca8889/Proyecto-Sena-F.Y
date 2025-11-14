@@ -48,10 +48,9 @@ class Herramientas:
                 cantidad_actual = result["cantidad"]
                 if cantidad_actual >= cantidad_salida:
                     nueva_cantidad = cantidad_actual - cantidad_salida
-                    query_update = "UPDATE inventarioherramientas SET cantidad = %s WHERE id_herr = %s;"
+                    query_update = "UPDATE inventarioherramientas SET cantidad_faltante = %s WHERE id_herr = %s;"
                     self.cursor.execute(query_update, (nueva_cantidad, id_herr))
                     self.conexion.commit()
-                    print(f"Salida registrada correctamente. Nueva cantidad: {nueva_cantidad}")
                     return True
                 else:
                     print("❌ No hay suficiente cantidad disponible para salida.")
@@ -66,14 +65,14 @@ class Herramientas:
 
     def reintegro(self, id_herr, cantidad_reintegro):
         try:
-            query_select = "SELECT cantidad FROM inventarioherramientas WHERE id_herr = %s;"
+            query_select = "SELECT cantidad_faltante FROM inventarioherramientas WHERE id_herr = %s;"
             self.cursor.execute(query_select, (id_herr,))
             result = self.cursor.fetchone()
 
             if result:
-                cantidad_actual = result["cantidad"]
-                nueva_cantidad = cantidad_actual + cantidad_reintegro
-                query_update = "UPDATE inventarioherramientas SET cantidad = %s WHERE id_herr = %s;"
+                cantidad_actual = result["cantidad_faltante"]
+                nueva_cantidad = cantidad_actual - cantidad_reintegro
+                query_update = "UPDATE inventarioherramientas SET cantidad_faltante = %s WHERE id_herr = %s;"
                 self.cursor.execute(query_update, (nueva_cantidad, id_herr))
                 self.conexion.commit()
                 return True

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Control de Herramientas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='control_herramientas.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+
+    <header>
+    <a class="salir" href="{{ url_for('agregar_herramienta') }}"><i data-feather="arrow-left"></i></a>
+    <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <div class="titulo">
+            <h1>CONTROL DE HERRAMIENTAS</h1>
+        </div>
+        <div class="acciones" > 
+        </div>
+    </header>
+
+<script>feather.replace();</script>
+
+<h1 style="text-align:center; margin-top: 20px;"></h1>
+
+<form method="POST" style="padding: 20px">
+
+<table class="tabla-herramientas">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Herramienta</th>
+            <th>Stock</th>
+            <th>Retirada</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.id_herr }}</td>
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>{{ item.cantidad_faltante }}</td>
+            
+            
+
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+</form>
+
+</body>
+</html>

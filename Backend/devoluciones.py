@@ -10,12 +10,13 @@ from BD.conexion import conectar
 
 
 class Devolucion:
-    def __init__(self, id_devolucion=None, compra_id=None, fecha=None, estado=None, razon=None):
+    def __init__(self, id_devolucion=None, compra_id=None, fecha=None, estado=None, razon=None, cantidad=None):
         self.id_devolucion = id_devolucion
         self.compra_id = compra_id
         self.fecha = fecha
         self.estado = estado
         self.razon = razon
+        self.cantidad = cantidad
 
         try:
             self.conexion = conectar()
@@ -32,10 +33,10 @@ class Devolucion:
         cursor = conexion.cursor()
 
         sql = """
-        INSERT INTO devoluciones (compra_id, razon, estado, fecha)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO devoluciones (compra_id, razon, estado, fecha, cantidad)
+        VALUES (%s, %s, %s, %s, %s)
         """
-        valores = (self.compra_id, self.razon, self.estado, self.fecha)
+        valores = (self.compra_id, self.razon, self.estado, self.fecha, self.cantidad)
 
         cursor.execute(sql, valores)
         conexion.commit()

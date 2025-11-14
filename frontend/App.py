@@ -410,7 +410,7 @@ def login():
         else:
             flash("Usuario o contraseña incorrectos", "danger")
 
-    return render_template('login.html')
+    return render_template('login.html'), session['id_usuario']
 
 @app.route('/olvidaste-contraseña', methods=['GET', 'POST'])
 def olvidaste_contraseña():
@@ -480,11 +480,71 @@ def register():
 # ==========================================
 @app.route('/admin', endpoint="admin")
 def home():
-    return render_template('index.html')
+    id_usuario = session.get('id_usuario')
+
+    if not id_usuario:
+        return redirect(url_for('login'))  
+
+    usuario = ConexionUsuario()
+    nombre = usuario.obtener_nombre(id_usuario)
+    usuario.cerrar()
+
+    return render_template('index.html', presentacion=nombre)
+
 
 @app.route('/empleado')
 def empleado():
-    return render_template('empleado.html')
+    id_usuario = session.get('id_usuario')
+
+    if not id_usuario:
+        return redirect(url_for('login'))  
+
+    usuario = ConexionUsuario()
+    nombre = usuario.obtener_nombre(id_usuario)
+    usuario.cerrar()
+    
+    return render_template('empleado.html', presentacion=nombre)
+
+
+
+# ==========================================
+# RUTAS DE cambio de rol
+# ==========================================
+
+@app.route("/usuarios")
+def usuarios():
+    page = int(request.args.get("page", 1))
+    per_page = 10
+    offset = (page - 1) * per_page
+
+    db = ConexionUsuario()
+    usuarios = db.obtener_usuarios_paginados(per_page, offset)
+    total = db.contar_usuarios()
+    total_pages = (total + per_page - 1) // per_page
+
+    return render_template(
+        "usuarios.html",
+        usuarios=usuarios,
+        page=page,
+        total_pages=total_pages
+    )
+
+@app.route("/cambiar_rol/<int:id_usuario>", methods=["POST"])
+def cambiar_rol(id_usuario):
+    nuevo_rol = int(request.form.get("rol"))
+
+    db = ConexionUsuario()
+    exito = db.cambiar_rol(id_usuario, nuevo_rol)
+
+    if exito:
+        flash("Rol actualizado correctamente", "success")
+    else:
+        flash("Error al actualizar rol", "danger")
+
+    return redirect(url_for("usuarios"))
+
+
+
 
 # ==========================================
 # RUTAS DE GESTIÓN DE CLIENTES camilo
@@ -595,7 +655,7 @@ def agregar_herramienta():
         nombre = request.form['nombre']
         descripcion = request.form['descripcion']
         cantidad = int(request.form['cantidad'])
-        estado = request.form['estado']
+        estado = "disponible"
         usuario_id = int(request.form['usuario_id'])
 
         nueva_herramienta = Herramientas(
@@ -675,6 +735,34 @@ def buscar_herramienta():
 @app.route('/inventario') 
 def inventario(): 
     return render_template('inventario_herramientas.html')
+
+
+# ==========================================
+# SALIDA DE INVENTARIO 
+# ==========================================
+@app.route('/control_herramientas', methods=['GET', 'POST'])
+def control_herramientas():
+
+    herramientas = Herramientas()
+
+    if request.method == 'POST':
+        ids = request.form.getlist("herramienta")
+
+        for id_h in ids:
+            valor_faltante = int(request.form.get(f"faltante_{id_h}", 0))
+
+            if valor_faltante > 0:
+                herramientas.marcar_faltantes(id_h, valor_faltante)
+
+        herramientas.cerrar()
+        flash("Control actualizado correctamente.", "success")
+        return redirect(url_for('control_herramientas'))
+
+    data = herramientas.mostrar_herramientas()
+    herramientas.cerrar()
+
+    return render_template('control_herramientas.html', items=data)
+
 
 
 
@@ -1179,6 +1267,7 @@ def devoluciones():
         compra_id = request.form.get("compra_id")
         razon = request.form.get("razon")
         fecha = date.today().strftime("%Y-%m-%d")
+        cantidad = int(request.form.get("cantidad"))
         estado = 1  
 
         try:
@@ -1187,7 +1276,8 @@ def devoluciones():
                 compra_id=compra_id,
                 razon=razon,
                 estado=estado,
-                fecha=fecha
+                fecha=fecha,
+                cantidad = cantidad
             )
 
             # Llamar al método que guarda la devolución en BD

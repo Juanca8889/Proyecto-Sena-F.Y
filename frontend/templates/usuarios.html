@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios</title>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #f3f3f3;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pagination a {
+            padding: 10px 15px;
+            margin: 3px;
+            border-radius: 5px;
+            background: #2ecc71;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .pagination a.active {
+            background: #27ae60;
+        }
+
+        .btn-rol {
+            padding: 6px 10px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-rol:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Gestión de Usuarios</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Celular</th>
+                <th>Correo</th>
+                <th>Usuario</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for u in usuarios %}
+            <tr>
+                <td>{{ u.nombre }}</td>
+                <td>{{ u.apellido }}</td>
+                <td>{{ u.celular }}</td>
+                <td>{{ u.correo }}</td>
+                <td>{{ u.usuario }}</td>
+
+                <td>
+                    {% if u.rol_id == 1 %}
+                        Admin
+                    {% else %}
+                        Empleado
+                    {% endif %}
+                </td>
+
+                <td>
+                    <form action="{{ url_for('cambiar_rol', id_usuario=u.id_usuario) }}" method="POST">
+                        <select name="rol">
+                            <option value="1" {% if u.rol_id == 1 %}selected{% endif %}>Admin</option>
+                            <option value="2" {% if u.rol_id == 2 %}selected{% endif %}>Empleado</option>
+                        </select>
+
+                        <button type="submit" class="btn-rol">Guardar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Paginación -->
+    <div class="pagination">
+        {% for p in range(1, total_pages + 1) %}
+            <a href="{{ url_for('usuarios', page=p) }}"
+               class="{% if p == page %}active{% endif %}">
+                {{ p }}
+            </a>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

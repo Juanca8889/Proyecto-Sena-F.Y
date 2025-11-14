@@ -6,16 +6,21 @@
     <title>Reintegro de Herramienta</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='inventario_herramientas.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/feather-icons"></script>
 
 </head>
 <body>
         {% include "alertas_flash.html" %}
     {% block content %}{% endblock %}
 
-    <a href="agregar_herramienta" class="salir" title="Volver">
-    <i class="fa-solid fa-arrow-left"></i>
-    </a>
-    <h1>Reintegro de Herramienta</h1>
+  <header>
+    <a class="salir" href="{{ url_for('agregar_herramienta') }}"><i data-feather="arrow-left"></i></a>
+    <h2 class="SERVIMAQ">SERVIMAQ</h2>
+    <div class="titulo">
+      <h1>Retiro de herramienta</h1>
+    </div>
+  </header>
+
 
     <form action="/reintegro" method="post">
         <label for="id_herr">ID de Herramienta:</label>
@@ -26,5 +31,9 @@
 
         <button type="submit">Registrar Reintegro</button>
     </form>
+
+<script>
+    feather.replace()
+  </script>
 </body>
 </html>
