@@ -410,7 +410,7 @@ def login():
         else:
             flash("Usuario o contraseña incorrectos", "danger")
 
-    return render_template('login.html'), session['id_usuario']
+    return render_template('login.html')
 
 @app.route('/olvidaste-contraseña', methods=['GET', 'POST'])
 def olvidaste_contraseña():
@@ -746,22 +746,27 @@ def control_herramientas():
     herramientas = Herramientas()
 
     if request.method == 'POST':
-        ids = request.form.getlist("herramienta")
 
-        for id_h in ids:
-            valor_faltante = int(request.form.get(f"faltante_{id_h}", 0))
-
-            if valor_faltante > 0:
-                herramientas.marcar_faltantes(id_h, valor_faltante)
+        id_usuario = session.get('id_usuario')
+       
+        herramientas.registrar_control(id_usuario)
+        print(f"este es el usuario: {id_usuario}")
 
         herramientas.cerrar()
-        flash("Control actualizado correctamente.", "success")
+        flash("Control registrado correctamente.", "success")
         return redirect(url_for('control_herramientas'))
 
+
     data = herramientas.mostrar_herramientas()
+    historial = herramientas.mostrar_control()
     herramientas.cerrar()
 
-    return render_template('control_herramientas.html', items=data)
+    return render_template(
+        'control_herramientas.html',
+        items=data,
+        historial=historial
+    )
+
 
 
 
