@@ -1,4 +1,4 @@
-
+@import url("./variables.css");
 
 
 * {
@@ -7,6 +7,20 @@
   box-sizing: border-box;
   font-family: sans-serif;
 }
+
+.icono-usuario {
+  background-color:var(--color-azul) ;
+  border-radius: 50%;
+}
+
+.clase-buscar {
+    background-color:var(--color-azul) ;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+
+
 
 a{
   text-decoration: none;

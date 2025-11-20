@@ -40,28 +40,15 @@
                 <td>{{ item.id_herr }}</td>
                 <td>{{ item.nombre }}</td>
                 <td>{{ item.cantidad }}</td>
-
-                <td>
-                    <!-- Lista de ids -->
-                    <input type="hidden" name="herramienta" value="{{ item.id_herr }}">
-
-                    <!-- Cantidad faltante -->
-                    <input 
-                        type="number" 
-                        name="faltante_{{ item.id_herr }}" 
-                        value="{{ item.cantidad_faltante or 0 }}"
-                        min="0"
-                        max="{{ item.cantidad }}"
-                        style="width:70px;"
-                    >
-                </td>
+                <td>{{ item.cantidad_faltante }}</td>
+                
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <div style="text-align:center; margin-top:20px;">
-        <button type="submit" class="btn-guardar">Registrar Control</button>
+    <div  class="btn-guardar" >
+        <button type="submit" class="btn-small">Registrar Control</button>
     </div>
 
 </form>

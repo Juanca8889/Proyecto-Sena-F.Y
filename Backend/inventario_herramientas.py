@@ -125,7 +125,7 @@ class Herramientas:
         query = """
             SELECT ch.*, u.nombre AS usuario
             FROM control_herramienta ch
-            INNER JOIN Usuario u ON u.id_usuario = ch.usuario_id
+            INNER JOIN usuario u ON u.id_usuario = ch.usuario_id
             ORDER BY ch.fecha DESC;
         """
         self.cursor.execute(query)

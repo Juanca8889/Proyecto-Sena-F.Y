@@ -174,6 +174,24 @@ button {
   font-size: 15px;
 }
 
+.btn-guardar {
+  display: flex;
+  justify-content: center;  /* Centra el botón */
+  margin-top: 20px;
+}
+
+.btn-small {
+  width: 1000px;  /* Ajusta el ancho como quieras */
+  padding: 10px;
+  background-color: var(--color-verde);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+
 
 
 .historial-container {

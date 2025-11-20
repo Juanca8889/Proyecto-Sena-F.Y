@@ -3,59 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Usuarios</title>
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='usuarios.css') }}"/>
+    <script src="https://unpkg.com/feather-icons"></script>
 
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background: #f3f3f3;
-        }
-
-        .pagination {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .pagination a {
-            padding: 10px 15px;
-            margin: 3px;
-            border-radius: 5px;
-            background: #2ecc71;
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .pagination a.active {
-            background: #27ae60;
-        }
-
-        .btn-rol {
-            padding: 6px 10px;
-            background: #3498db;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn-rol:hover {
-            background: #2980b9;
-        }
-    </style>
 </head>
 
 <body>
 
-    <h2>Gestión de Usuarios</h2>
+    
+<header>
+    <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+    <h2 class="SERVIMAQ">SERVIMAQ</h2>
+    <div class="titulo">
+      <h1>GESTION USUARIOS</h1>
+    </div>
+  </header>
+<body>
+{% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
 
     <table>
         <thead>
@@ -111,6 +77,6 @@
             </a>
         {% endfor %}
     </div>
-
+<script>feather.replace();</script>
 </body>
 </html>

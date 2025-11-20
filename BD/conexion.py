@@ -4,7 +4,7 @@ def conectar():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        database="montallantasfy1",
+        database="montallantasfy",
         charset="utf8mb4"
     )
 
