@@ -1,15 +1,17 @@
-CREATE DATABASE montallantasfy;
-USE montallantasfy;
+CREATE DATABASE montallantasfy1;
+USE montallantasfy1;
 
-
-
-
--- TABLAS --
+-- ============================
+-- TABLA ROLES
+-- ============================
 CREATE TABLE Rol (
     id_rol INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL
 );
 
+-- ============================
+-- TABLA PROVEEDORES
+-- ============================
 CREATE TABLE Proveedor (
     id_proveedor INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(30) NOT NULL,
@@ -17,6 +19,9 @@ CREATE TABLE Proveedor (
     correo VARCHAR(80) NOT NULL UNIQUE
 );
 
+-- ============================
+-- TABLA USUARIOS
+-- ============================
 CREATE TABLE Usuario (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50),
@@ -24,7 +29,7 @@ CREATE TABLE Usuario (
     celular BIGINT UNIQUE,
     correo VARCHAR(100) UNIQUE,
     usuario VARCHAR(50) UNIQUE,
-    clave varbinary(64) ,
+    clave VARBINARY(64),
     rol_id INT,
     FOREIGN KEY (rol_id) REFERENCES Rol(id_rol)
 );
@@ -32,10 +37,13 @@ CREATE TABLE Usuario (
 ALTER TABLE Usuario
 MODIFY rol_id INT NOT NULL DEFAULT 3;
 
+-- ============================
+-- CLIENTES
+-- ============================
 CREATE TABLE Cliente (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50) NULL,
-    apellido VARCHAR(50) NULL,
+    nombre VARCHAR(50),
+    apellido VARCHAR(50),
     celular BIGINT NOT NULL UNIQUE,
     correo VARCHAR(100) UNIQUE,
     direccion VARCHAR(100) NOT NULL,
@@ -43,14 +51,18 @@ CREATE TABLE Cliente (
     modelo VARCHAR(40) NOT NULL
 );
 
-
-
+-- ============================
+-- CATEGORÍAS DE PRODUCTOS
+-- ============================
 CREATE TABLE categoriaProductos (
     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     descripcion TEXT
 );
 
+-- ============================
+-- PRODUCTOS
+-- ============================
 CREATE TABLE Producto (
     id_producto INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -61,6 +73,9 @@ CREATE TABLE Producto (
     FOREIGN KEY (categoria_id) REFERENCES categoriaProductos(id_categoria)
 );
 
+-- ============================
+-- INVENTARIO DE PRODUCTOS
+-- ============================
 CREATE TABLE InventarioProductos (
     id_inve_produ INT AUTO_INCREMENT PRIMARY KEY,
     producto_id INT NOT NULL,
@@ -72,6 +87,9 @@ CREATE TABLE InventarioProductos (
     FOREIGN KEY (rol_id) REFERENCES Rol(id_rol)
 );
 
+-- ============================
+-- INVENTARIO DE HERRAMIENTAS
+-- ============================
 CREATE TABLE InventarioHerramientas (
     id_herr INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
@@ -79,13 +97,25 @@ CREATE TABLE InventarioHerramientas (
     cantidad INT,
     estado VARCHAR(50),
     usuario_id INT NOT NULL,
+    cantidad_faltante INT DEFAULT 0,
     FOREIGN KEY (usuario_id) REFERENCES Usuario(id_usuario)
 );
 
-ALTER TABLE InventarioHerramientas 
-ADD COLUMN cantidad_faltante INT DEFAULT 0;
+-- ============================
+-- TABLA NUEVA: CONTROL DE HERRAMIENTAS
+-- ============================
+CREATE TABLE Control_Herramienta (
+    id_control INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    fecha DATETIME NOT NULL,
+    herramienta_total INT NOT NULL,
+    herramienta_faltante INT NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id_usuario)
+);
 
-
+-- ============================
+-- COMPRAS
+-- ============================
 CREATE TABLE Compra (
     id_compra INT AUTO_INCREMENT PRIMARY KEY,
     proveedor_id INT NOT NULL,
@@ -98,18 +128,22 @@ CREATE TABLE Compra (
     FOREIGN KEY (producto_id) REFERENCES Producto(id_producto)
 );
 
+-- ============================
+-- DEVOLUCIONES
+-- ============================
 CREATE TABLE Devoluciones (
     id_devolucion INT AUTO_INCREMENT PRIMARY KEY,
     compra_id INT NOT NULL,
     fecha DATE NOT NULL,
     estado BOOLEAN,
     razon VARCHAR(100) NOT NULL,
+    cantidad INT DEFAULT 0,
     FOREIGN KEY (compra_id) REFERENCES Compra(id_compra)
 );
-ALTER TABLE devoluciones
-ADD COLUMN cantidad INT DEFAULT 0;
 
-
+-- ============================
+-- VENTAS
+-- ============================
 CREATE TABLE Venta (
     id_venta INT AUTO_INCREMENT PRIMARY KEY,
     cliente_id INT,
@@ -118,12 +152,14 @@ CREATE TABLE Venta (
     fecha_venta DATE,
     encargado_id INT,
     monto DECIMAL(10,2),
-    garantias INT not null,
+    garantias INT NOT NULL DEFAULT 0,
     FOREIGN KEY (cliente_id) REFERENCES Cliente(id_cliente),
     FOREIGN KEY (encargado_id) REFERENCES Usuario(id_usuario)
 );
 
-
+-- ============================
+-- SERVICIOS
+-- ============================
 CREATE TABLE Servicio (
     id_servicio INT AUTO_INCREMENT PRIMARY KEY,
     descripcion TEXT NOT NULL,
@@ -135,6 +171,9 @@ CREATE TABLE Servicio (
     FOREIGN KEY (usuario_id) REFERENCES Usuario(id_usuario)
 );
 
+-- ============================
+-- DETALLE VENTA
+-- ============================
 CREATE TABLE DetalleVenta (
     id_detalle INT AUTO_INCREMENT PRIMARY KEY,
     venta_id INT NOT NULL,
@@ -148,6 +187,9 @@ CREATE TABLE DetalleVenta (
     FOREIGN KEY (producto_id) REFERENCES Producto(id_producto)
 );
 
+-- ============================
+-- DOMICILIOS
+-- ============================
 CREATE TABLE Domicilio (
     id_domicilio INT AUTO_INCREMENT PRIMARY KEY,
     cliente_id INT NOT NULL,
@@ -160,6 +202,9 @@ CREATE TABLE Domicilio (
     FOREIGN KEY (usuario_id) REFERENCES Usuario(id_usuario)
 );
 
+-- ============================
+-- MAQUINARIA
+-- ============================
 CREATE TABLE Maquinaria (
     id_maquina INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(30) NOT NULL,
@@ -167,6 +212,9 @@ CREATE TABLE Maquinaria (
     estado VARCHAR(50) NOT NULL
 );
 
+-- ============================
+-- MANTENIMIENTO
+-- ============================
 CREATE TABLE Mantenimiento (
     id_mantenimiento INT AUTO_INCREMENT PRIMARY KEY,
     descripcion TEXT NOT NULL,
@@ -1888,3 +1936,6 @@ select * from servicio;
 select * from devoluciones;
 select * from domicilio;
 select * from proveedor;
+select * from control_herramienta;
+select * from venta;
+select * from detalleventa;
