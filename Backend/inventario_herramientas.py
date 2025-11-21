@@ -162,6 +162,7 @@ class Herramientas:
 
     def mostrar_control(self):
         self.cursor.execute("SELECT * FROM Control_Herramienta")
+        print("Mostrando control de herramientas")
         return self.cursor.fetchall()
 
     def cerrar(self):
