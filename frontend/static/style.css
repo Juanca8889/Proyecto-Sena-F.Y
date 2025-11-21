@@ -8,31 +8,37 @@
   font-family: sans-serif;
 }
 
+
+.buscar {
+  width: 22px;
+  height: 22px;
+}
+
+
 .icono-usuario {
-  background-color:var(--color-azul) ;
+  width: 22px;
+  height: 22px;
+  stroke-width: 2;
+  padding: -5px;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  background-color: whitesmoke;
   border-radius: 50%;
 }
 
-.clase-buscar {
-    background-color:var(--color-azul) ;
-  border-radius: 50%;
-  padding: 5px;
-}
 
 
-
-
-a{
+a {
   text-decoration: none;
   color: inherit;
 }
 
-.logo img{
- background-color: #f1f1f1;
- width: 100PX;
- height: 100PX;
- border-radius:50%;
-margin-left: 20%;
+.logo img {
+  background-color: #f1f1f1;
+  width: 100PX;
+  height: 100PX;
+  border-radius: 50%;
+  margin-left: 20%;
 }
 
 body {
@@ -168,26 +174,9 @@ body {
 }
 
 
-.icono-busqueda {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
-  stroke-width: 2;
-  color: #999;
-  pointer-events: none;
-}
 
 
-.icono-usuario {
-  width: 22px;
-  height: 22px;
-  stroke-width: 2;
-  color: white;
-  cursor: pointer;
-}
+
 
 
 .mensaje {
@@ -323,6 +312,52 @@ body {
   background: #f0f0f0;
 }
 
+/* Contenedor del usuario */
+.dropdown-usuario {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* Submenú del usuario */
+.submenu-usuario {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  min-width: 160px;
+  z-index: 1000;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
+  align-items: center;
+}
+
+/* Mostrar al pasar el mouse */
+.dropdown-usuario:hover .submenu-usuario {
+  display: block;
+}
+
+/* Estilos de las opciones */
+.submenu-usuario li {
+  padding: 10px;
+}
+
+.submenu-usuario li a {
+  text-decoration: none;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.submenu-usuario li:hover {
+  background: #f0f0f0;
+}
 
 
 .menu {

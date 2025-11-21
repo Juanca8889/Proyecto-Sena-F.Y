@@ -20,6 +20,15 @@ class Venta:
             print(f"Error al obtener ventas: {err}")
             return []
 
+    def obtener_precio_producto(self, id_producto):
+        try:
+            query = "SELECT precio FROM producto WHERE id_producto = %s;"
+            self.cursor.execute(query, (id_producto,))
+            return self.cursor.fetchone()
+        except mysql.connector.Error as err:
+            print(f"Error al obtener producto: {err}")
+            return None
+    
     def obtener_producto(self, id_producto):
         try:
             query = "SELECT * FROM producto WHERE id_producto = %s;"
@@ -78,6 +87,40 @@ class Venta:
         except mysql.connector.Error as err:
             print(f"Error al obtener ventas: {err}")
             return []
+
+    def obtener_venta_por_id(self, id_venta):
+        try:
+            query = "SELECT * FROM venta WHERE id_venta = %s LIMIT 1;"
+            self.cursor.execute(query, (id_venta,))
+            return self.cursor.fetchone()
+        except mysql.connector.Error as err:
+            print(f"Error al obtener venta: {err}")
+            return None
+
+    def obtener_venta(self, id_venta):
+        try:
+            query = "SELECT * FROM venta WHERE id_venta = %s"
+            self.cursor.execute(query, (id_venta,))
+            return self.cursor.fetchone()
+        except:
+            return None
+
+        
+    def actualizar_venta(self, id_venta, cantidad, garantia, monto):
+        try:
+            query = """
+                UPDATE venta 
+                SET cantidad = %s, garantias = %s, monto = %s
+                WHERE id_venta = %s
+            """
+            self.cursor.execute(query, (cantidad, garantia, monto, id_venta))
+            self.conexion.commit()
+            return True
+        except mysql.connector.Error as err:
+            print("Error:", err)
+            return False
+
+
 
 
     def contar_ventas(self):

@@ -44,8 +44,24 @@ class ConexionUsuario:
         values = (nueva_contrasena, nuevo_correo, nombre)
         self.cursor.execute(query, values)
         self.conexion.commit()
-    
-    
+        
+    def actualizar_contacto(self, id_usuario, nuevo_celular, nuevo_correo):
+        query = """
+            UPDATE Usuario
+            SET celular = %s, correo = %s
+            WHERE id_usuario = %s
+        """
+        valores = (nuevo_celular, nuevo_correo, id_usuario)
+        self.cursor.execute(query, valores)
+        self.conexion.commit()
+        return True
+
+        
+    def obtener_por_id(self, id_usuario):
+        query = "SELECT * FROM usuario WHERE id_usuario = %s"
+        self.cursor.execute(query, (id_usuario,))
+        return self.cursor.fetchone()
+
     
     
     def eliminar_usuario(self, nombre):

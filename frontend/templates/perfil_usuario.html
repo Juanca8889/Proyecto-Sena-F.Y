@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Usuario</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='perfil_usuario.css') }}">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+
+<body>
+       {% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
+
+    <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+    <div class="card-editar">
+
+        <h2>Datos del Usuario</h2>
+
+        <!-- FORMULARIO SIN JAVASCRIPT -->
+        <form action="{{ url_for('editar_contacto') }}" method="POST">
+
+            <!-- Nombre -->
+            <div class="fila-dato">
+                <label>Nombre:</label>
+                <span>{{ usuario.nombre }}</span>
+            </div>
+
+            <!-- Apellido -->
+            <div class="fila-dato">
+                <label>Apellido:</label>
+                <span>{{ usuario.apellido }}</span>
+            </div>
+
+            <!-- Usuario -->
+            <div class="fila-dato">
+                <label>Usuario:</label>
+                <span>{{ usuario.usuario }}</span>
+            </div>
+
+            <!-- Celular (editable) -->
+            <div class="fila-dato">
+                <label>Celular:</label>
+                <input type="text" name="celular" value="{{ usuario.celular }}">
+            </div>
+
+            <!-- Correo (editable) -->
+            <div class="fila-dato">
+                <label>Correo:</label>
+                <input type="email" name="correo" value="{{ usuario.correo }}">
+            </div>
+
+            <button type="submit">Guardar Cambios</button>
+
+        </form>
+    </div>
+    <script>
+        feather.replace()
+    </script>
+
+</body>
+</html>

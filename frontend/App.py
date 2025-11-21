@@ -748,7 +748,7 @@ def control_herramientas():
     if request.method == 'POST':
 
         id_usuario = session.get('id_usuario')
-       
+        
         herramientas.registrar_control(id_usuario)
         print(f"este es el usuario: {id_usuario}")
 
@@ -767,7 +767,38 @@ def control_herramientas():
         historial=historial
     )
 
+# ==========================================
+# Configuracion prorpia de usuario
+# ==========================================
 
+@app.route("/perfil_usuario")
+def perfil_usuario():
+    id_usuario = session.get("id_usuario")
+
+    usuario = ConexionUsuario()
+    datos = usuario.obtener_por_id(id_usuario)  
+    usuario.cerrar()
+
+    return render_template("perfil_usuario.html", usuario=datos)
+
+
+
+@app.route("/editar_contacto", methods=["POST"])
+def editar_contacto():
+    id_usuario = session.get("id_usuario")  
+
+    nuevo_celular = request.form.get("celular")
+    nuevo_correo = request.form.get("correo")
+
+    usuario = ConexionUsuario()
+    if usuario.actualizar_contacto(id_usuario, nuevo_celular, nuevo_correo):
+        flash("Información de contacto actualizada correctamente", "success")
+        usuario.cerrar()
+    else:
+        flash("Error al actualizar la información de contacto", "danger")
+        usuario.cerrar()
+
+    return redirect(url_for("perfil_usuario"))
 
 
 
@@ -825,6 +856,48 @@ def registrar_venta():
     else:
         venta.cerrar()
         return "Error al registrar la venta"
+
+
+
+
+# ==========================================
+#  editar venta
+# ==========================================
+@app.route("/editar_venta", methods=["GET"])
+def editar_venta():
+    id_venta = request.args.get("id")   # ← el name="id" de tu input
+    venta = None
+
+    if id_venta:
+        v = Venta()
+        venta = v.obtener_venta(id_venta)
+        v.cerrar()
+
+    return render_template("editar_venta.html", venta=venta, id_venta=id_venta)
+
+
+@app.route("/actualizar_venta", methods=["POST"])
+def actualizar_venta():
+
+    id_venta = request.form.get("id_venta")
+    cantidad = int(request.form.get("cantidad"))
+    garantia = int(request.form.get("garantia"))
+
+    v = Venta()
+    venta_actual = v.obtener_venta(id_venta)
+
+    # Se necesita el precio unitario desde producto
+    producto = v.obtener_producto(venta_actual["id_producto"])
+    precio_unitario = producto["precio"]
+
+    monto_nuevo = precio_unitario * cantidad
+
+    v.actualizar_venta(id_venta, cantidad, garantia, monto_nuevo)
+    v.cerrar()
+
+    return redirect(url_for("editar_venta"))
+
+
 
 
 # ==========================================
