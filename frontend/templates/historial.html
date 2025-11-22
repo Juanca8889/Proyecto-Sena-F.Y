@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gestión de Clientes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='historial.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <script src="https://unpkg.com/feather-icons"></script>
+  </head>
+  <body>
+
+    {% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
+
+
+
+
+
+    <header>
+      <a class="volver" href="{{ url_for('usuarios') }}" title="Volver al menú">
+        <i class="fa-solid fa-arrow-left"></i>
+      </a>
+
+      <h2 class="SERVIMAQ">SERVIMAQ</h2>
+
+      <div class="titulo">
+        <i class="fa-solid fa-users"></i>
+        <h1>Historial de usuario</h1>
+        
+      </div>
+    </header>
+
+    <div class="window">
+      <main>
+
+        <div class="tabla-contenedor">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Tabla</th>
+                        <th>Operación</th>
+                        <th>ID Registro</th>
+                        <th>Info Anterior</th>
+                        <th>Info Actual</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for h in registros %}
+                    <tr>
+                        <td>{{ h.tabla }}</td>
+                        <td>{{ h.operacion | traducir_operacion }}</td>
+                        <td>{{ h.registro_id }}</td>
+
+                        <!-- ========================== -->
+                        <!--    OLD DATA (SOLO VALORES)  -->
+                        <!-- ========================== -->
+                        <td>
+                            {% if h.old_data %}
+                                {% set old = h.old_data | loads %}
+                                {% for key, value in old.items() %}
+                                    {{ value }}<br>
+                                {% endfor %}
+                            {% else %}
+                                Ninguno
+                            {% endif %}
+                        </td>
+
+                        <!-- ========================== -->
+                        <!--    NEW DATA (SOLO VALORES)  -->
+                        <!-- ========================== -->
+                        <td>
+                            {% if h.new_data %}
+                                {% set new = h.new_data | loads %}
+                                {% for key, value in new.items() %}
+                                    {{ value }}<br>
+                                {% endfor %}
+                            {% endif %}
+                        </td>
+
+                        <td>{{ h.fecha }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+ </main>
+
+        <div class="paginacion">
+        {% if page > 1 %}
+            <a href="{{ url_for('historial', page=page-1) }}" class="boton">Anterior</a>
+        {% endif %}
+
+        {% for p in range(1, total_paginas + 1) %}
+            <a href="{{ url_for('historial', page=p) }}"
+            class="boton {% if p == page %}activo{% endif %}">
+            {{ p }}
+            </a>
+        {% endfor %}
+
+        {% if page < total_paginas %}
+            <a href="{{ url_for('historial', page=page+1) }}" class="boton">Siguiente</a>
+        {% endif %}
+        </div>
+
+     
+
+
+    <script>
+      feather.replace();
+    </script>
+  </body>
+</html>

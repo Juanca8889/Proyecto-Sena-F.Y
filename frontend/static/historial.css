@@ -1,0 +1,183 @@
+@import url('variables.css');
+
+body {
+  font-family: var(--fuente-principal, Arial, sans-serif);
+  background: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+header {
+  background: var(--color-azul);
+  color: white;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  height: 70px;
+ 
+}
+
+.paginacion a{
+
+  background-color: #218838;
+  padding: 5px;
+  color: #fff;
+  margin: 5px;
+  
+
+}
+
+
+header .volver {
+  font-size: 22px;
+  color: white;
+  text-decoration: none;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: color 0.2s ease;
+}
+
+header .volver:hover {
+  color: var(--color-verde);
+}
+
+.SERVIMAQ {
+  position: absolute;
+  left: 60px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+header .titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .titulo h1 {
+  margin: 0;
+  font-size: 22px;
+  color: white;
+  letter-spacing: 1px;
+}
+
+header .acciones {
+  position: absolute;
+  right: 20px;
+}
+
+header .btn-agregar {
+  background: var(--color-verde);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+header .btn-agregar:hover {
+  background: #218838;
+}
+
+/* =========================
+   CONTENIDO
+   ========================= */
+
+.window {
+  max-width: 1200px;
+  margin: 30px auto;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px #aaa;
+  padding: 24px;
+}
+
+h1 {
+  text-align: center;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.clientes-actions {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+select {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background-color: white;
+}
+
+/* =========================
+   TABLA
+   ========================= */
+
+.tabla-contenedor {
+  max-height: 350px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th,
+td {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background: var(--color-azul);
+  color: white;
+  position: sticky;
+  top: 0;
+}
+
+tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+/* =========================
+   BOTONES
+   ========================= */
+
+.btn-encuesta {
+  background: var(--color-verde);
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-encuesta:hover {
+  background: #218838;
+}

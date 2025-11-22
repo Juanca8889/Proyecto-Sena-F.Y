@@ -5,6 +5,7 @@ import pandas as pd
 from fpdf import FPDF
 from functools import wraps
 from datetime import date, datetime,timedelta
+import json
 
 
 
@@ -35,6 +36,7 @@ from Backend.devoluciones import Devolucion
 from Backend.proveedores import ConexionProveedor 
 from Backend.material import ConexionMaterial
 from Backend.Agenda_Mantenimiento import Agenda 
+from Backend.historial import Historial
 from Backend.maquinaria import ConexionMaquinaria
 
 from Backend.control_sesiones import (
@@ -1553,6 +1555,38 @@ def registrar_maquinaria():
 
     # Si se accede por GET, redirigir al listado
     return redirect(url_for('maquinaria'))
+
+# ==========================================
+# RUTA: CONTROL DE STOCK
+# ==========================================
+
+app.jinja_env.filters['loads'] = json.loads
+app.jinja_env.filters['traducir_operacion'] = Historial.traducir_operacion
+
+@app.route('/historial')
+def historial():
+    page = int(request.args.get('page', 1))   
+    por_pagina = 4                            
+    inicio = (page - 1) * por_pagina
+    fin = inicio + por_pagina
+
+    historial_obj = Historial()
+    registros_completos = historial_obj.listar_historial()
+    historial_obj.cerrar()
+
+    total_registros = len(registros_completos)
+    total_paginas = (total_registros + por_pagina - 1) // por_pagina
+
+    registros = registros_completos[inicio:fin]
+
+    return render_template(
+        'historial.html',
+        registros=registros,
+        page=page,
+        total_paginas=total_paginas
+    )
+
+
 
 
 

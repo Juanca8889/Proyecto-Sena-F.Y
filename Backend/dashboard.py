@@ -7,6 +7,8 @@ import sys
 import matplotlib
 matplotlib.use('Agg')  # Evita errores GUI en Flask
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+
 
 
 
@@ -37,6 +39,13 @@ def plot_to_img():
     plt.close()
     return img_base64
 
+# Formatear números grandes en el eje Y (20.000 - 1.200.000 - 10.000.000)
+def formatear_eje_y():
+    plt.gca().yaxis.set_major_formatter(
+        ticker.FuncFormatter(lambda x, pos: format(int(x), ",").replace(",", "."))
+    )
+
+
 def ventas_por_dia():
     resultados = query_db("""
         SELECT fecha_venta, SUM(monto) AS total_ventas
@@ -45,36 +54,100 @@ def ventas_por_dia():
         GROUP BY fecha_venta
         ORDER BY fecha_venta ASC
     """)
-    fechas = [r['fecha_venta'].strftime("%Y-%m-%d") for r in resultados]
-    ventas = [r['total_ventas'] for r in resultados]
+    meses_es = {
+    "01": "Enero",
+    "02": "Febrero",
+    "03": "Marzo",
+    "04": "Abril",
+    "05": "Mayo",
+    "06": "Junio",
+    "07": "Julio",
+    "08": "Agosto",
+    "09": "Septiembre",
+    "10": "Octubre",
+    "11": "Noviembre",
+    "12": "Diciembre"
+}
+
+
+    dias_es = {
+        "Monday": "Lunes",
+        "Tuesday": "Martes",
+        "Wednesday": "Miércoles",
+        "Thursday": "Jueves",
+        "Friday": "Viernes",
+        "Saturday": "Sábado",
+        "Sunday": "Domingo"
+    }
+
+    fechas = []
+    ventas = []
+
+    for r in resultados:
+        fecha = r["fecha_venta"]
+        if not fecha:
+            continue  # Evita errores si fecha = NULL
+
+        dia_ing = fecha.strftime('%A')
+        dia = dias_es.get(dia_ing, dia_ing)
+
+        fechas.append(f"{dia} {fecha.strftime('%d')}")
+        ventas.append(r["total_ventas"])
 
     plt.figure(figsize=(8,4))
-    plt.plot(fechas, ventas, marker='o', linestyle='-', color='blue')
-    plt.title('Ventas Últimos 7 Días')
-    plt.xlabel('Fecha')
-    plt.ylabel('Ventas (monto)')
+    plt.plot(fechas, ventas, marker='o')
     plt.xticks(rotation=45)
     plt.grid(True)
+
+    formatear_eje_y()
+    plt.ylim(20000, 10000000)
+
     return plot_to_img()
+
+
+
 
 def ventas_por_semana():
     resultados = query_db("""
-        SELECT YEARWEEK(fecha_venta, 1) AS semana, SUM(monto) AS total_ventas
+        SELECT YEARWEEK(fecha_venta, 1) AS semana_id, SUM(monto) AS total_ventas
         FROM venta
         WHERE fecha_venta >= CURDATE() - INTERVAL 4 WEEK
-        GROUP BY semana
-        ORDER BY semana ASC
+        GROUP BY semana_id
+        ORDER BY semana_id ASC
     """)
-    semanas = [str(r['semana']) for r in resultados]
-    ventas = [r['total_ventas'] for r in resultados]
+
+    semanas = []
+    ventas = []
+
+    numero = 1
+    for r in resultados:
+        semanas.append(f"Semana {numero}")
+        ventas.append(r["total_ventas"])
+        numero += 1
 
     plt.figure(figsize=(8,4))
-    plt.bar(semanas, ventas, color='green')
-    plt.title('Ventas Últimas 4 Semanas')
-    plt.xlabel('Semana (AñoSemana)')
-    plt.ylabel('Ventas (monto)')
+    plt.bar(semanas, ventas)
+    plt.title("Ventas por Semana (Últimas 4)")
+    plt.xlabel("Semana")
+    plt.ylabel("Ventas (monto)")
     plt.grid(axis='y')
+
+    plt.ylim(20000, 10000000)
+    formatear_eje_y()
+
     return plot_to_img()
+
+
+
+def productos_bajo_stock(umbral=10):
+    resultados = query_db("""
+        SELECT id_producto, nombre, cantidad
+        FROM producto
+        WHERE cantidad <= %s
+        ORDER BY cantidad ASC
+    """, (umbral,))
+    return resultados
+
 
 def ventas_por_mes():
     resultados = query_db("""
@@ -84,27 +157,37 @@ def ventas_por_mes():
         GROUP BY mes
         ORDER BY mes ASC
     """)
-    meses = [r['mes'] for r in resultados]
-    ventas = [r['total_ventas'] for r in resultados]
+
+    meses_es = {
+        "01": "Enero", "02": "Febrero", "03": "Marzo", "04": "Abril",
+        "05": "Mayo", "06": "Junio", "07": "Julio", "08": "Agosto",
+        "09": "Septiembre", "10": "Octubre", "11": "Noviembre", "12": "Diciembre"
+    }
+
+    meses = []
+    ventas = []
+
+    for r in resultados:
+        mes = r["mes"]
+        numero = mes.split("-")[1]  # → "01"
+        meses.append(meses_es[numero])  # → "Enero"
+        ventas.append(r["total_ventas"])
 
     plt.figure(figsize=(10,4))
-    plt.plot(meses, ventas, marker='s', linestyle='--', color='orange')
-    plt.title('Ventas Últimos 12 Meses')
-    plt.xlabel('Mes')
-    plt.ylabel('Ventas (monto)')
+    plt.plot(meses, ventas, marker='s', linestyle='--')
+    plt.title("Ventas por Mes (Últimos 12 Meses)")
+    plt.xlabel("Mes")
+    plt.ylabel("Ventas (monto)")
     plt.xticks(rotation=45)
     plt.grid(True)
+
+    plt.ylim(20000, 10000000)
+    formatear_eje_y()
+
     return plot_to_img()
 
-def productos_bajo_stock(umbral=10):
-    resultados = query_db("""
-        SELECT id_producto, nombre, cantidad
-        FROM producto
-        WHERE cantidad <= %s
-        ORDER BY cantidad ASC
-    """, (umbral,))
-    # Para mostrar en tabla simple en HTML
-    return resultados
+  
+
 
 def pedidos_activos():
     conexion = conectar()
