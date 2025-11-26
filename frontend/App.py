@@ -38,6 +38,7 @@ from Backend.material import ConexionMaterial
 from Backend.Agenda_Mantenimiento import Agenda 
 from Backend.historial import Historial
 from Backend.maquinaria import ConexionMaquinaria
+from Backend.importar_exportar import safe_int, safe_float
 
 from Backend.control_sesiones import (
     obtener_todas_sesiones_activas, 
@@ -61,6 +62,31 @@ app.register_blueprint(dashboard_bp)
 # ==========================================
 # LÓGICA DE SEGURIDAD Y ROLES
 # ==========================================
+
+
+#@login_required
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # Validación REAL del login
+        if 'id_usuario' not in session:
+            flash("Debes iniciar sesión para acceder.", "danger")
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+@app.route('/check')
+def check():
+    return str(session)
+
+@app.route("/logout")
+def logout():
+    session.clear()  # elimina TODA la sesión
+    flash("Sesión cerrada correctamente.", "info")
+    return redirect(url_for("login"))
+
+
+
 def get_current_admin_id():
     """Obtiene el ID del usuario logueado (necesario para auditoría)."""
     return session.get('usuario_id', 0) 
@@ -109,6 +135,7 @@ def root():
 # RUTA PRINCIPAL - PEDIDO DE COMPRA
 # ==========================================
 @app.route("/pedido_compra")
+@login_required
 def pedido_compra():
     
     if is_admin():
@@ -145,6 +172,7 @@ def pedido_compra():
 # RUTA: FORMULARIO PARA REALIZAR PEDIDO
 # ==========================================
 @app.route("/realizar_pedido", methods=["GET", "POST"], endpoint="realizar_pedido")
+@login_required
 def realizar_pedido():
     if request.method == "POST":
         # Validación robusta de entrada
@@ -187,6 +215,7 @@ def realizar_pedido():
 # RUTA: VER TODOS LOS PEDIDOS
 # ==========================================
 @app.route("/ver_pedidos", endpoint="ver_pedidos")
+@login_required
 def ver_pedidos():
     pedidos = gestor_compras.obtener_pedidos()
     return render_template(
@@ -195,11 +224,14 @@ def ver_pedidos():
         pedidos=pedidos,
         menu_url=_menu_url(),  # para la flecha Volver
     )
+    
+
 
 # ==========================================
 # RUTA: CONTROL DE STOCK
 # ==========================================
 @app.route("/control_stock", endpoint="control_stock")
+@login_required
 def control_stock():
     filtro_codigo = request.args.get("filtro_codigo", "").strip()
     filtro_nombre = request.args.get("filtro_nombre", "").strip()
@@ -252,6 +284,7 @@ def control_stock():
 # RUTA: STOCK INICIAL (ACTUALIZACIÓN)
 # ==========================================
 @app.route("/stock_inicial", methods=["GET", "POST"], endpoint="stock_inicial")
+@login_required
 def stock_inicial():
     if request.method == "POST":
         id_producto_str = request.form.get("id_producto", "")
@@ -283,6 +316,7 @@ def stock_inicial():
 # RUTA: FORMULARIO DE CREAR REFERENCIA
 # ==========================================
 @app.route("/crear_referencia", methods=["GET", "POST"], endpoint="crear_referencia")
+@login_required
 def crear_referencia():
     if request.method == "POST":
         nombre = request.form.get("nombre", "").strip()
@@ -304,6 +338,7 @@ def crear_referencia():
 # RUTA: NOTIFICACIONES 
 # ==========================================
 @app.route("/notificaciones", endpoint="notificaciones")
+@login_required
 def notificaciones():
     sugerencias = gestor_compras.sugerir_pedido_y_alertar()
     productos_recientes, _ = gestor_stock.obtener_productos_con_filtros(
@@ -326,11 +361,8 @@ def notificaciones():
 
 
 @app.route('/domicilios', methods=['GET', 'POST'])
+@login_required
 def domicilios():
-    if 'id_usuario' not in session:
-        flash("Debes iniciar sesión primero.", "error")
-        return redirect(url_for('login'))
-
     conexion = conectar()
     domicilio_model = Domicilio(conexion)
 
@@ -339,15 +371,16 @@ def domicilios():
         servicio_id = request.form['servicio_id']
         fecha = request.form['fecha']
         monto = request.form['monto']
-        usuario_id = session['id_usuario']
+        usuario_id = session['id_usuario']  # ya es seguro usarlo porque login_required lo validó
 
         domicilio_model.registrar(cliente_id, servicio_id, fecha, monto, usuario_id)
         flash("Domicilio registrado exitosamente", "success")
         return redirect(url_for('domicilios'))
 
+    # Obtener los domicilios registrados
     domicilios = domicilio_model.obtener_todos()
 
-    # Para los select del formulario
+    # Para los selects
     cursor = conexion.cursor(dictionary=True)
     cursor.execute("SELECT id_cliente, nombre FROM cliente")
     clientes = cursor.fetchall()
@@ -355,24 +388,32 @@ def domicilios():
     servicios = cursor.fetchall()
     cursor.close()
 
-    return render_template('cliente_domicilio.html', domicilios=domicilios, clientes=clientes, servicios=servicios)
+    return render_template('cliente_domicilio.html',
+                           domicilios=domicilios,
+                           clientes=clientes,
+                           servicios=servicios)
+
 
 
 
 
 @app.route('/form_cliente', endpoint="form_cliente")
+@login_required
 def form_cliente():
     return render_template("form_cliente.html", menu_url=_menu_url())
 
 @app.route('/guardar_cliente', methods=['POST'], endpoint="guardar_cliente")
+@login_required
 def guardar_cliente():
     nombre = request.form['nombre']
     apellido = request.form['apellido']
     celular = request.form.get('celular') or None
     correo = (request.form.get('correo') or '').strip() or None
     direccion = request.form.get('direccion') or None
-    placa = request.form.get('placa') or None
+    num_placa = request.form.get('placa') or None
     modelo = request.form.get('modelo') or None
+    
+    placa = num_placa.upper() 
 
     nuevo_cliente = Cliente(
         nombre=nombre,
@@ -386,7 +427,7 @@ def guardar_cliente():
     ok = nuevo_cliente.registrar_cliente()
     nuevo_cliente.cerrar()
 
-    flash("✅ Cliente registrado correctamente" if ok else "❌ No se pudo registrar el cliente", "success" if ok else "danger")
+    flash("✅ Cliente registrado correctamente" if ok else "❌ No se pudo registrar el cliente, El correo ya se encuentra registrado", "success" if ok else "danger")
     return redirect(url_for('clientes'))
 
 # ==========================================
@@ -514,6 +555,7 @@ def empleado():
 # ==========================================
 
 @app.route("/usuarios")
+@login_required
 def usuarios():
     page = int(request.args.get("page", 1))
     per_page = 10
@@ -532,6 +574,7 @@ def usuarios():
     )
 
 @app.route("/cambiar_rol/<int:id_usuario>", methods=["POST"])
+@login_required
 def cambiar_rol(id_usuario):
     nuevo_rol = int(request.form.get("rol"))
 
@@ -552,14 +595,30 @@ def cambiar_rol(id_usuario):
 # RUTAS DE GESTIÓN DE CLIENTES camilo
 # ==========================================
 @app.route("/clientes", endpoint="clientes")
+@login_required
 def mostrar_clientes():
-    orden = request.args.get("orden", None)
+    rol = session.get("rol")
+    print(rol)
+
+    # Obtener el tipo de orden (si viene)
+    orden = request.args.get("orden")
+
+    # Obtener clientes
     conexion = ConexionClientes()
     clientes = conexion.mostrar_clientes(orden)
     conexion.cerrar()
-    return render_template("Gestion_clientes.html", usuarios=clientes, menu_url=_menu_url())
+
+    # Si es admin → plantilla normal
+    if rol == 1:
+        template = "Gestion_clientes.html"
+    else:
+        template = "Gestion_clientes(EMPLEADO).html"
+
+    return render_template(template, usuarios=clientes, menu_url=_menu_url())
+
 
 @app.route("/enviar-encuesta", methods=["POST"])
+@login_required
 def enviar_encuesta():
     correo = request.form.get("correo")
     encuesta = Encuestas(correo)
@@ -570,12 +629,70 @@ def enviar_encuesta():
         flash("Encuesta enviada correctamente", "success")
     return redirect(url_for("clientes")) 
 
+# ==========================================
+# Encuesta 
+# ==========================================
+@app.route('/encuesta', methods=['GET', 'POST'])
+def encuesta():
+    puntuacion = request.form.get('rating')
+    opinion = request.form.get('opinion')
+
+
+    # Si viene vacía, espacios o None → poner "Sin respuesta"
+    if not opinion or opinion.strip() == "":
+        opinion = "Sin respuesta"
+        if not puntuacion or puntuacion.strip() == "":
+            puntuacion = "0"
+
+    print(f"{puntuacion} y {opinion}")
+
+    if request.method == 'POST':
+        encuesta = Encuestas(correo=None)
+        encuesta.guardar_encuesta(puntuacion, opinion)
+        flash("Gracias por completar la encuesta.", "success")
+    else:
+        flash("Error al enviar la encuesta. Inténtalo de nuevo.", "danger")
+
+    return render_template('encuesta.html')
+
+@app.route('/encuestas_admin', methods=['GET'])
+@login_required
+@admin_required
+def ver_encuestas():
+    
+    encuesta = Encuestas(correo=None)
+
+    # 1. Obtener todas las encuestas
+    todas = encuesta.ver_encuestas()
+
+    # 2. Parámetros de paginación
+    page = request.args.get('page', 1, type=int)
+    per_page = 6  # cantidad por página (puedes cambiarlo)
+
+    total = len(todas)
+    total_pages = (total + per_page - 1) // per_page  # redondeo hacia arriba
+
+    # 3. Slicing de registros que se van a mostrar
+    start = (page - 1) * per_page
+    end = start + per_page
+    encuestas_page = todas[start:end]
+
+    return render_template(
+        'encuestas.html',
+        menu_url=_menu_url(),
+        encuestas=encuestas_page,  # SOLO las de esta página
+        page=page,
+        total_pages=total_pages
+    )
+
+
 
 
 # ==========================================
 # RUTAS PARA LA AGENDA DE MANTENIMIENTO
 # ==========================================
 @app.route('/Agenda', methods=['GET'], endpoint="agenda")
+@login_required
 def agenda():
     if is_admin():
         vista = request.args.get('vista', 'mensual')
@@ -587,7 +704,11 @@ def agenda():
         dia_seleccionado = request.args.get('dia')
         dias = range(1, 32) if vista == 'mensual' else range(1, 8)
         return render_template('Agenda (EMPLEADO).html', dias=dias, vista=vista, dia_seleccionado=dia_seleccionado, menu_url=_menu_url())
+
+
+
 @app.route('/buscar_maquina')
+@login_required
 def buscar_maquina():
     id_maquina = request.args.get('id')
     if not id_maquina:
@@ -605,6 +726,7 @@ def buscar_maquina():
 
 
 @app.route('/agregar', methods=['POST'])
+@login_required
 def agregar():
     dia = request.form.get('dia')
     descripcion = request.form.get('descripcion')
@@ -630,6 +752,7 @@ def agregar():
 
 
 @app.route('/gestion_tickets', methods=['GET', 'POST'])
+@login_required
 def gestion_tickets():
     if request.method == 'POST':
         cuerpo = request.form.get('ticket_Descripcion', '')
@@ -650,6 +773,7 @@ def gestion_tickets():
 # ==========================================
 
 @app.route('/agregar_herramienta', methods=['GET', 'POST'])
+@login_required
 def agregar_herramienta():
     herramienta = Herramientas()  
 
@@ -684,6 +808,7 @@ def agregar_herramienta():
 # ==========================================
 
 @app.route('/retiro_herramienta', methods=['GET', 'POST'])
+@login_required
 def retiro_herramienta():
     if request.method == 'POST':
         nombre = request.form['id_herr']
@@ -705,6 +830,7 @@ def retiro_herramienta():
 # ==========================================
 
 @app.route('/reintegro', methods=['GET', 'POST'])
+@login_required
 def reintegro():
     if request.method == 'POST':
         id_herr = int(request.form['id_herr'])
@@ -721,7 +847,15 @@ def reintegro():
 
     return render_template('reintegro_herramientas.html')
 
+
+
+
+# ==========================================
+# BUSCAR HERRAMIENTA
+#=========================================
+
 @app.route('/buscar_herramienta', methods=['GET'])
+@login_required
 def buscar_herramienta():
     nombre = request.args.get('nombre', '').strip()  
     herramienta = Herramientas()
@@ -735,6 +869,7 @@ def buscar_herramienta():
     return render_template('inventario_herramientas.html', items=items)
 
 @app.route('/inventario') 
+@login_required
 def inventario(): 
     return render_template('inventario_herramientas.html')
 
@@ -743,6 +878,7 @@ def inventario():
 # SALIDA DE INVENTARIO 
 # ==========================================
 @app.route('/control_herramientas', methods=['GET', 'POST'])
+@login_required
 def control_herramientas():
 
     herramientas = Herramientas()
@@ -774,6 +910,7 @@ def control_herramientas():
 # ==========================================
 
 @app.route("/perfil_usuario")
+@login_required
 def perfil_usuario():
     id_usuario = session.get("id_usuario")
 
@@ -786,6 +923,7 @@ def perfil_usuario():
 
 
 @app.route("/editar_contacto", methods=["POST"])
+@login_required
 def editar_contacto():
     id_usuario = session.get("id_usuario")  
 
@@ -808,6 +946,7 @@ def editar_contacto():
 # SALIDA DE INVENTARIO 
 # ==========================================
 @app.route('/salida_inventario', methods=['GET'])
+@login_required
 def salida_inventario():
     page = int(request.args.get('page', 1))
     filtro = request.args.get('filtro', 'recientes')  # por defecto mostrar recientes
@@ -834,6 +973,7 @@ def salida_inventario():
 # RUTA: Mostrar formulario de venta
 # ==========================================
 @app.route('/venta', methods=['GET'])
+@login_required
 def venta_form():
     return render_template('venta.html')  
 
@@ -841,18 +981,22 @@ def venta_form():
 # Registrar la venta en la base de datos
 # ==========================================
 @app.route('/registrar_venta', methods=['POST'])
+@login_required
 def registrar_venta():
     id_producto = int(request.form['id_producto'])
     cliente_id = int(request.form['cliente_id'])
     cantidad = int(request.form['cantidad'])
-    encargado_id = int(request.form['encargado_id'])
+    encargado_id = session.get('id_usuario')
     garantia = int(request.form['garantia'])
     descripcion = request.form['descripcion']
 
+    # IMPORTANTE: evitar error si llega None
+    descuento = request.form.get('descuento', 0)
+    descuento = int(descuento)
+
     venta = Venta()
     
-    if venta.registrar_venta(cliente_id, id_producto, cantidad, encargado_id, descripcion, garantia):
-        print(garantia)
+    if venta.registrar_venta(cliente_id, id_producto, cantidad, encargado_id, descripcion, garantia, descuento):
         venta.cerrar()
         return redirect(url_for('venta_form'))
     else:
@@ -862,42 +1006,67 @@ def registrar_venta():
 
 
 
+
 # ==========================================
 #  editar venta
 # ==========================================
-@app.route("/editar_venta", methods=["GET"])
+@app.route('/editar_venta', methods=['GET', 'POST'])
+@login_required
 def editar_venta():
-    id_venta = request.args.get("id")   # ← el name="id" de tu input
+    venta_model = Venta()
     venta = None
 
-    if id_venta:
-        v = Venta()
-        venta = v.obtener_venta(id_venta)
-        v.cerrar()
+    if request.method == 'POST':
+        id_venta = request.form.get('id_buscar')  # ← COINCIDE con el HTML
 
-    return render_template("editar_venta.html", venta=venta, id_venta=id_venta)
+        if id_venta:
+            venta = venta_model.obtener_venta(id_venta)
+
+            if not venta:
+                flash("No existe una venta con ese ID", "danger")
+                return redirect(url_for('editar_venta'))
+
+    return render_template('editar_venta.html', venta=venta)
 
 
-@app.route("/actualizar_venta", methods=["POST"])
+@app.route('/actualizar_venta', methods=['POST'])
+@login_required
 def actualizar_venta():
+    id_venta = request.form.get('id_venta')
+    cliente_id = request.form.get('cliente_id')
+    cantidad = int(request.form.get('cantidad'))
+    garantia = request.form.get('garantia')
 
-    id_venta = request.form.get("id_venta")
-    cantidad = int(request.form.get("cantidad"))
-    garantia = int(request.form.get("garantia"))
+    venta_model = Venta()
 
-    v = Venta()
-    venta_actual = v.obtener_venta(id_venta)
+    # Obtener venta actual
+    venta_actual = venta_model.obtener_venta(id_venta)
+    if not venta_actual:
+        flash("Error: la venta no existe.", "danger")
+        return redirect(url_for('editar_venta'))
 
-    # Se necesita el precio unitario desde producto
-    producto = v.obtener_producto(venta_actual["id_producto"])
-    precio_unitario = producto["precio"]
-
+    # El monto se recalcula solo si cambia la cantidad
+    precio_unitario = venta_actual["monto"] / venta_actual["cantidad"]
     monto_nuevo = precio_unitario * cantidad
 
-    v.actualizar_venta(id_venta, cantidad, garantia, monto_nuevo)
-    v.cerrar()
+    exito = venta_model.actualizar_venta(id_venta, cliente_id, cantidad, garantia, monto_nuevo)
+    venta_model.cerrar()
 
-    return redirect(url_for("editar_venta"))
+    if exito:
+        flash("Venta actualizada correctamente", "success")
+    else:
+        flash("Error al actualizar la venta", "danger")
+
+    return redirect(url_for('editar_venta'))
+
+
+
+
+
+
+
+
+
 
 
 
@@ -906,6 +1075,7 @@ def actualizar_venta():
 #  Buscar producto 
 # ==========================================
 @app.route('/buscar_producto/<int:id_producto>', methods=['GET'])
+@login_required
 def buscar_producto(id_producto):
     venta = Venta()
     producto = venta.obtener_producto(id_producto)
@@ -921,6 +1091,7 @@ def buscar_producto(id_producto):
 #  Formulario para registrar material
 # ==========================================
 @app.route('/material_form', methods=['GET'])
+@login_required
 def material_form():
     return render_template('Guardar_material.html')  
 
@@ -932,6 +1103,7 @@ def material_form():
 #  Registrar material (sumar cantidad)
 # ==========================================
 @app.route('/registrar_material', methods=['POST'])
+@login_required
 def registrar_material():
     id_producto = int(request.form['id_producto'])
     cantidad = int(request.form['cantidad'])
@@ -945,22 +1117,13 @@ def registrar_material():
         return redirect(url_for('material_form'))
     else:
         return flash("Error al registrar el material", "danger")
-    
 
-
-
-
-
-
-
-# ==========================================
-# Laura
-# ==========================================
 
 # -----------------------
 # RUTA: REPORTE DE VENTAS
 # -----------------------
 @app.route("/reporte_ventas" ,methods=["GET"])
+@login_required
 def reporte_ventas():
     fecha = request.args.get("fecha")
     orden = request.args.get("orden")
@@ -1074,47 +1237,63 @@ def exportar_pdf():
 # ==========================================
 
 @app.route('/importar/excel', methods=['GET', 'POST'])
+@login_required
 def importar_excel():
     if request.method == 'POST':
-        archivo = request.files['archivo']
+        archivo = request.files.get('archivo')
 
         if not archivo:
             flash('❌ No se seleccionó ningún archivo', 'error')
             return redirect(request.url)
 
         try:
-
+            # Leer archivo Excel
             df = pd.read_excel(archivo)
+
+            # Columnas reales permitidas en tu tabla
+            columnas_validas = ['nombre', 'descripcion', 'cantidad', 'categoria_id', 'precio']
+
+            # Verificar que existan en el Excel
+            for col in columnas_validas:
+                if col not in df.columns:
+                    flash(f'❌ El Excel no contiene la columna obligatoria: {col}', 'error')
+                    return redirect(request.url)
 
             conn = conectar()
             cursor = conn.cursor()
 
             for _, fila in df.iterrows():
+
+                nombre = fila['nombre']
+                descripcion = fila['descripcion']
+                cantidad = safe_int(fila['cantidad'])
+                categoria_id = safe_int(fila['categoria_id'])
+                precio = safe_float(fila['precio'])
+
                 query = """
                     INSERT INTO producto (nombre, descripcion, cantidad, categoria_id, precio)
                     VALUES (%s, %s, %s, %s, %s)
                 """
-                valores = (
-                    fila['nombre'],
-                    fila['descripcion'],
-                    int(fila['cantidad']),
-                    int(fila['categoria_id']),
-                    float(fila['precio'])
-                )
-                cursor.execute(query, valores)
+
+                cursor.execute(query, (nombre, descripcion, cantidad, categoria_id, precio))
 
             conn.commit()
-            cursor.close()
-            conn.close()
-
             flash('✅ Datos importados correctamente desde Excel', 'success')
-            return redirect(url_for('importar_excel'))
 
         except Exception as e:
+            if conn:
+                conn.rollback()
             flash(f'❌ Error al importar: {str(e)}', 'error')
-            return redirect(url_for('importar_excel'))
 
-    return render_template('importar_excel.html')
+        finally:
+            if 'cursor' in locals():
+                cursor.close()
+            if 'conn' in locals():
+                conn.close()
+
+        return redirect(url_for('exportar'))
+
+    return render_template('exportar.html')
 
 
 
@@ -1125,6 +1304,7 @@ def importar_excel():
 
 
 @app.route("/ordenes", methods=["GET", "POST"])
+@login_required
 def ordenes():
     servicio = Servicio()
 
@@ -1195,6 +1375,7 @@ def ordenes():
 # INVENTARIO
 # -----------------------------------------
 @app.route("/filtro", methods=["GET", "POST"])
+@login_required
 def filtro():
     
     if is_admin():
@@ -1342,6 +1523,7 @@ def volver():
 # -----------------------------
 
 @app.route("/devolucion_de_material", methods=["GET", "POST"])
+@login_required
 def devoluciones():
     if request.method == "POST":
         compra_id = request.form.get("compra_id")
@@ -1377,11 +1559,13 @@ def devoluciones():
 # EDITAR MATERIALES
 # -----------------------------
 @app.route('/editar_material_form', methods=['GET'])
+@login_required
 def editar_material_form():
     return render_template('editar_material.html')
 
 
 @app.route('/editar_material', methods=['POST'])
+@login_required
 def editar_material():
     try:
         id_producto = request.form.get('id_producto')
@@ -1416,6 +1600,7 @@ def editar_material():
 # REGISTRAR ADMINISTRAR PROVEEDORES
 # -----------------------------
 @app.route("/agregar_proveedor", methods=["GET", "POST"])
+@login_required
 def agregar_proveedor():
     if request.method == "POST":
         nombre = request.form.get("nombre")
@@ -1436,6 +1621,7 @@ def agregar_proveedor():
 # -----------------------------------------
 
 @app.route("/exportar/ventas/excel")
+@login_required
 def exportar_ventas_excel():
     fecha = request.args.get("fecha")
     orden = request.args.get("orden")
@@ -1469,6 +1655,7 @@ def exportar_ventas_excel():
 
 
 @app.route("/exportar/ventas/pdf")
+@login_required
 def exportar_ventas_pdf():
     fecha = request.args.get("fecha")
     orden = request.args.get("orden")
@@ -1526,6 +1713,7 @@ def exportar_ventas_pdf():
 # Maquinaria
 # -----------------------------------------
 @app.route('/maquinaria', methods=['GET'])
+@login_required
 def maquinaria():
     conexion = ConexionMaquinaria()
     maquinarias = conexion.mostrar_maquinarias()
@@ -1534,6 +1722,7 @@ def maquinaria():
 
 # --- Registrar nueva maquinaria ---
 @app.route('/registrar_maquinaria', methods=['GET', 'POST'])
+@login_required
 def registrar_maquinaria():
     if request.method == 'POST':
         nombre = request.form.get('nombre')
@@ -1564,6 +1753,7 @@ app.jinja_env.filters['loads'] = json.loads
 app.jinja_env.filters['traducir_operacion'] = Historial.traducir_operacion
 
 @app.route('/historial')
+@login_required
 def historial():
     page = int(request.args.get('page', 1))   
     por_pagina = 4                            
@@ -1596,6 +1786,7 @@ def historial():
 # -----------------------------------------
 
 @app.route('/mantenimientos', methods=['GET'])
+@login_required
 def mantenimientos():
     agenda = Agenda()
 

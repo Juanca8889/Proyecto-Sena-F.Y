@@ -20,7 +20,7 @@ header {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   position: relative;
   height: 70px;
- 
+
 }
 
 header .volver {
@@ -62,6 +62,8 @@ header .titulo h1 {
 header .acciones {
   position: absolute;
   right: 20px;
+  gap: 15px;
+
 }
 
 header .btn-agregar {
@@ -72,6 +74,8 @@ header .btn-agregar {
   text-decoration: none;
   font-weight: bold;
   transition: background 0.2s;
+  margin: 5px;
+
 }
 
 header .btn-agregar:hover {
@@ -107,6 +111,7 @@ h1 {
 .clientes-actions {
   margin-bottom: 16px;
   text-align: left;
+
 }
 
 select {

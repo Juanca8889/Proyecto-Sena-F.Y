@@ -1,61 +1,76 @@
 @import url('./variables.css');
 
 body {
-    margin:0%;
+    margin: 0%;
 }
 
 
+.btn-orden {
+    background-color: var(--color-verde);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    position: absolute;
+    right: 15px;
 
-        table {
-            width: 70%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            margin-left: 15%;
-            border: solid black;
-            
-        }
-        th, td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
+}
 
-        th {
-            background: var(--color-azul);
-            color:white; 
-            
-        }
+table {
+    width: 70%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: 15%;
+    border: solid black;
 
-        .pagination {
-            margin-top: 20px;
-            text-align: center;
-        }
+}
 
-        .pagination a {
-            padding: 10px 15px;
-            margin: 3px;
-            border-radius: 5px;
-            background: #2ecc71;
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-        }
+th,
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
 
-        .pagination a.active {
-            background: #27ae60;
-        }
+th {
+    background: var(--color-azul);
+    color: white;
 
-        .btn-rol {
-            padding: 6px 10px;
-            background: #3498db;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn-rol:hover {
-            background: #2980b9;
-        }
+}
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    padding: 10px 15px;
+    margin: 3px;
+    border-radius: 5px;
+    background: #2ecc71;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.pagination a.active {
+    background: #27ae60;
+}
+
+.btn-rol {
+    padding: 6px 10px;
+    background: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-rol:hover {
+    background: #2980b9;
+}
 
 .SERVIMAQ {
     margin-left: 5px;
@@ -73,7 +88,7 @@ header {
     justify-content: center;
     position: relative;
     height: 70px;
-    margin:0;
+    margin: 0;
 }
 
 header .salir {
@@ -84,6 +99,6 @@ header .salir {
     left: 20px;
     top: 40px;
     border-radius: 6px;
-    margin:0;
+    margin: 0;
 
 }

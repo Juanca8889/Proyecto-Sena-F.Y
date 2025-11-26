@@ -73,7 +73,7 @@
             <i  data-feather="user" class="icono-usuario"></i>
             <ul class="submenu-usuario">
             <li><a href="{{url_for('perfil_usuario')}}"><i data-feather="settings"></i>   Editar usuario</a></li>
-            <li ><a style="color:red;" href="{{ url_for('login') }}"><i data-feather="log-out"></i> Cerrar sesion</a></li>
+            <li ><a style="color:red;" href="{{ url_for('logout') }}"><i data-feather="log-out"></i> Cerrar sesion</a></li>
             </ul>
             </span>
           </div>
@@ -90,7 +90,7 @@
         </section>
 
         <footer class="cerrar-sesion">
-          <a href="login"><i data-feather="arrow-right"></i></a>
+          <a href="{{ url_for('logout') }}"><i data-feather="arrow-right"></i></a>
         </footer>
       </main>
     </div>

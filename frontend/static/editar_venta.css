@@ -15,7 +15,7 @@ body {
     margin: 30px auto;
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* ===========================
@@ -56,6 +56,16 @@ h2 {
     color: white;
     border: none;
     border-radius: 6px;
+    cursor: pointer;
+}
+
+
+.btn-volver {
+    font-size: 24px;
+    color: #333;
+    position: absolute;
+    top: 20px;
+    left: 20px;
     cursor: pointer;
 }
 

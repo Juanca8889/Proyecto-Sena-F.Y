@@ -4,12 +4,28 @@ from email.message import EmailMessage
 import ssl
 import smtplib
 from Backend.Clientes import ConexionClientes
+from BD.conexion import conectar
 
 
 
 class Encuestas: 
     def __init__(self, correo):
         self.email_para = correo
+        self.conexion = conectar()
+        self.cursor = self.conexion.cursor(dictionary=True)
+        
+        
+    def guardar_encuesta(self, puntuacion, opinion):
+        query = "INSERT INTO encuesta (calificacion, opinion) VALUES (%s, %s)"
+        valores = (puntuacion, opinion)
+        self.cursor.execute(query, valores)
+        self.conexion.commit()
+        self.conexion.close()
+        
+    def ver_encuestas(self):
+        self.cursor.execute("SELECT * FROM encuesta ORDER BY id_encuesta DESC")
+        encuestas = self.cursor.fetchall()
+        return encuestas
 
     def enviar_correo(self):
             load_dotenv()
@@ -24,7 +40,7 @@ Gracias por confiar en nuestros servicios. Para nosotros es fundamental mejorar 
 
 Te invitamos a responder una breve encuesta que no te tomará más de 2 minutos:
 
-https://n9.cl/5as0hi.
+http://127.0.0.1:5000/encuesta.
 
 Agradecemos mucho tu tiempo y tus comentarios.
 

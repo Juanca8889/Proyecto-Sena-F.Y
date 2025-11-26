@@ -4,70 +4,82 @@
     <meta charset="UTF-8">
     <title>Editar Venta</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='editar_venta.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
+
+    {% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
+
+
+<a href="{{ url_for('salida_inventario') }}" class="volver" title="Volver">
+    <i class="fa-solid fa-arrow-left btn-volver"></i>
+    </a>
 
 <div class="container">
 
     <h1>Editar Venta</h1>
 
-    <!-- BUSCAR VENTA -->
-    <form method="GET" action="{{ url_for('editar_venta') }}" class="buscar-form">
-        <label>ID de la Venta:</label>
-        <input type="number" name="id" value="{{ id_venta or '' }}" required>
+    <!-- FORMULARIO PARA BUSCAR VENTA -->
+    <form method="POST" action="{{ url_for('editar_venta') }}" class="buscar-form">
+        <input type="number" name="id_buscar" placeholder="ID Venta" required>
         <button type="submit">Buscar</button>
     </form>
 
     {% if venta %}
-    <h2>Detalles de la Venta</h2>
 
+    <h2>Datos de la Venta</h2>
+
+    <!-- FORMULARIO PARA ACTUALIZAR -->
     <form method="POST" action="{{ url_for('actualizar_venta') }}" class="venta-form">
 
+        <!-- Oculto el ID venta -->
         <input type="hidden" name="id_venta" value="{{ venta.id_venta }}">
 
+        <!-- ID Cliente (EDITABLE) -->
         <div class="fila">
-            <label>Cliente ID:</label>
-            <input type="text" value="{{ venta.cliente_id }}" readonly>
+            <label>ID Cliente</label>
+            <input type="number" name="cliente_id" value="{{ venta.cliente_id }}" required>
         </div>
 
-    
-
+        <!-- Cantidad (EDITABLE) -->
         <div class="fila">
-            <label>Descripción:</label>
+            <label>Cantidad</label>
+            <input type="number" name="cantidad" min="1" value="{{ venta.cantidad }}" required>
+        </div>
+
+        <!-- Garantía (EDITABLE) -->
+        <div class="fila">
+            <label>Garantía (días)</label>
+            <input type="number" name="garantia" min="0" max="365" value="{{ venta.garantias }}" required>
+        </div>
+
+        <!-- Encargado (NO editable) -->
+        <div class="fila">
+            <label>ID Encargado</label>
+            <input type="number" value="{{ venta.encargado_id }}" readonly>
+        </div>
+
+        <!-- Descripción (NO editable) -->
+        <div class="fila">
+            <label>Descripción</label>
             <textarea readonly>{{ venta.descripcion }}</textarea>
         </div>
 
-        <div class="fila">
-            <label>Fecha:</label>
-            <input type="date" value="{{ venta.fecha_venta }}" readonly>
-        </div>
+        
 
-        <div class="fila">
-            <label>Encargado ID:</label>
-            <input type="text" value="{{ venta.encargado_id }}" readonly>
-        </div>
-
-        <div class="fila">
-            <label>Monto Actual:</label>
-            <input type="text" value="{{ venta.monto }}" readonly>
-        </div>
-
-        <div class="fila">
-            <label>Nueva Cantidad:</label>
-            <input type="number" name="cantidad" value="{{ venta.cantidad }}">
-        </div>
-
-        <div class="fila">
-            <label>Nueva Garantía (días):</label>
-            <input type="number" name="garantia" value="{{ venta.garantias }}">
-        </div>
-
-        <button type="submit" class="guardar-btn">Guardar Cambios</button>
+        <!-- Botón Guardar -->
+        <button class="guardar-btn" type="submit">Guardar Cambios</button>
 
     </form>
+
     {% endif %}
 
 </div>
+<script>
+    feather.replace();
+</script>
 
 </body>
 </html>

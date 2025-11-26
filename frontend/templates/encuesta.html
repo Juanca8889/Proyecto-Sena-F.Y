@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='encuesta.css') }}" />
+    <title>Encuesta - 5 estrellas</title>
+    
+</head>
+
+<body>
+
+    {% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
+
+    <main class="card" aria-labelledby="encuesta-title">
+        <h1 id="encuesta-title">Cuéntanos tu experiencia</h1>
+
+        <form id="surveyForm" action="/encuesta" method="post" novalidate>
+            <div class="note">Califica con estrellas (1 = muy mal, 5 = excelente)</div>
+
+            <div class="rating" role="radiogroup" aria-label="Calificación">
+                <!-- Radios come first so CSS sibling selectors can color previous labels -->
+                <input type="radio" name="rating" id="r5" value="5" required />
+                <input type="radio" name="rating" id="r4" value="4" />
+                <input type="radio" name="rating" id="r3" value="3" />
+                <input type="radio" name="rating" id="r2" value="2" />
+                <input type="radio" name="rating" id="r1" value="1" />
+
+                <label class="star-label" for="r1" title="1 estrella" aria-hidden="true">★</label>
+                <label class="star-label" for="r2" title="2 estrellas" aria-hidden="true">★</label>
+                <label class="star-label" for="r3" title="3 estrellas" aria-hidden="true">★</label>
+                <label class="star-label" for="r4" title="4 estrellas" aria-hidden="true">★</label>
+                <label class="star-label" for="r5" title="5 estrellas" aria-hidden="true">★</label>
+
+         
+            </div>
+
+            <label for="opinion" class="note">Tu opinión</label><br>
+            <textarea id="opinion" name="opinion" minlength="0" maxlength="200" rows="4" placeholder="Escribe tu opinión aquí..." required ></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+    </main>
+</body>
+</html>
