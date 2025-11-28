@@ -49,7 +49,11 @@ body {
 
 
 
+<<<<<<< HEAD
 .sidebar button {
+=======
+.sidebar button  {
+>>>>>>> 8f4524cf1af715343c67c28340670e4c18aa869f
   background: none;
   color: white;
   border: none;
@@ -109,6 +113,10 @@ body {
   display: flex;
   gap: 18px;
   align-items: center;
+<<<<<<< HEAD
+=======
+  color : white;
+>>>>>>> 8f4524cf1af715343c67c28340670e4c18aa869f
 }
 
 

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar material</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='venta.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <a href="{{ url_for('filtro') }}" class="volver" title="Volver">
+        <i class="fa-solid fa-arrow-left btn-volver"></i>
+    </a>
+
+    <div class="container">
+        <h1>Editar material</h1>
+
+        <form id="material_Form">
+            <div class="form-group">
+                <label for="id_producto">Código del Producto</label>
+                <input type="number" id="id_producto" name="id_producto" required>
+                <button type="button" id="buscarBtn">Buscar</button>
+            </div>
+
+            <div class="form-group">
+                <label>Nombre actual</label>
+                <input type="text" id="nombre_actual" name="nombre_actual" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Precio actual</label>
+                <input type="text" id="precio_actual" name="precio_actual" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Descripción actual</label>
+                <textarea id="descripcion_actual" name="descripcion_actual" readonly></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Nuevo nombre</label>
+                <input type="text" id="nombre_nuevo" name="nombre_nuevo">
+            </div>
+
+            <div class="form-group">
+                <label>Nuevo precio</label>
+                <input type="text" id="precio_nuevo" name="precio_nuevo">
+            </div>
+
+            <div class="form-group">
+                <label>Nueva descripción</label>
+                <textarea id="descripcion_nuevo" name="descripcion_nuevo"></textarea>
+            </div>
+
+            <button type="submit" class="btn">Editar Material</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("buscarBtn").addEventListener("click", async () => {
+            const id = document.getElementById("id_producto").value;
+            if (!id) return;
+
+            const res = await fetch(`/buscar_producto/${id}`);
+            const data = await res.json();
+
+            if (data.error) {
+                Swal.fire("Error", "Producto no encontrado", "error");
+                document.getElementById("nombre_actual").value = "";
+                document.getElementById("precio_actual").value = "";
+                document.getElementById("descripcion_actual").value = "";
+            } else {
+                document.getElementById("nombre_actual").value = data.nombre;
+                document.getElementById("precio_actual").value = data.precio;
+                document.getElementById("descripcion_actual").value = data.descripcion;
+            }
+        });
+
+       document.getElementById("material_Form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const res = await fetch("/editar_material", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+        Swal.fire({
+            icon: "success",
+            title: "Material actualizado",
+            text: data.message,
+            timer: 2000,
+            showConfirmButton: false
+        });
+        e.target.reset();
+    } else {
+        Swal.fire("Error", data.message || "Hubo un problema al editar el material", "error");
+    }
+});
+
+    </script>
+</body>
+</html>

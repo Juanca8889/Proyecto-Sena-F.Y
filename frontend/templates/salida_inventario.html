@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Salidas de Inventario</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='salida_inventario.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+  <header>
+    <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+    <h2 class="SERVIMAQ">SERVIMAQ</h2>
+    <div class="titulo">
+      <h1>REGISTRO DE SALIDA DE INVENTARIO</h1>
+    </div>
+    <div class="acciones-header">
+    <button class="add-btn" onclick="window.location.href='{{ url_for('venta_form') }}'">+ Registrar Venta</button>
+    <button class="add-btn" onclick="window.location.href='{{ url_for('editar_venta') }}'">Editar Venta</button>
+    </div>
+
+  </header>
+
+<div class="filtros">
+  <a href="{{ url_for('salida_inventario', filtro='recientes') }}" class="btn-filtro">Más recientes</a>
+  <a href="{{ url_for('salida_inventario', filtro='antiguos') }}" class="btn-filtro">Más antiguos</a>
+</div>
+
+
+  <div class="container">
+    <div class="cards-container">
+      {% if ventas %}
+        {% for v in ventas %}
+        <div class="card">
+          <h3>Venta #{{ v.id_venta }}</h3>
+          <p><strong>Fecha:</strong> {{ v.fecha_venta }}</p>
+          <p><strong>Garantia:</strong> {{ v.garantias }}</p>
+          <p><strong>Cantidad:</strong> {{ v.cantidad }}</p>
+          <p><strong>Descripción:</strong> {{ v.descripcion }}</p>
+          <p><strong>Monto:</strong> ${{ v.monto }}</p>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p>No hay registros todavía.</p>
+      {% endif %}
+    </div>
+
+    <!-- Paginación simple -->
+    <footer>
+      <div class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('salida_inventario', page=page-1) }}">&laquo; Anterior</a>
+        {% endif %}
+        <span>Página {{ page }}</span>
+        {% if has_next %}
+        <a href="{{ url_for('salida_inventario', page=page+1) }}">Siguiente &raquo;</a>
+        {% endif %}
+      </div>
+    </footer>
+  </div>
+
+  <script>feather.replace();</script>
+</body>
+</html>

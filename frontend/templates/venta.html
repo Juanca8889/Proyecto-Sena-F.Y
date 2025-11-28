@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Venta</title>
+    <link rel="stylesheet"  href="{{ url_for('static', filename='venta.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <a href="{{ url_for('salida_inventario') }}" class="volver" title="Volver">
+    <i class="fa-solid fa-arrow-left btn-volver"></i>
+    </a>
+
+    <div class="container">
+        <h1>Registrar Venta</h1>
+
+        <form id="ventaForm">
+            <div class="form-group">
+                <label for="id_producto">Código del Producto</label>
+                <input type="number" id="id_producto" name="id_producto" required>
+                <button type="button" id="buscarBtn">Buscar</button>
+            </div>
+
+            <div class="form-group">
+                <label>Nombre del Producto</label>
+                <input type="text" id="nombre" name="nombre" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Precio Unitario</label>
+                <input type="text" id="precio" name="precio" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Descripción</label>
+                <textarea id="descripcion" name="descripcion" readonly></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Cantidad</label>
+                <input type="number" id="cantidad" name="cantidad" required min="1">
+            </div>
+
+            <div class="form-group">
+                <label>Garantía (días)</label>
+                <input type="number" id="garantia" name="garantia" required min="0">
+            </div>
+
+            <div class="form-group">
+                <label>ID Cliente</label>
+                <input type="number" id="cliente_id" name="cliente_id" required>
+            </div>
+            <div class="form-group">
+                <label>Descuento</label>
+                <input type="number" id="descuento" name="descuento" min="0" max="15" required>
+            </div>
+
+            <button type="submit" class="btn">Registrar Venta</button>
+        </form>
+    </div>
+
+    <script>
+        // Buscar producto por ID
+        document.getElementById("buscarBtn").addEventListener("click", async () => {
+            const id = document.getElementById("id_producto").value;
+            if (!id) return;
+
+            const res = await fetch(`/buscar_producto/${id}`);
+            const data = await res.json();
+
+            if (data.error) {
+                Swal.fire("Error", "Producto no encontrado", "error");
+                document.getElementById("nombre").value = "";
+                document.getElementById("precio").value = "";
+                document.getElementById("descripcion").value = "";
+            } else {
+                document.getElementById("nombre").value = data.nombre;
+                document.getElementById("precio").value = data.precio;
+                document.getElementById("descripcion").value = data.descripcion;
+            }
+        });
+
+        // Registrar venta
+        document.getElementById("ventaForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            const res = await fetch("/registrar_venta", {
+                method: "POST",
+                body: formData
+            });
+
+            if (res.ok) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Venta registrada",
+                    text: "La venta fue registrada correctamente",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                e.target.reset();
+            } else {
+                Swal.fire("Error", "Hubo un problema al registrar la venta", "error");
+            }
+        });
+    </script>
+</body>
+</html>

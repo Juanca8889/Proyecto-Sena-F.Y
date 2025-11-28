@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Compra de material</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='pedido_compra.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+<header class="encabezado">
+    
+    <div class="titulo-con-flecha">
+        <a class="flecha" href="{{ url_for('volver') }}" title="Volver al menú">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+        <h1>Compra de material</h1>
+    </div>
+        <div class="botones-principales">
+        <a href="{{ url_for('realizar_pedido') }}">
+            <button><i class="fas fa-plus-circle"></i> Realizar un pedido</button>
+        </a>
+        <a href="{{ url_for('ver_pedidos') }}">
+            <button><i class="fas fa-clipboard-list"></i> Ver pedidos</button>
+        </a><br>
+        <a href="{{ url_for('devoluciones') }}">
+            <button><i class="fas fa-clipboard-list"></i> Devoluciones</button>
+        </a>
+        <a href="{{ url_for('agregar_proveedor') }}">
+            <button><i class="fas fa-plus-circle"></i> Agregar proveedor</button>
+        </a>
+    </div>
+
+</header>
+
+    {# 
+      BLOQUE DE MENSAJES FLASH 
+      Aquí se muestran alertas de Flask (ej: "Pedido realizado con éxito").
+      Se activan en app.py con flash("mensaje", "categoria").
+      Las categorías pueden ser "success" o "danger" y se usan en el CSS. 
+    #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {# VISTA 1: LISTA DE PRODUCTOS (se muestra si la variable vista == 'lista_materiales') #}
+    {% if vista == 'lista_materiales' %}
+    <main>
+        <div class="filtros-sugerencias">
+            
+            <!-- FILTROS para ordenar productos según criterio -->
+            <div class="filtros">
+                <form method="get" action="{{ url_for('pedido_compra') }}">
+                    <label for="filtro-select"><i class="fas fa-filter"></i> <b>FILTRO</b></label>
+                    <select id="filtro-select" name="filtro">
+                        {# 
+                          {% if filtro == 'MAS VENDIDO' %}selected{% endif %} 
+                          Esto marca como seleccionada la opción correspondiente.
+                          "filtro" es una variable que manda Flask. 
+                        #}
+                        <option {% if filtro == 'MAS VENDIDO' %}selected{% endif %}>MAS VENDIDO</option>
+                        <option {% if filtro == 'MENOR CANTIDAD' %}selected{% endif %}>MENOR CANTIDAD</option>
+                        <option {% if filtro == 'MAYOR CANTIDAD' %}selected{% endif %}>MAYOR CANTIDAD</option>
+                    </select>
+                    <button type="submit">Aplicar</button>
+                </form>
+            </div>
+
+            <!-- LISTADO DE PRODUCTOS -->
+            <div class="contenedor-materiales">
+                {# 
+                  {% for producto in productos %} 
+                  Recorre la lista de productos que viene de la base de datos.
+                  Cada "producto" es una tupla con: id, nombre, descripción, cantidad, precio, vendidos.
+                #}
+                {% for producto in productos %}
+                <div class="material">
+                    <!-- Nombre del producto -->
+                    <div class="nombre-material"><i class="fas fa-box"></i> {{ producto[1] }}</div>
+                    <!-- Descripción -->
+                    <p>{{ producto[2] }}</p>
+                    <!-- Precio -->
+                    <p><i class="fas fa-dollar-sign"></i> Precio: ${{ producto[4] }}</p>
+                    <!-- Cantidad disponible en stock -->
+                    <p><i class="fas fa-cubes"></i> En stock: {{ producto[3] }}</p>
+                    <!-- Cantidad vendida -->
+                    <p><i class="fas fa-chart-line"></i> Vendidos: {{ producto[5] }}</p>
+                    
+                    <!-- FORMULARIO para hacer un pedido directo de este producto -->
+                    <form action="{{ url_for('realizar_pedido') }}" method="POST">
+                        <!-- ID del producto oculto (para identificar qué producto se compra) -->
+                        <input type="hidden" name="id_producto" value="{{ producto[0] }}" />
+                        
+                        <!-- Campo para cantidad -->
+                        <label>Cantidad:
+                            <input type="number" name="cantidad" min="1" required />
+                        </label>
+                        
+                        <!-- Selección del proveedor -->
+                        <label>Proveedor:
+                            <select name="id_proveedor" required>
+                                {% for proveedor in proveedores %}
+                                <option value="{{ proveedor[0] }}">{{ proveedor[1] }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                        
+                        <!-- Fecha de entrega -->
+                        <label>Fecha de entrega:
+                            <input type="date" name="fecha_entrega" required />
+                        </label>
+                        
+                        <!-- Descripción opcional del pedido -->
+                        <label>Descripción (opcional):
+                            <input type="text" name="descripcion" placeholder="Ej: Urgente, lote nuevo..." />
+                        </label>
+                        
+                        <!-- Botón para enviar el pedido -->
+                        <button type="submit"><i class="fas fa-shopping-cart"></i> Comprar</button>
+                    </form>
+                </div>
+                {% else %}
+                {# Si la lista de productos está vacía, se ejecuta este bloque #}
+                <p>No hay productos para mostrar.</p>
+                {% endfor %}
+            </div>
+
+            <!-- SECCIÓN DE SUGERENCIAS (productos con stock bajo) -->
+            <div class="sugerencias">
+                <h3><i class="fas fa-lightbulb"></i> Sugerencias</h3>
+                {% for s in sugerencias %}
+                <div class="sugerencia-item">
+                    <p><b>Material:</b> {{ s.nombre }}</p>
+                    <p><b>Cantidad sugerida:</b> {{ s.cantidad_sugerida }}</p>
+                </div>
+                {% else %}
+                {# Si no hay sugerencias de pedido #}
+                <p>No hay sugerencias.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+    <!-- BOTONES PRINCIPALES de navegación -->
+
+    {# VISTA 2: FORMULARIO MANUAL DE PEDIDO (se muestra si vista == 'form_pedido') #}
+    {% elif vista == 'form_pedido' %}
+    <section class="formulario-pedido">
+        <h2><i class="fas fa-shopping-bag"></i> Detalle de compra</h2>
+        <form action="{{ url_for('realizar_pedido') }}" method="POST">
+            <!-- Selección de producto -->
+            <label>Seleccione el producto:
+                <select name="id_producto" required>
+                    {% for producto in productos %}
+                    <option value="{{ producto[0] }}">{{ producto[1] }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            
+            <!-- Cantidad -->
+            <label>Seleccione la cantidad:
+                <input type="number" name="cantidad" min="1" required />
+            </label>
+            
+            <!-- Proveedor -->
+            <label>Seleccione Proveedor:
+                <select name="id_proveedor" required>
+                    {% for proveedor in proveedores %}
+                    <option value="{{ proveedor[0] }}">{{ proveedor[1] }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            
+            <!-- Fecha de entrega -->
+            <label>Seleccione la fecha:
+                <input type="date" name="fecha_entrega" required />
+            </label>
+            
+            <!-- Descripción opcional -->
+            <label>Descripción (opcional):
+                <input type="text" name="descripcion" placeholder="Ej: Pedido con prioridad" />
+            </label>
+            
+            <!-- Botón para confirmar la compra -->
+            <button type="submit"><i class="fas fa-check-circle"></i> Comprar</button>
+        </form>
+        
+        <!-- Botón para volver al inicio -->
+        <a href="{{ url_for('pedido_compra') }}" class="btn-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </section>
+
+    {# VISTA 3: LISTADO DE PEDIDOS (se muestra si vista == 'ver_pedidos') #}
+    {% elif vista == 'ver_pedidos' %}
+    <section class="ver-pedidos">
+        <h2><i class="fas fa-clipboard-check"></i> Pedidos realizados</h2>
+        <ul>
+            {# for recorre la lista de pedidos realizados #}
+            {% for pedido in pedidos %}
+            <li>
+                <i class="fas fa-truck-moving"></i>
+                Proveedor: {{ pedido[1] }},
+                Material: {{ pedido[2] }},
+                Cantidad: {{ pedido[4] }},
+                Pedido: {{ pedido[5] }},
+                Entrega: {{ pedido[6] }}
+            </li>
+            {% else %}
+            {# Si no hay pedidos realizados #}
+            <li><i class="fas fa-info-circle"></i> No hay pedidos realizados.</li>
+            {% endfor %}
+        </ul>
+        
+        <!-- Botón volver -->
+        <a href="{{ url_for('pedido_compra') }}" class="btn-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </section>
+    {% endif %}
+</body>
+<script>
+    feather.replace();
+</script>
+</html>

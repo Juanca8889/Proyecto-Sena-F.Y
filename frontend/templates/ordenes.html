@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Órdenes de Servicio</title>
+  <link rel="stylesheet" href="../static/ordenes.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+
+<body>
+      {% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
+
+<header>
+    <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+    <h2 class="SERVIMAQ">SERVIMAQ</h2>
+    <div class="titulo">
+        <h1>REGISTAR SERVICIOS</h1>
+        <div class="create-order">
+        <button class="btn-orden" id="abrirModal">Crear Orden</button>
+        </div>
+
+    </div>
+</header>
+
+<!-- ✅ Filtros REALMENTE funcionales -->
+<div class="filters">
+  <form method="GET" action="{{ url_for('ordenes') }}">
+      <select name="fecha">
+        <option value="">Fecha</option>
+        <option value="hoy"  {% if fecha=='hoy' %}selected{% endif %}>Hoy</option>
+        <option value="ayer" {% if fecha=='ayer' %}selected{% endif %}>Ayer</option>
+        <option value="7dias" {% if fecha=='7dias' %}selected{% endif %}>Últimos 7 días</option>
+        <option value="mes" {% if fecha=='mes' %}selected{% endif %}>Último mes</option>
+      </select>
+
+      <select name="tipo">
+        <option value="">Tipo</option>
+        <option value="taller" {% if tipo=='taller' %}selected{% endif %}>Taller</option>
+        <option value="domicilio" {% if tipo=='domicilio' %}selected{% endif %}>Domicilio</option>
+      </select>
+
+      <button type="submit" class="btn-orden">Filtrar</button>
+  </form>
+</div>
+
+
+
+
+
+<table class="tabla-servicios">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Descripción</th>
+      <th>Tipo</th>
+      <th>Fecha</th>
+      <th>Cliente ID</th>
+      <th>Usuario ID</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for s in servicios %}
+    <tr>
+      <td>{{ s.id_servicio }}</td>
+      <td>{{ s.descripcion }}</td>
+      <td>{{ s.tipo }}</td>
+      <td>{{ s.fecha }}</td>
+      <td>{{ s.cliente_id }}</td>
+      <td>{{ s.usuario_id }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- MODAL -->
+<div class="modal" id="miModal">
+  <div class="modal-content">
+    <span class="close" id="cerrarModal">&times;</span>
+    <h2>Crear Orden</h2>
+
+    <form method="POST" action="{{ url_for('ordenes') }}">
+      <label>Descripción:</label>
+      <textarea name="descripcion" required></textarea>
+
+      <label>Tipo:</label>
+      <select name="tipo">
+        <option value="taller">Taller</option>
+        <option value="domicilio">Domicilio</option>
+      </select>
+
+      <label>Fecha:</label>
+      <input type="date" name="fecha" required>
+
+      <label>ID Cliente:</label>
+      <input type="number" name="cliente_id" required>
+
+      <label>ID Usuario:</label>
+      <input type="number" name="usuario_id" required>
+
+      <button type="submit">Crear Orden</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Modal abrir/cerrar
+  document.getElementById("abrirModal").onclick = () =>
+    document.getElementById("miModal").style.display = "flex";
+
+  document.getElementById("cerrarModal").onclick = () =>
+    document.getElementById("miModal").style.display = "none";
+
+  window.onclick = (e) => {
+    if (e.target == document.getElementById("miModal"))
+      document.getElementById("miModal").style.display = "none";
+  };
+
+  feather.replace();
+</script>
+
+</body>
+</html>

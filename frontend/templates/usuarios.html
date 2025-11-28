@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuarios</title>
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='usuarios.css') }}"/>
+    <script src="https://unpkg.com/feather-icons"></script>
+
+</head>
+
+<body>
+
+    
+<header>
+    <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+    <h2 class="SERVIMAQ">SERVIMAQ</h2>
+    <div class="titulo">
+    <h1>GESTION USUARIOS</h1>
+    </div>
+    <div class="right">
+    <button  onclick="window.location.href='{{ url_for('historial') }}'" class="btn-orden">Historial</button>
+    </div>
+</header>
+<body>
+{% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Celular</th>
+                <th>Correo</th>
+                <th>Usuario</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for u in usuarios %}
+            <tr>
+                <td>{{ u.nombre }}</td>
+                <td>{{ u.apellido }}</td>
+                <td>{{ u.celular }}</td>
+                <td>{{ u.correo }}</td>
+                <td>{{ u.usuario }}</td>
+
+                <td>
+                    {% if u.rol_id == 1 %}
+                        Admin
+                    {% else %}
+                        Empleado
+                    {% endif %}
+                </td>
+
+                <td>
+                    <form action="{{ url_for('cambiar_rol', id_usuario=u.id_usuario) }}" method="POST">
+                        <select name="rol">
+                            <option value="1" {% if u.rol_id == 1 %}selected{% endif %}>Admin</option>
+                            <option value="2" {% if u.rol_id == 2 %}selected{% endif %}>Empleado</option>
+                        </select>
+
+                        <button type="submit" class="btn-rol">Guardar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Paginación -->
+    <div class="pagination">
+        {% for p in range(1, total_pages + 1) %}
+            <a href="{{ url_for('usuarios', page=p) }}"
+               class="{% if p == page %}active{% endif %}">
+                {{ p }}
+            </a>
+        {% endfor %}
+    </div>
+<script>feather.replace();</script>
+</body>
+</html>

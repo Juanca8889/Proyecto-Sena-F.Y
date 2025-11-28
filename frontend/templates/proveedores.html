@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Proveedor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='proveedor.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+
+</head>
+<body>
+
+
+      {% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
+
+    <a href="{{ url_for('pedido_compra') }}" class="volver" title="Volver">
+    <i class="fa-solid fa-arrow-left btn-volver"></i>
+    </a>
+
+    <h2>Agregar nuevo proveedor</h2>
+
+    <form action="/agregar_proveedor" method="POST">
+        <label>Nombre:</label><br>
+        <input type="text" name="nombre" required><br><br>
+
+        <label>Teléfono:</label><br>
+        <input type="number" name="telefono" required><br><br>
+
+        <label>Correo:</label><br>
+        <input type="email" name="correo" required><br><br>
+
+        <button type="submit">Agregar</button>
+    </form>
+<script>
+    feather.replace()
+</script>
+
+</body>
+</html>

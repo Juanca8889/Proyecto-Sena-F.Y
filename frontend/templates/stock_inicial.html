@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Control de Stock</title>
+
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='stock_inicial.css') }}" />
+
+    <!-- Iconos FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+
+ 
+    <header class="header">
+        <div class="header-left">
+        <a href="{{ back_button_url }}" class="volver" title="Volver">
+        <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+
+            <!-- Búsqueda con botón -->
+            <form method="GET" action="{{ url_for('control_stock') }}" class="barra-busqueda" role="search">
+                <input
+                    type="text"
+                    name="filtro_nombre"
+                    value="{{ filtro_nombre }}"
+                    placeholder="Buscar material"
+                    class="search-input"
+                    aria-label="Buscar material"
+                />
+                <button type="submit" class="btn-buscar" title="Buscar" aria-label="Buscar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+
+        <div class="header-title">Control de Stock</div>
+
+        <div class="header-right">
+            <a href="{{ url_for('crear_referencia') }}" class="crear-btn">Crear referencia</a>
+            <a href="{{ url_for('notificaciones') }}" class="notif-icon" title="Notificaciones" aria-label="Notificaciones">
+                <i class="fa-regular fa-bell"></i>
+                {% if notificaciones and notificaciones|length > 0 %}
+                <span class="badge">{{ notificaciones|length }}</span>
+                {% endif %}
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- FORMULARIO DE FILTROS Y TABLA -->
+        <form method="GET" action="{{ url_for('control_stock') }}" class="filtros-form" id="filtrosForm">
+
+            <div class="tabla-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        {% set next_orden = 'asc' if orden == 'desc' else 'desc' %}
+                        <th>
+                            <a href="{{ url_for('control_stock',
+                                filtro_codigo=filtro_codigo, filtro_nombre=filtro_nombre, filtro_tipo=filtro_tipo,
+                                filtro_precio=filtro_precio, filtro_stock=filtro_stock, filtro_fecha=filtro_fecha,
+                                ordenar_por='codigo', orden=(ordenar_por == 'codigo' and next_orden or 'asc'), pagina=1) }}">
+                                Código
+                                {% if ordenar_por == 'codigo' %}
+                                    <i class="fa-solid fa-arrow-{{ 'up' if orden == 'asc' else 'down' }}"></i>
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ url_for('control_stock',
+                                filtro_codigo=filtro_codigo, filtro_nombre=filtro_nombre, filtro_tipo=filtro_tipo,
+                                filtro_precio=filtro_precio, filtro_stock=filtro_stock, filtro_fecha=filtro_fecha,
+                                ordenar_por='nombre', orden=(ordenar_por == 'nombre' and next_orden or 'asc'), pagina=1) }}">
+                                Nombre
+                                {% if ordenar_por == 'nombre' %}
+                                    <i class="fa-solid fa-arrow-{{ 'up' if orden == 'asc' else 'down' }}"></i>
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ url_for('control_stock',
+                                filtro_codigo=filtro_codigo, filtro_nombre=filtro_nombre, filtro_tipo=filtro_tipo,
+                                filtro_precio=filtro_precio, filtro_stock=filtro_stock, filtro_fecha=filtro_fecha,
+                                ordenar_por='tipo', orden=(ordenar_por == 'tipo' and next_orden or 'asc'), pagina=1) }}">
+                                Tipo
+                                {% if ordenar_por == 'tipo' %}
+                                    <i class="fa-solid fa-arrow-{{ 'up' if orden == 'asc' else 'down' }}"></i>
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ url_for('control_stock',
+                                filtro_codigo=filtro_codigo, filtro_nombre=filtro_nombre, filtro_tipo=filtro_tipo,
+                                filtro_precio=filtro_precio, filtro_stock=filtro_stock, filtro_fecha=filtro_fecha,
+                                ordenar_por='precio', orden=(ordenar_por == 'precio' and next_orden or 'asc'), pagina=1) }}">
+                                Precio
+                                {% if ordenar_por == 'precio' %}
+                                    <i class="fa-solid fa-arrow-{{ 'up' if orden == 'asc' else 'down' }}"></i>
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ url_for('control_stock',
+                                filtro_codigo=filtro_codigo, filtro_nombre=filtro_nombre, filtro_tipo=filtro_tipo,
+                                filtro_precio=filtro_precio, filtro_stock=filtro_stock, filtro_fecha=filtro_fecha,
+                                ordenar_por='stock', orden=(ordenar_por == 'stock' and next_orden or 'asc'), pagina=1) }}">
+                                Stock
+                                {% if ordenar_por == 'stock' %}
+                                    <i class="fa-solid fa-arrow-{{ 'up' if orden == 'asc' else 'down' }}"></i>
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ url_for('control_stock',
+                                filtro_codigo=filtro_codigo, filtro_nombre=filtro_nombre, filtro_tipo=filtro_tipo,
+                                filtro_precio=filtro_precio, filtro_stock=filtro_stock, filtro_fecha=filtro_fecha,
+                                ordenar_por='fecha', orden=(ordenar_por == 'fecha' and next_orden or 'asc'), pagina=1) }}">
+                                Última actualización
+                                {% if ordenar_por == 'fecha' %}
+                                    <i class="fa-solid fa-arrow-{{ 'up' if orden == 'asc' else 'down' }}"></i>
+                                {% endif %}
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if productos and productos|length > 0 %}
+                        {% for prod in productos %}
+                        <tr>
+                            <td>{{ prod.codigo }}</td>
+                            <td>{{ prod.nombre }}</td>
+                            <td>{{ prod.tipo }}</td>
+                            <td>{{ prod.precio }}</td>
+                            <td>{{ prod.stock }}</td>
+                            <td>{{ prod.updated_at or '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="no-resultados">
+                            <td colspan="6">
+                                No se encontraron resultados.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            </div>
+        </form>
+
+        <!-- PAGINACIÓN -->
+        <div class="paginacion">
+            {# Ir a primera y anterior #}
+            {% if pagina > 1 %}
+                <a href="{{ url_for('control_stock', pagina=1, ordenar_por=ordenar_por, orden=orden, filtro_codigo=filtro_codigo, filtro_nombre=filtro_nombre, filtro_tipo=filtro_tipo, filtro_precio=filtro_precio, filtro_stock=filtro_stock, filtro_fecha=filtro_fecha) }}">&laquo;&laquo;</a>
+                <a href="{{ url_for('control_stock', pagina=pagina-1, ordenar_por=ordenar_por, orden=orden, filtro_codigo=filtro_codigo, filtro_nombre=filtro_nombre, filtro_tipo=filtro_tipo, filtro_precio=filtro_precio, filtro_stock=filtro_stock, filtro_fecha=filtro_fecha) }}">&laquo;</a>
+            {% else %}
+                <span class="disabled">&laquo;&laquo;</span>
+                <span class="disabled">&laquo;</span>
+            {% endif %}
+
+            {# Números de página (ventana) #}
+            {% set start = 1 if pagina - 5 < 1 else pagina - 5 %}
+            {% set end = paginas_totales if pagina + 4 > paginas_totales else pagina + 4 %}
+            {% for p in range(start, end + 1) %}
+                {% if p == pagina %}
+                    <span class="current">{{ p }}</span>
+                {% else %}
+                    <a href="{{ url_for('control_stock', pagina=p, ordenar_por=ordenar_por, orden=orden, filtro_codigo=filtro_codigo, filtro_nombre=filtro_nombre, filtro_tipo=filtro_tipo, filtro_precio=filtro_precio, filtro_stock=filtro_stock, filtro_fecha=filtro_fecha) }}">{{ p }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {# Siguiente y última #}
+            {% if pagina < paginas_totales %}
+                <a href="{{ url_for('control_stock', pagina=pagina+1, ordenar_por=ordenar_por, orden=orden, filtro_codigo=filtro_codigo, filtro_nombre=filtro_nombre, filtro_tipo=filtro_tipo, filtro_precio=filtro_precio, filtro_stock=filtro_stock, filtro_fecha=filtro_fecha) }}">&raquo;</a>
+                <a href="{{ url_for('control_stock', pagina=paginas_totales, ordenar_por=ordenar_por, orden=orden, filtro_codigo=filtro_codigo, filtro_nombre=filtro_nombre, filtro_tipo=filtro_tipo, filtro_precio=filtro_precio, filtro_stock=filtro_stock, filtro_fecha=filtro_fecha) }}">&raquo;&raquo;</a>
+            {% else %}
+                <span class="disabled">&raquo;</span>
+                <span class="disabled">&raquo;&raquo;</span>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

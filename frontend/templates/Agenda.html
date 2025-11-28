@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Agenda de mantenimiento</title>
+    <link rel="stylesheet" href="./static/style.css" />
+    <link rel="stylesheet" href="./static/Agenda.css" />
+    <script src="https://unpkg.com/feather-icons"></script>
+  </head>
+  <body>
+    <header>
+      <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+      <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <div class="titulo">
+            <i class="fa-solid fa-users"></i>
+            <h1>AGENDA DE MANTENIMIENTO</h1>
+        </div>
+        <div class="acciones-header">
+          <a class="Maquinaria" href="{{ url_for('maquinaria') }}">Maquinaria</a>
+          <a class="mantenimientos" href="{{ url_for('mantenimientos') }}">Mantenimientos</a>
+        </div>
+    </header>
+      
+        <!-- Contenido de la agenda-->
+        <div class="general_agenda">
+          
+          <div class="selector">
+            <form method="get" action="{{ url_for('agenda') }}">
+              <button
+                class="boton-seleccionado"
+                type="submit"
+                name="vista"
+                value="mensual"
+              >
+                Mensual
+              </button>
+              <button
+                class="boton-seleccionado"
+                type="submit"
+                name="vista"
+                value="semanal"
+              >
+                Semanal
+              </button>
+            </form>
+          </div>
+
+          {% if vista == 'mensual' %}
+          <!-- Vista Mensual -->
+          <div id="mensual-vista">
+            <div class="calendario">
+              {% for dia in dias %}
+              <div class="dia">
+                {{ dia }}
+                <!-- botón que abre el formulario pasando el día por GET -->
+                <form method="get" action="{{ url_for('agenda') }}">
+                  <input type="hidden" name="vista" value="{{ vista }}" />
+                  <button
+                    class="boton-agregar"
+                    type="submit"
+                    name="dia"
+                    value="{{ dia }}"
+                  >
+                    +
+                  </button>
+                </form>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% else %}
+          <!-- Vista Semanal -->
+          <div id="semanal-vista">
+            <div class="calendario">
+              {% for dia in dias %}
+              <div class="dia">
+                {{ dia }}
+                <form method="get" action="{{ url_for('agenda') }}">
+                  <input type="hidden" name="vista" value="{{ vista }}" />
+                  <button
+                    class="boton-agregar"
+                    type="submit"
+                    name="dia"
+                    value="{{ dia }}"
+                  >
+                    +
+                  </button>
+                </form>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+                    <!-- Formulario de actividad (solo aparece si se seleccionó un día) -->
+                  {% if dia_seleccionado %}
+          <div id="form-actividad" class="form-actividad mostrar">
+            <form method="post" action="{{ url_for('agregar') }}">
+              <input type="hidden" name="dia" value="{{ dia_seleccionado }}" />
+
+              <!-- 🔹 Buscar máquina -->
+              <label>ID Máquina</label>
+              <div >
+                <input type="number" id="id_maquina" name="id_maquina" required placeholder="Ej: 3" />
+                <button type="button" id="buscarMaquina">Buscar</button>
+              </div>
+
+              <label>Nombre</label>
+              <input type="text" id="nombre_maquina" readonly>
+
+              <label>Descripción</label>
+              <textarea id="descripcion_maquina" readonly></textarea>
+
+              <label>Estado</label>
+              <input type="text" id="estado_maquina" readonly>
+
+              <label>Personal</label>
+              <input type="text" name="personal" required>
+
+              <label>Costo</label>
+              <input type="number" step="0.01" name="costo" required>
+
+              <label>Descripción del mantenimiento</label>
+              <textarea name="descripcion" required></textarea><br>
+
+              <button class="boton-final" type="submit">Guardar</button>
+              <a  class="boton-final" href="{{ url_for('agenda', vista=vista) }}">Cerrar</a>
+            </form>
+          </div>
+          {% endif %}
+
+        </div>
+      </main>
+    </div>
+    <script>
+      feather.replace();
+  
+  document.getElementById("buscarMaquina").addEventListener("click", async () => {
+    const id = document.getElementById("id_maquina").value;
+    const nombre = document.getElementById("nombre_maquina");
+    const descripcion = document.getElementById("descripcion_maquina");
+    const estado = document.getElementById("estado_maquina");
+
+    if (!id) {
+      alert("Por favor ingresa un ID de máquina.");
+      return;
+    }
+
+    const resp = await fetch(`/buscar_maquina?id=${id}`);
+    const data = await resp.json();
+
+    if (data.error) {
+      alert("Máquina no encontrada.");
+      nombre.value = "";
+      descripcion.value = "";
+      estado.value = "";
+    } else {
+      nombre.value = data.nombre;
+      descripcion.value = data.descripcion;
+      estado.value = data.estado;
+    }
+  });
+  </script>
+
+
+  </body>
+</html>

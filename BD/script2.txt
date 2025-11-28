@@ -1,0 +1,1941 @@
+CREATE DATABASE montallantasfy1;
+USE montallantasfy1;
+
+-- ============================
+-- TABLA ROLES
+-- ============================
+CREATE TABLE Rol (
+    id_rol INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+
+-- ============================
+-- TABLA PROVEEDORES
+-- ============================
+CREATE TABLE Proveedor (
+    id_proveedor INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(30) NOT NULL,
+    telefono BIGINT NOT NULL UNIQUE,
+    correo VARCHAR(80) NOT NULL UNIQUE
+);
+
+-- ============================
+-- TABLA USUARIOS
+-- ============================
+CREATE TABLE Usuario (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50),
+    apellido VARCHAR(50),
+    celular BIGINT UNIQUE,
+    correo VARCHAR(100) UNIQUE,
+    usuario VARCHAR(50) UNIQUE,
+    clave VARBINARY(64),
+    rol_id INT,
+    FOREIGN KEY (rol_id) REFERENCES Rol(id_rol)
+);
+
+ALTER TABLE Usuario
+MODIFY rol_id INT NOT NULL DEFAULT 3;
+
+-- ============================
+-- CLIENTES
+-- ============================
+CREATE TABLE Cliente (
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50),
+    apellido VARCHAR(50),
+    celular BIGINT NOT NULL UNIQUE,
+    correo VARCHAR(100) UNIQUE,
+    direccion VARCHAR(100) NOT NULL,
+    placa VARCHAR(7) NOT NULL UNIQUE,
+    modelo VARCHAR(40) NOT NULL
+);
+
+-- ============================
+-- CATEGORÍAS DE PRODUCTOS
+-- ============================
+CREATE TABLE categoriaProductos (
+    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    descripcion TEXT
+);
+
+-- ============================
+-- PRODUCTOS
+-- ============================
+CREATE TABLE Producto (
+    id_producto INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    cantidad INT NOT NULL,
+    categoria_id INT NOT NULL,
+    precio FLOAT NOT NULL,
+    FOREIGN KEY (categoria_id) REFERENCES categoriaProductos(id_categoria)
+);
+
+-- ============================
+-- INVENTARIO DE PRODUCTOS
+-- ============================
+CREATE TABLE InventarioProductos (
+    id_inve_produ INT AUTO_INCREMENT PRIMARY KEY,
+    producto_id INT NOT NULL,
+    cantidad INT NOT NULL,
+    categoria_id INT NOT NULL,
+    rol_id INT,
+    FOREIGN KEY (producto_id) REFERENCES Producto(id_producto),
+    FOREIGN KEY (categoria_id) REFERENCES categoriaProductos(id_categoria),
+    FOREIGN KEY (rol_id) REFERENCES Rol(id_rol)
+);
+
+-- ============================
+-- INVENTARIO DE HERRAMIENTAS
+-- ============================
+CREATE TABLE InventarioHerramientas (
+    id_herr INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    descripcion TEXT,
+    cantidad INT,
+    estado VARCHAR(50),
+    usuario_id INT NOT NULL,
+    cantidad_faltante INT DEFAULT 0,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id_usuario)
+);
+
+-- ============================
+-- TABLA NUEVA: CONTROL DE HERRAMIENTAS
+-- ============================
+CREATE TABLE Control_Herramienta (
+    id_control INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    fecha DATETIME NOT NULL,
+    herramienta_total INT NOT NULL,
+    herramienta_faltante INT NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id_usuario)
+);
+
+-- ============================
+-- COMPRAS
+-- ============================
+CREATE TABLE Compra (
+    id_compra INT AUTO_INCREMENT PRIMARY KEY,
+    proveedor_id INT NOT NULL,
+    producto_id INT NOT NULL,
+    descripcion TEXT,
+    cantidad INT,
+    fecha_pedido DATE,
+    fecha_entrega DATE,
+    FOREIGN KEY (proveedor_id) REFERENCES Proveedor(id_proveedor),
+    FOREIGN KEY (producto_id) REFERENCES Producto(id_producto)
+);
+
+-- ============================
+-- DEVOLUCIONES
+-- ============================
+CREATE TABLE Devoluciones (
+    id_devolucion INT AUTO_INCREMENT PRIMARY KEY,
+    compra_id INT NOT NULL,
+    fecha DATE NOT NULL,
+    estado BOOLEAN,
+    razon VARCHAR(100) NOT NULL,
+    cantidad INT DEFAULT 0,
+    FOREIGN KEY (compra_id) REFERENCES Compra(id_compra)
+);
+
+-- ============================
+-- VENTAS
+-- ============================
+CREATE TABLE Venta (
+    id_venta INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT,
+    cantidad INT,
+    descripcion TEXT,
+    fecha_venta DATE,
+    encargado_id INT,
+    monto DECIMAL(10,2),
+    garantias INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id_cliente),
+    FOREIGN KEY (encargado_id) REFERENCES Usuario(id_usuario)
+);
+
+-- ============================
+-- SERVICIOS
+-- ============================
+CREATE TABLE Servicio (
+    id_servicio INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion TEXT NOT NULL,
+    tipo ENUM('taller','domicilio') NOT NULL,
+    fecha DATE NOT NULL,
+    cliente_id INT,
+    usuario_id INT,
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id_cliente),
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id_usuario)
+);
+
+-- ============================
+-- DETALLE VENTA
+-- ============================
+CREATE TABLE DetalleVenta (
+    id_detalle INT AUTO_INCREMENT PRIMARY KEY,
+    venta_id INT NOT NULL,
+    servicio_id INT NOT NULL,
+    producto_id INT NOT NULL,
+    cantidad INT NOT NULL,
+    precio_unitario FLOAT NOT NULL,
+    fecha DATE NOT NULL,
+    FOREIGN KEY (venta_id) REFERENCES Venta(id_venta),
+    FOREIGN KEY (servicio_id) REFERENCES Servicio(id_servicio),
+    FOREIGN KEY (producto_id) REFERENCES Producto(id_producto)
+);
+
+-- ============================
+-- DOMICILIOS
+-- ============================
+CREATE TABLE Domicilio (
+    id_domicilio INT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT NOT NULL,
+    servicio_id INT NOT NULL,
+    fecha DATE,
+    monto DECIMAL(10,2),
+    usuario_id INT NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id_cliente),
+    FOREIGN KEY (servicio_id) REFERENCES Servicio(id_servicio),
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id_usuario)
+);
+
+-- ============================
+-- MAQUINARIA
+-- ============================
+CREATE TABLE Maquinaria (
+    id_maquina INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(30) NOT NULL,
+    descripcion TEXT NOT NULL,
+    estado VARCHAR(50) NOT NULL
+);
+
+-- ============================
+-- MANTENIMIENTO
+-- ============================
+CREATE TABLE Mantenimiento (
+    id_mantenimiento INT AUTO_INCREMENT PRIMARY KEY,
+    descripcion TEXT NOT NULL,
+    fecha DATE NOT NULL,
+    personal VARCHAR(80) NOT NULL,
+    maquina_id INT NOT NULL,
+    usuario_id INT,
+    costo DECIMAL(10,2),
+    FOREIGN KEY (maquina_id) REFERENCES Maquinaria(id_maquina),
+    FOREIGN KEY (usuario_id) REFERENCES Usuario(id_usuario)
+);
+
+
+-- INGRESO DE DATOS --
+INSERT INTO Rol (nombre) VALUES
+('Administrador'),
+('Mecanico Jefe'),
+('Vendedor'),
+('Empleado'),
+('Tecnico de Campo');
+
+INSERT INTO proveedor (nombre, telefono, correo) VALUES
+('DistriLlantas SAS', 3108765432, 'distrillantas.ventas@gmail.com'),
+('Aceites Supreme S.A.', 3117654321, 'aceites.supreme@gmail.com'),
+('Importaciones AutoPartes', 3126543210, 'autodealers.col@gmail.com'),
+('Equipos Taller Colombia', 3135432109, 'equipos.taller@gmail.com'),
+('TecnoBalance S.A.S', 3144321098, 'tecnobalance.info@gmail.com'),
+('LubriTodo LTDA', 3153210987, 'lubritodo.contact@gmail.com');
+select * from usuario;
+INSERT INTO Usuario (nombre, apellido, celular, correo, usuario, clave, rol_id) VALUES
+('Sofia','Ramirez',3012345678,'sofia.ramirez@gmail.com','sofia.ramirez','845Sofi',2),
+('Andres','Giraldo',3023456789,'andres.giraldo@gmail.com','andres.giraldo','Andres1458',3),
+('Daniela','Bacheloth',3034567890,'daniela.bacheloth@gmail.com','daniela.b','Dbache1465',4),
+('Felipe','Fernandez',3045678901,'felipe.fernandez@gmail.com','felipe.f','Felipe7654',5),
+('Luisa','Fernanda',3056789012,'luisa.fernanda@gmail.com','luisa.f','Lulu7564',4);
+
+INSERT INTO Cliente (nombre, apellido, celular, correo, direccion, placa, modelo) VALUES
+('Juan','Gómez',3001112233,'juan.gomez@gmail.com','Carrera 7 # 12-34, Bogotá','XYZ789','Renault Logan'),
+('Maria','Lopez',3012223344,'maria.lopez@gmail.com','Avenida 68 # 45-67, Medellín','ABC123','Mazda 2'),
+('Pedro','Martinez',3023334455,'pedro.martineze@gmail.com','Calle 26 # 5-89, Cali','DEF456','Toyota Hilux'),
+('Ana','Sanchez',3034445566,'ana.sancheze@gmail.com','Diagonal 45 # 10-11, Barranquilla','GHI789','Volkswagen Gol'),
+('Luis','Diaz',3045556677,'luis.diaze@gmail.com','Calle 100 # 70-01, Cartagena','JKL012','Ford Ranger'),
+('Sofia','Ruiz',3056667788,'sofia.ruize@gmail.com','Avenida Boyacá # 80-20, Bogotá','MNO345','Hyundai Tucson');
+
+INSERT INTO categoriaProductos (nombre, descripcion) VALUES
+('Llantas Radial','Llantas de construcción radial para turismos y camionetas'),
+('Aceites Lubricantes','Aceites para motor, transmisión y frenos'),
+('Filtros Automotriz','Filtros de aire, aceite, combustible, polen'),
+('Baterías Automotriz','Baterías de arranque para vehículos livianos y pesados'),
+('Accesorios Taller','Herramientas menores y consumibles para el taller');
+
+INSERT INTO Producto (nombre, descripcion, cantidad, categoria_id, precio) VALUES
+('Llanta Pirelli P1 Cinturato 185/65R15','Llanta radial de alto rendimiento, bajo ruido',80,1,285000.00),
+('Aceite Motor CASTROL GTX 20W-50','Aceite mineral multígrado para motores a gasolina',150,2,35000.00),
+('Filtro de Aire K&N para SUV','Filtro de aire de alto flujo, lavable y reutilizable',40,3,120000.00),
+('Bateria MAC 12V 700CCA','Batería de libre mantenimiento para vehículos de alto consumo',25,4,380000.00),
+('Valvula de Neumático (unidad)','Válvula de caucho para sellado de neumáticos',500,5,2500.00),
+('Llanta Michelin Primacy 4 205/55R16','Llanta premium para confort y durabilidad',60,1,450000.00);
+
+INSERT INTO InventarioProductos (producto_id, cantidad, categoria_id, rol_id) VALUES
+(1,75,1,1),(2,140,2,2),(3,38,3,3),
+(4,23,4,1),(5,450,5,2),(6,55,1,3);
+
+INSERT INTO InventarioHerramientas (nombre, descripcion, cantidad, estado, usuario_id) VALUES
+('Balanceadora Digital Corghi','Equipo de balanceo de última generación',1,'Excelente',2),
+('Desmontadora Automática Hofmann','Máquina para montar y desmontar neumáticos sin esfuerzo',1,'Operativa',2),
+('Gato de Carro 3 Toneladas','Gato hidráulico de bajo perfil para vehículos',5,'Bueno',5),
+('Pistola Neumática de Impacto','Llave de impacto para aflojar tuercas de rueda',3,'Operativa',5),
+('Manómetro Digital Michelin','Medidor de presión de neumáticos de alta precisión',10,'Nuevo',2);
+
+INSERT INTO Compra (proveedor_id, producto_id, descripcion, cantidad, fecha_pedido, fecha_entrega) VALUES
+(1,1,'Orden de 50 llantas Pirelli P1',50,'2024-05-01','2024-05-05'),
+(2,2,'Orden de 100 aceites Castrol 20W-50',100,'2024-05-03','2024-05-07'),
+(3,3,'Compra de 20 filtros K&N para SUV',20,'2024-05-05','2024-05-09'),
+(4,4,'Adquisición de 10 baterías MAC',10,'2024-05-08','2024-05-12'),
+(5,5,'Pedido de 200 válvulas de neumático',200,'2024-05-10','2024-05-14'),
+(1,6,'Orden de 30 llantas Michelin Primacy 4',30,'2024-05-15','2024-05-19');
+
+INSERT INTO devoluciones (compra_id, fecha, estado, razon) VALUES
+(1,'2024-05-06',TRUE,'Producto dañado en tránsito'),
+(2,'2025-05-08',FALSE,'Error en el modelo de aceite'),
+(3,'2024-05-10',TRUE,'Exceso de inventario'),
+(4,'2025-05-13',FALSE,'Bateria incorrecta'),
+(5,'2024-05-15',TRUE,'Defecto'),
+(6,'2024-05-17',TRUE,'Defecto de fábrica');
+
+INSERT INTO Venta (cliente_id, cantidad, descripcion, fecha_venta, encargado_id, monto) VALUES
+(1,4,'Venta de 4 Llantas Pirelli P1 con montaje y balanceo.','2024-06-01',3,1200000.00),
+(2,1,'Venta y cambio de Aceite Castrol y Filtro de Aire.','2024-06-02',3,180000.00),
+(3,1,'Venta e instalación de Bateria MAC 12V.','2024-06-03',3,450000.00),
+(4,1,'Revisión y calibración de presión de neumáticos.','2024-06-04',3,50000.00),
+(5,2,'Reparación de pinchazo con parche interno (2 neumáticos).','2024-06-05',3,80000.00),
+(6,4,'Venta de 4 Llantas Michelin Primacy 4, con alineación.','2024-06-06',3,2000000.00);
+
+INSERT INTO Servicio (descripcion, tipo, fecha, cliente_id, usuario_id) VALUES
+('Cambio de 4 llantas y balanceo computarizado','taller','2024-06-01',1,2),
+('Cambio de aceite y filtro de motor','taller','2024-06-02',2,2),
+('Instalación de batería nueva y revisión eléctrica','taller','2024-06-03',3,2),
+('Alineación de dirección y rotación de neumáticos','taller','2024-06-04',4,5),
+('Reparación de pinchazo a domicilio (llanta delantera derecha)','domicilio','2024-06-05',5,5),
+('Revisión de suspensión y amortiguadores','taller','2024-06-06',6,2);
+
+INSERT INTO DetalleVenta (venta_id, servicio_id, producto_id, cantidad, precio_unitario, fecha) VALUES
+(1,1,1,4,285000.00,'2024-06-01'),
+(2,2,2,1,35000.00,'2024-06-02'),
+(2,2,3,1,120000.00,'2024-06-02'),
+(3,3,4,1,380000.00,'2024-06-03'),
+(5,5,5,2,2500.00,'2024-06-05'),
+(6,6,6,4,450000.00,'2024-06-06');
+
+INSERT INTO Domicilio (cliente_id, servicio_id, fecha, monto, usuario_id) VALUES
+(5,5,'2024-06-05',60000.00,5),
+(2,2,'2024-06-07',45000.00,5),
+(4,4,'2024-06-09',55000.00,5),
+(1,1,'2024-06-11',70000.00,5),
+(3,3,'2024-06-13',65000.00,5);
+
+INSERT INTO maquinaria (nombre, descripcion, estado) VALUES
+('Balanceadora Corghi E.T.S.','Máquina profesional para balanceo de precisión','Operativa'),
+('Desmontadora Automática Hunter','Equipo para montar y desmontar neumáticos Run‑Flat y perfil bajo','Operativa'),
+('Compresor de Tornillo Kaeser','Compresor industrial de aire comprimido para taller','Mantenimiento Pendiente'),
+('Alineador 3D John Bean','Sistema de alineación tridimensional de última tecnología','Operativa'),
+('Elevador de Tijera Ravaglioli','Elevador hidráulico de tijera para trabajos rápidos y eficientes','Operativa');
+
+INSERT INTO Mantenimiento (descripcion, fecha, personal, maquina_id, usuario_id, costo) VALUES
+('Calibración trimestral de balanceadora','2024-04-20','Servicio Técnico Autorizado',1,1,250000.00),
+('Revisión de sistema hidráulico desmontadora','2024-05-10','Sofia Ramirez',2,2,80000.00),
+('Cambio de filtro y purga compresor','2024-06-01','Felipe Fernandez',3,5,150000.00),
+('Ajuste de sensores y lubricación alineador 3D','2024-05-25','Servicio Externo John Bean',4,1,300000.00),
+('Inspección de seguridad y lubricación elevador','2024-06-15','Sofia Ramirez',5,2,90000.00);
+
+-- VISTAS --
+
+
+-- MUESTRA LA CATEGORÍA LA CUAL PERTENECE EL PRODUCTO Y LA CANTIDAD--
+
+
+CREATE VIEW producto_categoria AS
+SELECT p.nombre AS producto, p.cantidad, c.nombre AS categoria
+FROM Producto p
+JOIN categoriaProductos c ON p.categoria_id = c.id_categoria;
+
+
+-- MUESTRA EL PRODUCTO Y EL TOTAL VENDIDO --
+CREATE VIEW vista_total_vendido_productos AS
+SELECT
+  p.id_producto,
+  p.nombre,
+  COALESCE(SUM(d.cantidad), 0) AS total_vendido
+FROM Producto p
+LEFT JOIN DetalleVenta d ON d.producto_id = p.id_producto
+GROUP BY p.id_producto, p.nombre;
+
+
+-- MUESTRA EL PRODUCTO MAS VENDIDO --
+CREATE VIEW vista_producto_mas_vendido AS
+SELECT nombre, total_vendido
+FROM vista_total_vendido_productos
+ORDER BY total_vendido DESC
+LIMIT 1;
+
+-- MUESTRA  EL PRODUCTO MENOS VENDIDO --
+CREATE VIEW vista_producto_menos_vendido AS
+SELECT nombre, total_vendido
+FROM vista_total_vendido_productos
+ORDER BY total_vendido ASC
+LIMIT 1;
+
+
+-- MUESTRA EL USUARIO Y EL TOTAL DE SERVICIOS QUE HA REALIZADO --
+CREATE VIEW vista_total_servicios_por_usuario AS
+SELECT
+  u.id_usuario,
+  CONCAT(u.nombre, ' ', u.apellido) AS usuario,
+  COUNT(s.id_servicio) AS total_servicios
+FROM Usuario u
+LEFT JOIN Servicio s ON s.usuario_id = u.id_usuario
+GROUP BY u.id_usuario, u.nombre, u.apellido;
+
+
+-- MUESTRA AL USUARIO QUE MAS SERVICIOS HACE --
+CREATE VIEW vista_usuario_mas_servicios AS
+SELECT usuario, total_servicios
+FROM vista_total_servicios_por_usuario
+ORDER BY total_servicios DESC
+LIMIT 1;
+
+
+-- MUESTRA AL USUARIO QUE MENOS SERVICIOS HACE --
+CREATE VIEW vista_usuario_menos_servicios AS
+SELECT usuario, total_servicios
+FROM vista_total_servicios_por_usuario
+ORDER BY total_servicios ASC
+LIMIT 1;
+
+-- MUESTRA A TODOS LOS USUARIOS CON LA VENTAS REALIZADAS Y LA SUMA DE ELLAS --
+CREATE VIEW vista_ventas_por_usuario AS
+SELECT 
+  u.id_usuario AS usuario_id,
+  CONCAT(u.nombre, ' ', u.apellido) AS nombre_usuario,
+  COUNT(v.id_venta) AS total_ventas,
+  SUM(v.monto) AS total_monto_vendido
+FROM Usuario u
+LEFT JOIN Venta v ON v.encargado_id = u.id_usuario
+GROUP BY u.id_usuario, u.nombre, u.apellido;
+
+-- MUESTRA AL USUARIO CON MÁS VENTAS REALIZADAS CON LA CANTIDAD DE ELLAS Y EL TOTAL VENDIDO --
+CREATE VIEW vista_usuario_mas_ventas AS
+SELECT nombre_usuario, total_ventas, total_monto_vendido
+FROM vista_ventas_por_usuario
+ORDER BY total_ventas DESC
+LIMIT 1;
+
+
+-- MUESTRA AL USUARIO CON MENOS VENTAS REALIZADAS CON SU RESPECTIVO MONTO --
+CREATE VIEW vista_usuario_menos_ventas AS
+SELECT nombre_usuario, total_ventas, total_monto_vendido
+FROM vista_ventas_por_usuario
+ORDER BY total_ventas ASC
+LIMIT 1;
+
+
+
+-- EJECUTAR VISTA --
+SELECT * FROM producto_categoria;
+select * from vista_producto_mas_vendido;
+select * from vista_producto_menos_vendido;
+select * from vista_total_vendido_productos;
+select * from vista_total_servicios_por_usuario;
+select * from vista_usuario_mas_servicios;
+select * from vista_usuario_menos_servicios;
+select * from vista_ventas_por_usuario;
+select * from vista_usuario_mas_ventas;
+select * from vista_usuario_menos_ventas;
+
+
+
+-- OPERACIONES (SELECT, UPDATE, DELETE) --
+
+-- ROL --
+set SQL_SAFE_UPDATES = 0;
+SELECT * FROM Rol;
+SELECT id_rol, nombre FROM Rol WHERE nombre LIKE '%Jefe%';
+UPDATE Rol SET nombre = 'Administrador General' WHERE id_rol= 1;
+UPDATE Rol SET nombre = 'Jefe de Mecánicos' WHERE nombre = 'Mecanico Jefe';
+UPDATE Rol SET nombre = 'Empleado de Taller' WHERE nombre = 'Empleado';
+DELETE FROM Rol WHERE nombre IN ('Administrador','Empleado','Mecanico Jefe');
+
+
+-- PROVEEDOR --
+
+SELECT * FROM proveedor;
+SELECT nombre, correo FROM proveedor WHERE telefono = 3153210987;
+SELECT correo FROM proveedor WHERE telefono = 3144321098;
+UPDATE proveedor SET nombre = 'Proveeduría Total' WHERE id_proveedor = 1;
+UPDATE proveedor SET telefono = 3109998888 WHERE id_proveedor = 3;
+UPDATE proveedor SET correo = 'nuevocorreo@ejemplo.com' WHERE id_proveedor = 2;
+DELETE FROM proveedor WHERE id_proveedor = 6 OR nombre = 'LubriTodo LTDA';
+
+-- USUARIO --
+SELECT * FROM Usuario;
+SELECT nombre, correo FROM Usuario WHERE rol_id = 4;
+SELECT correo FROM Usuario WHERE id_usuario = 3;
+UPDATE Usuario SET clave = 'Miguel2024' WHERE usuario = 'miguel.lopez';
+UPDATE Usuario SET celular = 3009998888 WHERE nombre = 'Sofia' AND apellido = 'Ramirez';
+UPDATE Usuario SET correo = 'luisa.factualizada@gmail.com' WHERE usuario = 'luisa.f';
+UPDATE Usuario SET clave = '1234' WHERE nombre = 'Sofia';
+
+
+-- CLIENTE --
+SELECT * FROM Cliente;
+SELECT nombre, modelo FROM Cliente WHERE direccion = 'Avenida 68 # 45-67, Medellín';
+SELECT nombre, modelo, direccion FROM Cliente WHERE direccion LIKE '%Medellín%';
+UPDATE Cliente SET direccion = 'Carrera 8 # 13-45, Bogotá' WHERE placa = 'XYZ789';
+UPDATE Cliente SET celular = 3001239999 WHERE placa = 'ABC123';
+UPDATE Cliente SET modelo = 'Hyundai i20' WHERE placa = 'MNO345';
+UPDATE Cliente SET modelo = 'Chevrolet Onix', celular = 3009988777 WHERE correo = 'juan.gomez@gmail.com';
+
+-- CATEGORÍA PRODUCTOS --
+SELECT * FROM categoriaProductos;
+SELECT nombre, descripcion FROM categoriaProductos WHERE nombre LIKE '%Llantas%';
+SELECT id_categoria, nombre, descripcion FROM categoriaProductos WHERE nombre LIKE '%Filtro%';
+UPDATE categoriaProductos SET descripcion = 'Aceites para todo tipo de motores' WHERE nombre = 'Aceites Lubricantes';
+UPDATE categoriaProductos SET nombre = 'Filtros Vehiculares' WHERE nombre = 'Filtros Automotriz';
+UPDATE categoriaProductos SET descripcion = 'Accesorios para mantenimiento general' WHERE nombre = 'Accesorios Taller';
+
+
+-- PRODUCTO --
+SELECT * FROM Producto;
+SELECT nombre, precio FROM Producto WHERE categoria_id = 1;
+SELECT nombre, precio
+FROM Producto
+WHERE precio > 300000;
+
+
+
+UPDATE Producto SET cantidad = 85 WHERE nombre = 'Llanta Pirelli P1 Cinturato 185/65R15';
+UPDATE Producto SET precio = 38000.00 WHERE nombre = 'Aceite Motor CASTROL GTX 20W-50';
+UPDATE Producto SET descripcion = 'Filtro de aire de alto rendimiento para SUV' WHERE nombre = 'Filtro de Aire K&N para SUV';
+UPDATE Producto
+SET descripcion = 'Aceite mineral premium para motores a gasolina',
+    precio = 37000.00
+WHERE nombre = 'Aceite Motor CASTROL GTX 20W-50';
+
+------------------------------------------------------------------------------------------
+set foreign_key_checks = 0;
+DELETE FROM Producto WHERE nombre = 'Valvula de Neumático (unidad)';
+set foreign_key_checks = 1;
+------------------------------------------------------------------------------------------
+-- inventario prod--
+
+
+SELECT * FROM InventarioProductos;
+SELECT producto_id, cantidad FROM InventarioProductos WHERE rol_id = 1;
+
+
+UPDATE InventarioProductos SET cantidad = 80 WHERE producto_id = 1;
+UPDATE InventarioProductos SET rol_id = 3 WHERE id_inve_produ = 2;
+UPDATE InventarioProductos SET categoria_id = 2 WHERE producto_id = 6;
+
+
+DELETE FROM InventarioProductos WHERE id_inve_produ = 4;
+DELETE FROM InventarioProductos WHERE cantidad < 30;
+DELETE FROM InventarioProductos WHERE rol_id = 2;
+
+-- inv her--
+
+
+
+SELECT * FROM InventarioHerramientas;
+SELECT nombre, estado FROM InventarioHerramientas WHERE usuario_id = 2; 
+
+
+UPDATE InventarioHerramientas SET estado = 'En reparación' WHERE nombre = 'Gato de Carro 3 Toneladas';
+UPDATE InventarioHerramientas SET cantidad = 12 WHERE nombre = 'Manómetro Digital Michelin';
+UPDATE InventarioHerramientas SET descripcion = 'Desmontadora automática para llantas Run-Flat' WHERE nombre = 'Desmontadora Automática Hofmann';
+
+
+DELETE FROM InventarioHerramientas WHERE id_herr = 3;
+DELETE FROM InventarioHerramientas WHERE estado = 'Nuevo';
+DELETE FROM InventarioHerramientas WHERE cantidad < 2;
+
+
+-- compra --
+
+SELECT * FROM Compra;
+SELECT descripcion, cantidad FROM Compra WHERE proveedor_id = 1;
+SELECT id_compra, descripcion, cantidad, fecha_pedido, fecha_entrega
+FROM Compra
+WHERE cantidad >= 30;
+
+
+UPDATE Compra SET cantidad = 60 WHERE id_compra = 1;
+UPDATE Compra SET fecha_entrega = '2024-05-08' WHERE id_compra = 2;
+UPDATE Compra SET descripcion = 'Compra de 25 filtros K&N para SUV' WHERE id_compra = 3;
+UPDATE Compra
+SET fecha_entrega = '2024-05-10',
+    descripcion = 'Compra de 50 llantas actualizada por cambio de condiciones'
+WHERE id_compra = 1;
+
+------------------------------------------------------------------
+set foreign_key_checks = 0;
+DELETE FROM Compra WHERE id_compra = 5;
+set foreign_key_checks = 1;
+-------------------------------------------------------------------
+-- DEVOLUCIONES --
+
+
+SELECT * FROM devoluciones;
+SELECT compra_id, estado, razon FROM devoluciones WHERE estado = TRUE;
+
+
+UPDATE devoluciones SET razon = 'Producto dañado - embalaje roto' WHERE id_devolucion = 1;
+UPDATE devoluciones SET estado = TRUE WHERE id_devolucion = 2;
+UPDATE devoluciones SET fecha = '2024-05-11' WHERE id_devolucion = 3;
+
+
+DELETE FROM devoluciones WHERE id_devolucion = 4;
+DELETE FROM devoluciones WHERE razon LIKE '%exceso%';
+DELETE FROM devoluciones WHERE estado = FALSE;
+
+-- VENTA
+
+
+SELECT * FROM Venta;
+SELECT cliente_id, monto FROM Venta WHERE cantidad >= 2;
+SELECT id_venta, descripcion, fecha_venta, monto
+FROM Venta
+WHERE encargado_id = 3;
+
+
+
+UPDATE Venta SET monto = 1250000.00 WHERE id_venta = 1;
+UPDATE Venta SET descripcion = 'Venta y cambio de Aceite Shell y Filtro de Aire' WHERE id_venta = 2;
+UPDATE Venta SET fecha_venta = '2024-06-07' WHERE cliente_id = 4;
+UPDATE Venta
+SET descripcion = 'Venta de aceite Shell y filtro Fram actualizado',
+    monto = 185000.00
+WHERE id_venta = 2;
+
+--------------------------------------------------------------
+set foreign_key_checks = 0;
+DELETE FROM Venta WHERE id_venta = 5;
+set foreign_key_checks = 1;
+---------------------------------------------------------------
+-- SERVICIO
+
+
+SELECT * FROM Servicio;
+SELECT descripcion, tipo FROM Servicio WHERE cliente_id = 2;
+SELECT id_servicio, descripcion, fecha
+FROM Servicio
+WHERE usuario_id = 2;
+
+
+
+UPDATE Servicio SET descripcion = 'Cambio de 4 llantas, balanceo y alineación' WHERE id_servicio = 1;
+UPDATE Servicio SET tipo = 'domicilio' WHERE id_servicio = 6;
+UPDATE Servicio SET fecha = '2024-06-07' WHERE cliente_id = 5;
+UPDATE Servicio
+SET tipo = 'domicilio',
+    fecha = '2024-06-10'
+WHERE id_servicio = 6;
+
+-------------------------------------------------------------------------------
+SET foreign_key_checks = 0;
+DELETE FROM Servicio WHERE id_servicio = 3;
+SET foreign_key_checks = 1;
+
+---------------------------------------------------------------------------------------
+-- detalle venta
+
+
+SELECT * FROM DetalleVenta;
+SELECT venta_id, cantidad, precio_unitario FROM DetalleVenta WHERE fecha = '2024-06-02';
+
+
+UPDATE DetalleVenta SET cantidad = 5 WHERE id_detalle = 1;
+UPDATE DetalleVenta SET precio_unitario = 36000.00 WHERE producto_id = 2 AND venta_id = 2;
+UPDATE DetalleVenta SET fecha = '2024-06-07' WHERE servicio_id = 5;
+
+
+DELETE FROM DetalleVenta WHERE id_detalle = 3;
+DELETE FROM DetalleVenta WHERE cantidad < 2;
+DELETE FROM DetalleVenta WHERE venta_id = 6;
+
+
+-- domicilio
+
+SELECT * FROM Domicilio;
+SELECT cliente_id, monto, fecha FROM Domicilio WHERE usuario_id = 5;
+
+
+UPDATE Domicilio SET monto = 62000.00 WHERE id_domicilio = 1;
+UPDATE Domicilio SET fecha = '2024-06-08' WHERE cliente_id = 2 AND servicio_id = 2;
+UPDATE Domicilio SET monto = 58000.00 WHERE id_domicilio = 3;
+
+
+DELETE FROM Domicilio WHERE id_domicilio = 2;
+DELETE FROM Domicilio WHERE monto < 50000.00;
+DELETE FROM Domicilio WHERE cliente_id = 3 AND servicio_id = 3;
+
+
+-- maquinaria
+
+SELECT * FROM maquinaria;
+SELECT nombre, estado FROM maquinaria WHERE estado = 'Operativa';
+
+
+UPDATE maquinaria SET estado = 'Fuera de Servicio' WHERE nombre = 'Compresor de Tornillo Kaeser';
+UPDATE maquinaria SET descripcion = 'Máquina profesional para balanceo con calibración digital' WHERE nombre = 'Balanceadora Corghi E.T.S.';
+UPDATE maquinaria SET estado = 'Operativa' WHERE id_maquina = 3;
+
+
+DELETE FROM maquinaria WHERE estado = 'operativo';
+DELETE FROM maquinaria WHERE estado = 'Fuera de Servicio';
+DELETE FROM maquinaria WHERE estado = 'Mantenimiento Pendiente';
+
+
+-- mantenimiento
+
+SELECT * FROM Mantenimiento;
+SELECT descripcion, costo FROM Mantenimiento WHERE usuario_id = 2;
+
+
+UPDATE Mantenimiento SET costo = 260000.00 WHERE id_mantenimiento = 1;
+UPDATE Mantenimiento SET personal = 'Sofia R' WHERE id_mantenimiento = 2;
+UPDATE Mantenimiento SET fecha = '2024-06-05' WHERE descripcion LIKE '%filtro y purga compresor%';
+
+
+DELETE FROM Mantenimiento WHERE id_mantenimiento = 3;
+DELETE FROM Mantenimiento WHERE descripcion LIKE '%elevador%';
+DELETE FROM Mantenimiento WHERE usuario_id = 5;
+set SQL_SAFE_UPDATES = 1;
+/*-------------------------------
+-- PROCEDIMIENTOS ALMACENADOS --
+----------------------------------*/
+
+/*-------------------------------
+-- Compra --
+----------------------------------*/
+DELIMITER $$
+
+CREATE PROCEDURE consulta_compra_id(IN p_id INT)
+BEGIN
+    SELECT * FROM Compra WHERE id_compra = p_id;
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE consulta_compra()
+BEGIN
+    SELECT * FROM Compra;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ingresar_compra(
+    IN p_proveedor_id INT, IN p_producto_id INT, IN p_descripcion TEXT,
+    IN p_cantidad INT, IN p_fecha_pedido DATE, IN p_fecha_entrega DATE
+)
+BEGIN
+    INSERT INTO Compra (proveedor_id, producto_id, descripcion, cantidad, fecha_pedido, fecha_entrega)
+    VALUES (p_proveedor_id, p_producto_id, p_descripcion, p_cantidad, p_fecha_pedido, p_fecha_entrega);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE actualizar_compra(IN p_id_compra INT, IN p_nueva_cantidad INT)
+BEGIN
+    UPDATE Compra SET cantidad = p_nueva_cantidad WHERE id_compra = p_id_compra;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE eliminar_compra(IN p_id_compra INT)
+BEGIN
+    DELETE FROM Compra WHERE id_compra = p_id_compra;
+END $$
+DELIMITER ;
+
+
+/*-------------------------------
+-- Rol --
+----------------------------------*/
+
+DELIMITER $$
+
+CREATE PROCEDURE consulta_rol_id(IN p_id INT)
+BEGIN
+    SELECT * FROM Rol WHERE id_rol = p_id;
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE consulta_rol()
+BEGIN
+    SELECT * FROM Rol;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ingresar_rol(IN p_nombre VARCHAR(50))
+BEGIN
+    INSERT INTO Rol (nombre) VALUES (p_nombre);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE actualizar_rol(IN p_id_rol INT, IN p_nombre_new VARCHAR(50))
+BEGIN
+    UPDATE Rol SET nombre = p_nombre_new WHERE id_rol = p_id_rol;
+END $$
+DELIMITER ;
+
+CALL consulta_rol();
+
+
+
+/*-------------------------------
+-- Proveedor --
+----------------------------------*/
+
+DELIMITER $$
+
+CREATE PROCEDURE InsertarProveedor(
+    IN p_nombre VARCHAR(30),
+    IN p_telefono BIGINT,
+    IN p_correo VARCHAR(80)
+)
+BEGIN
+    INSERT INTO Proveedor (nombre, telefono, correo) VALUES (p_nombre, p_telefono, p_correo);
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarTodosLosProveedores()
+BEGIN
+    SELECT id_proveedor, nombre, telefono, correo FROM Proveedor;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarProveedorPorId(IN p_id INT)
+BEGIN
+    SELECT id_proveedor, nombre, telefono, correo FROM Proveedor WHERE id_proveedor = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ActualizarProveedor(
+    IN p_id INT,
+    IN p_nombre VARCHAR(30),
+    IN p_telefono BIGINT,
+    IN p_correo VARCHAR(80)
+)
+BEGIN
+    UPDATE Proveedor 
+    SET nombre = p_nombre, telefono = p_telefono, correo = p_correo 
+    WHERE id_proveedor = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE EliminarProveedor(IN p_id INT)
+BEGIN
+    DELETE FROM Proveedor WHERE id_proveedor = p_id;
+END $$
+DELIMITER ;
+
+
+/*-------------------------------
+-- Usuario --
+----------------------------------*/
+
+DELIMITER $$
+
+CREATE PROCEDURE InsertarUsuario(
+    IN p_nombre VARCHAR(50), 
+    IN p_apellido VARCHAR(50),
+    IN p_celular BIGINT, 
+    IN p_correo VARCHAR(100),
+    IN p_usuario VARCHAR(50), 
+    IN p_clave VARCHAR(100), 
+    IN p_rol_id INT
+)
+BEGIN
+    INSERT INTO Usuario (nombre, apellido, celular, correo, usuario, clave, rol_id)
+    VALUES (p_nombre, p_apellido, p_celular, p_correo, p_usuario, p_clave, p_rol_id);
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarTodosLosUsuarios()
+BEGIN
+    SELECT * FROM Usuario;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarUsuarioPorId(IN p_id INT)
+BEGIN
+    SELECT * FROM Usuario WHERE id_usuario = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ActualizarUsuario(
+    IN p_id INT,
+    IN p_nombre VARCHAR(50),
+    IN p_apellido VARCHAR(50),
+    IN p_celular BIGINT,
+    IN p_correo VARCHAR(100),
+    IN p_usuario VARCHAR(50),
+    IN p_clave VARCHAR(100),
+    IN p_rol_id INT
+)
+BEGIN
+    UPDATE Usuario 
+    SET nombre = p_nombre,
+        apellido = p_apellido,
+        celular = p_celular,
+        correo = p_correo,
+        usuario = p_usuario,
+        clave = p_clave,
+        rol_id = p_rol_id
+    WHERE id_usuario = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE EliminarUsuario(IN p_id INT)
+BEGIN
+    DELETE FROM Usuario WHERE id_usuario = p_id;
+END $$
+
+DELIMITER ;
+
+/*-------------------------------
+-- Cliente --
+----------------------------------*/
+
+DELIMITER $$
+
+CREATE PROCEDURE InsertarCliente(
+    IN p_nombre VARCHAR(50),
+    IN p_apellido VARCHAR(50),
+    IN p_celular BIGINT,
+    IN p_correo VARCHAR(100),
+    IN p_direccion VARCHAR(100),
+    IN p_placa VARCHAR(7),
+    IN p_modelo VARCHAR(40)
+)
+BEGIN
+    INSERT INTO Cliente (nombre, apellido, celular, correo, direccion, placa, modelo)
+    VALUES (p_nombre, p_apellido, p_celular, p_correo, p_direccion, p_placa, p_modelo);
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarTodosLosClientes()
+BEGIN
+    SELECT * FROM Cliente;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarClientePorId(IN p_id INT)
+BEGIN
+    SELECT * FROM Cliente WHERE id_cliente = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ActualizarCliente(
+    IN p_id INT,
+    IN p_nombre VARCHAR(50),
+    IN p_apellido VARCHAR(50),
+    IN p_celular BIGINT,
+    IN p_correo VARCHAR(100),
+    IN p_direccion VARCHAR(100),
+    IN p_placa VARCHAR(7),
+    IN p_modelo VARCHAR(40)
+)
+BEGIN
+    UPDATE Cliente 
+    SET nombre = p_nombre,
+        apellido = p_apellido,
+        celular = p_celular,
+        correo = p_correo,
+        direccion = p_direccion,
+        placa = p_placa,
+        modelo = p_modelo
+    WHERE id_cliente = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE EliminarCliente(IN p_id INT)
+BEGIN
+    DELETE FROM Cliente WHERE id_cliente = p_id;
+END $$
+
+DELIMITER ;
+
+
+/*-------------------------------
+-- CategoriaProductos --
+----------------------------------*/
+
+DELIMITER $$
+
+CREATE PROCEDURE InsertarCategoriaProducto(
+    IN p_nombre VARCHAR(50), 
+    IN p_descripcion TEXT
+)
+BEGIN
+    INSERT INTO categoriaProductos (nombre, descripcion) 
+    VALUES (p_nombre, p_descripcion);
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarTodasLasCategoriasProductos()
+BEGIN
+    SELECT * FROM categoriaProductos;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarCategoriaProductoPorId(IN p_id INT)
+BEGIN
+    SELECT * FROM categoriaProductos WHERE id_categoria = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ActualizarCategoriaProducto(
+    IN p_id INT, 
+    IN p_nombre VARCHAR(50), 
+    IN p_descripcion TEXT
+)
+BEGIN
+    UPDATE categoriaProductos 
+    SET nombre = p_nombre,
+        descripcion = p_descripcion
+    WHERE id_categoria = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE EliminarCategoriaProducto(IN p_id INT)
+BEGIN
+    DELETE FROM categoriaProductos WHERE id_categoria = p_id;
+END $$
+
+DELIMITER ;
+
+
+/*-------------------------------
+-- Producto --
+----------------------------------*/
+
+DELIMITER $$
+
+CREATE PROCEDURE InsertarProducto(
+    IN p_nombre VARCHAR(100),
+    IN p_descripcion TEXT,
+    IN p_cantidad INT,
+    IN p_categoria_id INT,
+    IN p_precio FLOAT
+)
+BEGIN
+    INSERT INTO Producto (nombre, descripcion, cantidad, categoria_id, precio)
+    VALUES (p_nombre, p_descripcion, p_cantidad, p_categoria_id, p_precio);
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarTodosLosProductos()
+BEGIN
+    SELECT * FROM Producto;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarProductoPorId(IN p_id INT)
+BEGIN
+    SELECT * FROM Producto WHERE id_producto = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ActualizarProducto(
+    IN p_id INT,
+    IN p_nombre VARCHAR(100),
+    IN p_descripcion TEXT,
+    IN p_cantidad INT,
+    IN p_categoria_id INT,
+    IN p_precio FLOAT
+)
+BEGIN
+    UPDATE Producto 
+    SET nombre = p_nombre,
+        descripcion = p_descripcion,
+        cantidad = p_cantidad,
+        categoria_id = p_categoria_id,
+        precio = p_precio
+    WHERE id_producto = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE EliminarProducto(IN p_id INT)
+BEGIN
+    DELETE FROM Producto WHERE id_producto = p_id;
+END $$
+
+DELIMITER ;
+
+
+/*-------------------------------
+-- InventarioProductos --
+----------------------------------*/
+
+DELIMITER $$
+CREATE PROCEDURE InsertarInventarioProducto(
+    IN p_producto_id INT,IN p_cantidad INT,
+    IN p_categoria_id INT,IN p_rol_id INT
+)
+BEGIN
+    INSERT INTO InventarioProductos (producto_id,cantidad,categoria_id,rol_id)
+    VALUES (p_producto_id,p_cantidad,p_categoria_id,p_rol_id);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarTodoInventarioProductos()
+BEGIN
+    SELECT * FROM InventarioProductos;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarInventarioProductoPorId(IN p_id_inve_produ INT)
+BEGIN
+    SELECT * FROM InventarioProductos WHERE id_inve_produ=p_id_inve_produ;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ActualizarInventarioProducto(
+    IN p_id_inve_produ INT,IN p_producto_id INT,
+    IN p_cantidad INT,IN p_categoria_id INT,IN p_rol_id INT
+)
+BEGIN
+    UPDATE InventarioProductos
+    SET producto_id=p_producto_id,cantidad=p_cantidad,
+        categoria_id=p_categoria_id,rol_id=p_rol_id
+    WHERE id_inve_produ=p_id_inve_produ;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE InsertarVenta(
+  IN p_cliente_id INT,
+  IN p_cantidad INT,
+  IN p_descripcion TEXT,
+  IN p_fecha_venta DATE,
+  IN p_encargado_id INT,
+  IN p_monto DECIMAL(10,2)
+)
+BEGIN
+  INSERT INTO Venta(cliente_id, cantidad, descripcion, fecha_venta, encargado_id, monto)
+  VALUES (p_cliente_id, p_cantidad, p_descripcion, p_fecha_venta, p_encargado_id, p_monto);
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarTodasLasVentas()
+BEGIN
+  SELECT * FROM Venta;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarVentaPorId(IN p_id INT)
+BEGIN
+  SELECT * FROM Venta WHERE id_venta = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ActualizarVenta(
+  IN p_id INT,
+  IN p_cliente_id INT,
+  IN p_cantidad INT,
+  IN p_descripcion TEXT,
+  IN p_fecha_venta DATE,
+  IN p_encargado_id INT,
+  IN p_monto DECIMAL(10,2)
+)
+BEGIN
+  UPDATE Venta
+  SET cliente_id = p_cliente_id,
+      cantidad = p_cantidad,
+      descripcion = p_descripcion,
+      fecha_venta = p_fecha_venta,
+      encargado_id = p_encargado_id,
+      monto = p_monto
+  WHERE id_venta = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE EliminarVenta(IN p_id INT)
+BEGIN
+  DELETE FROM Venta WHERE id_venta = p_id;
+END $$
+
+DELIMITER ;
+
+
+/*-------------------------------
+-- Servicio --
+----------------------------------*/
+
+DELIMITER $$
+
+CREATE PROCEDURE InsertarServicio(
+  IN p_descripcion TEXT,
+  IN p_tipo ENUM('taller','domicilio'),
+  IN p_fecha DATE,
+  IN p_cliente_id INT,
+  IN p_usuario_id INT
+)
+BEGIN
+  INSERT INTO Servicio(descripcion, tipo, fecha, cliente_id, usuario_id)
+  VALUES (p_descripcion, p_tipo, p_fecha, p_cliente_id, p_usuario_id);
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarTodosLosServicios()
+BEGIN
+  SELECT * FROM Servicio;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ConsultarServicioPorId(IN p_id INT)
+BEGIN
+  SELECT * FROM Servicio WHERE id_servicio = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE ActualizarServicio(
+  IN p_id INT,
+  IN p_descripcion TEXT,
+  IN p_tipo ENUM('taller','domicilio'),
+  IN p_fecha DATE,
+  IN p_cliente_id INT,
+  IN p_usuario_id INT
+)
+BEGIN
+  UPDATE Servicio
+  SET descripcion = p_descripcion,
+      tipo = p_tipo,
+      fecha = p_fecha,
+      cliente_id = p_cliente_id,
+      usuario_id = p_usuario_id
+  WHERE id_servicio = p_id;
+END $$
+
+DELIMITER $$
+
+CREATE PROCEDURE EliminarServicio(IN p_id INT)
+BEGIN
+  DELETE FROM Servicio WHERE id_servicio = p_id;
+END $$
+
+DELIMITER ;
+
+/*-------------------------------
+-- DetalleVenta --
+---------------------------------*/
+DELIMITER $$
+
+CREATE PROCEDURE InsertarDetalleVenta(
+  IN p_venta_id INT,
+  IN p_servicio_id INT,
+  IN p_producto_id INT,
+  IN p_cantidad INT,
+  IN p_precio_unitario FLOAT,
+  IN p_fecha DATE
+)
+BEGIN
+  INSERT INTO DetalleVenta(venta_id, servicio_id, producto_id, cantidad, precio_unitario, fecha)
+  VALUES (p_venta_id, p_servicio_id, p_producto_id, p_cantidad, p_precio_unitario, p_fecha);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarDetalleVentaPorVenta(IN p_venta_id INT)
+BEGIN
+  SELECT * FROM DetalleVenta WHERE venta_id = p_venta_id;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ActualizarDetalleVenta(
+  IN p_id_detalle INT,
+  IN p_venta_id INT,
+  IN p_servicio_id INT,
+  IN p_producto_id INT,
+  IN p_cantidad INT,
+  IN p_precio_unitario FLOAT,
+  IN p_fecha DATE
+)
+BEGIN
+  UPDATE DetalleVenta
+  SET venta_id = p_venta_id,
+      servicio_id = p_servicio_id,
+      producto_id = p_producto_id,
+      cantidad = p_cantidad,
+      precio_unitario = p_precio_unitario,
+      fecha = p_fecha
+  WHERE id_detalle = p_id_detalle;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE EliminarDetalleVenta(IN p_id_detalle INT)
+BEGIN
+  DELETE FROM DetalleVenta WHERE id_detalle = p_id_detalle;
+END $$
+DELIMITER ;
+
+/*-------------------------------
+-- Domicilio --
+---------------------------------*/
+DELIMITER $$
+CREATE PROCEDURE InsertarDomicilio(
+  IN p_cliente_id INT,
+  IN p_servicio_id INT,
+  IN p_fecha DATE,
+  IN p_monto DECIMAL(10,2),
+  IN p_usuario_id INT
+)
+BEGIN
+  INSERT INTO Domicilio(cliente_id, servicio_id, fecha, monto, usuario_id)
+  VALUES (p_cliente_id, p_servicio_id, p_fecha, p_monto, p_usuario_id);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarTodosLosDomicilios()
+BEGIN
+  SELECT * FROM Domicilio;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarDomicilioPorId(IN p_id_domicilio INT)
+BEGIN
+  SELECT * FROM Domicilio WHERE id_domicilio = p_id_domicilio;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ActualizarDomicilio(
+  IN p_id_domicilio INT,
+  IN p_cliente_id INT,
+  IN p_servicio_id INT,
+  IN p_fecha DATE,
+  IN p_monto DECIMAL(10,2),
+  IN p_usuario_id INT
+)
+BEGIN
+  UPDATE Domicilio
+  SET cliente_id = p_cliente_id,
+      servicio_id = p_servicio_id,
+      fecha = p_fecha,
+      monto = p_monto,
+      usuario_id = p_usuario_id
+  WHERE id_domicilio = p_id_domicilio;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE EliminarDomicilio(IN p_id_domicilio INT)
+BEGIN
+  DELETE FROM Domicilio WHERE id_domicilio = p_id_domicilio;
+END $$
+DELIMITER ;
+
+/*-------------------------------
+-- Maquinaria --
+---------------------------------*/
+DELIMITER $$
+CREATE PROCEDURE InsertarMaquinaria(
+  IN p_nombre VARCHAR(30),
+  IN p_descripcion TEXT,
+  IN p_estado VARCHAR(50)
+)
+BEGIN
+  INSERT INTO Maquinaria(nombre, descripcion, estado)
+  VALUES (p_nombre, p_descripcion, p_estado);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarTodasLasMaquinarias()
+BEGIN
+  SELECT * FROM Maquinaria;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarMaquinariaPorId(IN p_id_maquina INT)
+BEGIN
+  SELECT * FROM Maquinaria WHERE id_maquina = p_id_maquina;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ActualizarMaquinaria(
+  IN p_id_maquina INT,
+  IN p_nombre VARCHAR(30),
+  IN p_descripcion TEXT,
+  IN p_estado VARCHAR(50)
+)
+BEGIN
+  UPDATE Maquinaria
+  SET nombre = p_nombre,
+      descripcion = p_descripcion,
+      estado = p_estado
+  WHERE id_maquina = p_id_maquina;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE EliminarMaquinaria(IN p_id_maquina INT)
+BEGIN
+  DELETE FROM Maquinaria WHERE id_maquina = p_id_maquina;
+END $$
+DELIMITER ;
+
+/*-------------------------------
+-- Mantenimiento --
+---------------------------------*/
+DELIMITER $$
+CREATE PROCEDURE InsertarMantenimiento(
+  IN p_descripcion TEXT,
+  IN p_fecha DATE,
+  IN p_personal VARCHAR(80),
+  IN p_maquina_id INT,
+  IN p_usuario_id INT,
+  IN p_costo DECIMAL(10,2)
+)
+BEGIN
+  INSERT INTO Mantenimiento(descripcion, fecha, personal, maquina_id, usuario_id, costo)
+  VALUES (p_descripcion, p_fecha, p_personal, p_maquina_id, p_usuario_id, p_costo);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarTodosLosMantenimientos()
+BEGIN
+  SELECT * FROM Mantenimiento;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarMantenimientoPorId(IN p_id_mantenimiento INT)
+BEGIN
+  SELECT * FROM Mantenimiento WHERE id_mantenimiento = p_id_mantenimiento;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ActualizarMantenimiento(
+  IN p_id_mantenimiento INT,
+  IN p_descripcion TEXT,
+  IN p_fecha DATE,
+  IN p_personal VARCHAR(80),
+  IN p_maquina_id INT,
+  IN p_usuario_id INT,
+  IN p_costo DECIMAL(10,2)
+)
+BEGIN
+  UPDATE Mantenimiento
+  SET descripcion = p_descripcion,
+      fecha = p_fecha,
+      personal = p_personal,
+      maquina_id = p_maquina_id,
+      usuario_id = p_usuario_id,
+      costo = p_costo
+  WHERE id_mantenimiento = p_id_mantenimiento;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE EliminarMantenimiento(IN p_id_mantenimiento INT)
+BEGIN
+  DELETE FROM Mantenimiento WHERE id_mantenimiento = p_id_mantenimiento;
+END $$
+DELIMITER ;
+
+/*-------------------------------
+-- InventarioHerramientas --
+---------------------------------*/
+DELIMITER $$
+CREATE PROCEDURE InsertarInventarioHerramienta(
+  IN p_nombre VARCHAR(100),
+  IN p_descripcion TEXT,
+  IN p_cantidad INT,
+  IN p_estado VARCHAR(50),
+  IN p_usuario_id INT
+)
+BEGIN
+  INSERT INTO InventarioHerramientas(nombre, descripcion, cantidad, estado, usuario_id)
+  VALUES (p_nombre, p_descripcion, p_cantidad, p_estado, p_usuario_id);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarInventarioHerramienta()
+BEGIN
+  SELECT * FROM InventarioHerramientas;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarInventarioHerramientaPorId(IN p_id_herr INT)
+BEGIN
+  SELECT * FROM InventarioHerramientas WHERE id_herr = p_id_herr;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ActualizarInventarioHerramienta(
+  IN p_id_herr INT,
+  IN p_nombre VARCHAR(100),
+  IN p_descripcion TEXT,
+  IN p_cantidad INT,
+  IN p_estado VARCHAR(50),
+  IN p_usuario_id INT
+)
+BEGIN
+  UPDATE InventarioHerramientas
+  SET nombre = p_nombre,
+      descripcion = p_descripcion,
+      cantidad = p_cantidad,
+      estado = p_estado,
+      usuario_id = p_usuario_id
+  WHERE id_herr = p_id_herr;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE EliminarInventarioHerramienta(IN p_id_herr INT)
+BEGIN
+  DELETE FROM InventarioHerramientas WHERE id_herr = p_id_herr;
+END $$
+DELIMITER ;
+
+/*-------------------------------
+-- Devoluciones --
+---------------------------------*/
+DELIMITER $$
+CREATE PROCEDURE InsertarDevolucion(
+  IN p_compra_id INT,
+  IN p_fecha DATE,
+  IN p_estado BOOLEAN,
+  IN p_razon VARCHAR(100)
+)
+BEGIN
+  INSERT INTO Devoluciones(compra_id, fecha, estado, razon)
+  VALUES (p_compra_id, p_fecha, p_estado, p_razon);
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarDevoluciones()
+BEGIN
+  SELECT * FROM Devoluciones;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarDevolucionPorId(IN p_id_devolucion INT)
+BEGIN
+  SELECT * FROM Devoluciones WHERE id_devolucion = p_id_devolucion;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE ActualizarDevolucion(
+  IN p_id_devolucion INT,
+  IN p_compra_id INT,
+  IN p_fecha DATE,
+  IN p_estado BOOLEAN,
+  IN p_razon VARCHAR(100)
+)
+BEGIN
+  UPDATE Devoluciones
+  SET compra_id = p_compra_id,
+      fecha = p_fecha,
+      estado = p_estado,
+      razon = p_razon
+  WHERE id_devolucion = p_id_devolucion;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE EliminarDevolucion(IN p_id_devolucion INT)
+BEGIN
+  DELETE FROM Devoluciones WHERE id_devolucion = p_id_devolucion;
+END $$
+DELIMITER ;
+
+
+
+
+ALTER TABLE producto
+ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+
+DESCRIBE compra;
+
+SELECT fecha_venta, SUM(monto) AS total_ventas
+FROM venta
+WHERE fecha_venta >= CURDATE() - INTERVAL 7 DAY
+GROUP BY fecha_venta
+ORDER BY fecha_venta ASC;
+
+INSERT INTO venta (fecha_venta, monto) VALUES
+(CURDATE() - INTERVAL 6 DAY, 150),
+(CURDATE() - INTERVAL 5 DAY, 200),
+(CURDATE() - INTERVAL 4 DAY, 180),
+(CURDATE() - INTERVAL 3 DAY, 220),
+(CURDATE() - INTERVAL 2 DAY, 170),
+(CURDATE() - INTERVAL 1 DAY, 190),
+(CURDATE(), 210);
+
+SELECT fecha_venta, monto FROM venta WHERE fecha_venta >= CURDATE() - INTERVAL 7 DAY ORDER BY fecha_venta;
+
+INSERT INTO venta (fecha_venta, monto) VALUES
+(CURDATE() - INTERVAL 1 DAY, 190),
+(CURDATE(), 210);
+
+SELECT fecha_venta, SUM(monto) FROM Venta GROUP BY fecha_venta LIMIT 1;
+
+
+-- ===============================================
+-- 1️⃣ Extender tabla Compra
+-- ===============================================
+
+ALTER TABLE Compra 
+ADD COLUMN IF NOT EXISTS precio_unitario DECIMAL(10,2) NULL AFTER cantidad;
+
+ALTER TABLE Compra 
+ADD COLUMN IF NOT EXISTS estado ENUM('Pendiente','En proceso','Recibido','Cancelado') 
+NOT NULL DEFAULT 'Pendiente' AFTER fecha_entrega;
+
+CREATE INDEX IF NOT EXISTS idx_compra_estado ON Compra(estado);
+CREATE INDEX IF NOT EXISTS idx_compra_proveedor ON Compra(proveedor_id);
+CREATE INDEX IF NOT EXISTS idx_compra_producto ON Compra(producto_id);
+CREATE INDEX IF NOT EXISTS idx_compra_fechas ON Compra(fecha_pedido, fecha_entrega);
+
+-- ===============================================
+-- 2️⃣ Opción A (recomendada): monto como columna generada
+-- ===============================================
+
+ALTER TABLE Compra 
+ADD COLUMN IF NOT EXISTS monto DECIMAL(10,2) 
+GENERATED ALWAYS AS (cantidad * IFNULL(precio_unitario, 0)) STORED;
+
+-- Si tu versión no soporta columnas generadas, comenta lo anterior
+-- y usa la Opción B con triggers.
+
+
+-- ===============================================
+-- 3️⃣ Vistas para pedidos y detalles
+-- ===============================================
+
+-- Cabecera de pedidos
+DROP VIEW IF EXISTS vw_pedidos;
+CREATE VIEW pedidos AS
+SELECT 
+  c.id_compra,
+  c.proveedor_id,
+  MIN(c.fecha_pedido) AS fecha_pedido,
+  MAX(c.fecha_entrega) AS fecha_entrega,
+  COALESCE(SUM(c.monto), 0) AS total,
+  MAX(c.estado) AS estado
+FROM Compra c
+GROUP BY c.id_compra, c.proveedor_id;
+
+-- Detalle de pedidos
+DROP VIEW IF EXISTS pedido_detalle;
+CREATE VIEW pedido_detalle AS
+SELECT 
+  c.id_compra,
+  c.proveedor_id,
+  pr.nombre AS proveedor_nombre,
+  c.producto_id,
+  p.nombre AS producto_nombre,
+  c.descripcion,
+  c.cantidad,
+  c.precio_unitario,
+  c.monto,
+  c.fecha_pedido,
+  c.fecha_entrega,
+  c.estado
+FROM Compra c
+JOIN Producto p ON p.id_producto = c.producto_id
+JOIN Proveedor pr ON pr.id_proveedor = c.proveedor_id;
+
+-- ===============================================
+-- 4️⃣ Consultas útiles
+-- ===============================================
+
+-- Listar pedidos (últimos primero)
+SELECT * FROM pedidos ORDER BY fecha_pedido DESC LIMIT 20 OFFSET 0;
+
+-- Productos más solicitados
+SELECT 
+  c.producto_id, 
+  p.nombre AS producto_nombre, 
+  SUM(c.cantidad) AS total_solicitado
+FROM Compra c
+JOIN Producto p ON p.id_producto = c.producto_id
+GROUP BY c.producto_id, p.nombre
+ORDER BY total_solicitado DESC
+LIMIT 50;
+
+-- Pedidos ordenados por cantidad total (mayor a menor)
+SELECT 
+  id_compra, 
+  proveedor_id, 
+  SUM(cantidad) AS total_cantidad, 
+  SUM(monto) AS total_monto, 
+  MIN(fecha_pedido) AS fecha_pedido, 
+  MAX(fecha_entrega) AS fecha_entrega, 
+  MAX(estado) AS estado
+FROM Compra
+GROUP BY id_compra, proveedor_id
+ORDER BY total_cantidad DESC
+LIMIT 50;
+
+-- Detalle de un pedido específico
+SELECT * FROM pedido_detalle WHERE id_compra = 123 ORDER BY producto_id;
+
+-- ===============================================
+-- 5️⃣ Procedimientos almacenados
+-- ===============================================
+
+-- Listar cabeceras de pedidos con filtros
+DROP PROCEDURE IF EXISTS ListarPedidos;
+DELIMITER $$
+CREATE PROCEDURE ListarPedidos(
+  IN p_orden VARCHAR(10),     -- 'ASC' | 'DESC'
+  IN p_campo VARCHAR(30),     -- 'fecha_pedido' | 'total' | 'estado'
+  IN p_limit INT,
+  IN p_offset INT
+)
+BEGIN
+  SET @sql = CONCAT(
+    'SELECT id_compra, proveedor_id, fecha_pedido, fecha_entrega, total, estado ',
+    'FROM pedidos ',
+    'ORDER BY ',
+    CASE 
+      WHEN p_campo = 'total' THEN ' total '
+      WHEN p_campo = 'estado' THEN ' estado '
+      ELSE ' fecha_pedido '
+    END,
+    ' ',
+    IF(p_orden = 'ASC', 'ASC', 'DESC'),
+    ' LIMIT ', p_limit, ' OFFSET ', p_offset
+  );
+
+  PREPARE stmt FROM @sql;
+  EXECUTE stmt;
+  DEALLOCATE PREPARE stmt;
+END$$
+DELIMITER ;
+
+-- Obtener detalle de pedido
+DROP PROCEDURE IF EXISTS ObtenerDetallePedido;
+DELIMITER $$
+CREATE PROCEDURE ObtenerDetallePedido(IN p_id_compra INT)
+BEGIN
+  SELECT * FROM pedido_detalle WHERE id_compra = p_id_compra ORDER BY producto_id;
+END$$
+DELIMITER ;
+
+-- Actualizar pedido (cabecera)
+DROP PROCEDURE IF EXISTS ActualizarPedido;
+DELIMITER $$
+CREATE PROCEDURE ActualizarPedido(
+  IN p_id_compra INT,
+  IN p_fecha_entrega DATE,
+  IN p_estado ENUM('Pendiente','En proceso','Recibido','Cancelado')
+)
+BEGIN
+  UPDATE Compra
+  SET fecha_entrega = p_fecha_entrega,
+      estado = p_estado
+  WHERE id_compra = p_id_compra;
+END$$
+DELIMITER ;
+
+-- Actualizar ítem
+DROP PROCEDURE IF EXISTS ActualizarItemPedido;
+DELIMITER $$
+CREATE PROCEDURE ActualizarItemPedido(
+  IN p_id_compra INT,
+  IN p_producto_id INT,
+  IN p_cantidad INT,
+  IN p_precio_unitario DECIMAL(10,2)
+)
+BEGIN
+  IF p_cantidad <= 0 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La cantidad debe ser mayor que 0';
+  END IF;
+
+  UPDATE Compra
+  SET cantidad = p_cantidad,
+      precio_unitario = p_precio_unitario
+  WHERE id_compra = p_id_compra AND producto_id = p_producto_id;
+END$$
+DELIMITER ;
+
+-- Eliminar ítem
+DROP PROCEDURE IF EXISTS EliminarItemPedido;
+DELIMITER $$
+CREATE PROCEDURE EliminarItemPedido(
+  IN p_id_compra INT,
+  IN p_producto_id INT
+)
+BEGIN
+  DELETE FROM Compra WHERE id_compra = p_id_compra AND producto_id = p_producto_id;
+END$$
+DELIMITER ;
+
+-- Reporte de productos más solicitados
+DROP PROCEDURE IF EXISTS ProductosMasSolicitadosCompras;
+DELIMITER $$
+CREATE PROCEDURE ProductosMasSolicitadosCompras(IN p_limit INT)
+BEGIN
+  SELECT 
+    c.producto_id,
+    p.nombre AS producto_nombre,
+    SUM(c.cantidad) AS total_solicitado
+  FROM Compra c
+  JOIN Producto p ON p.id_producto = c.producto_id
+  GROUP BY c.producto_id, p.nombre
+  ORDER BY total_solicitado DESC
+  LIMIT p_limit;
+END$$
+DELIMITER ;
+
+-- ===============================================
+-- 6️⃣ Pruebas rápidas
+-- ===============================================
+
+-- Ver estructura
+DESCRIBE Compra;
+
+-- Inicializar precios (si tu tabla Producto tiene precio)
+SET SQL_SAFE_UPDATES = 0;
+
+UPDATE Compra c
+JOIN Producto p ON p.id_producto = c.producto_id
+SET c.precio_unitario = p.precio
+WHERE c.precio_unitario IS NULL;
+
+SET SQL_SAFE_UPDATES = 1;
+
+
+-- Probar vistas
+SELECT * FROM pedidos ORDER BY fecha_pedido DESC LIMIT 10;
+SELECT * FROM pedido_detalle WHERE id_compra = 1;
+
+-- Probar procedimientos
+CALL ListarPedidos('DESC', 'fecha_pedido', 20, 0);
+CALL ObtenerDetallePedido(1);
+CALL ActualizarPedido(1, '2025-10-25', 'En proceso');
+CALL ActualizarItemPedido(1, 1, 60, 280000.00);
+CALL EliminarItemPedido(1, 6);
+CALL ProductosMasSolicitadosCompras(10);
+
+-- Tabla para sesiones activas
+CREATE TABLE sesion_activa (
+  id_sesion INT AUTO_INCREMENT PRIMARY KEY,
+  usuario_id INT NOT NULL,
+  nombre_usuario VARCHAR(150),
+  hora_inicio DATETIME DEFAULT CURRENT_TIMESTAMP,
+  ultima_actividad DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  estado ENUM('activa','cerrada') DEFAULT 'activa',
+  ip VARCHAR(45),
+  user_agent VARCHAR(255),
+  FOREIGN KEY (usuario_id) REFERENCES usuario(id_usuario)
+);
+
+-- Tabla de auditoría para acciones administrativas (cierres forzados)
+CREATE TABLE auditoria_sesiones (
+  id_audit INT AUTO_INCREMENT PRIMARY KEY,
+  id_sesion INT,
+  usuario_admin_id INT NOT NULL,       -- quien ejecutó la acción
+  accion VARCHAR(100),                 -- ej: 'cierre_forzado'
+  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+  descripcion TEXT
+);
+
+CREATE TABLE PlantillaComprobante (
+   id_plantilla INT AUTO_INCREMENT PRIMARY KEY,
+   tipo_comprobante ENUM('Orden de Servicio', 'Recibo de Pago', 'Comprobante de Devolución') NOT NULL,
+   nombre_plantilla VARCHAR(100) NOT NULL,
+   contenido_html TEXT,
+  veces_usada INT DEFAULT 0,
+   fecha_modificacion DATETIME
+ );
+ 
+ CREATE OR REPLACE VIEW vista_domicilios AS
+SELECT 
+    d.id_domicilio,
+    c.nombre AS nombre_cliente,
+    c.direccion,
+    s.descripcion AS descripcion_servicio,
+    d.fecha,
+    d.monto,
+    u.nombre AS usuario_registro
+FROM domicilio d
+JOIN cliente c ON d.cliente_id = c.id_cliente
+JOIN servicio s ON d.servicio_id = s.id_servicio
+JOIN usuario u ON d.usuario_id = u.id_usuario;
+
+ ALTER TABLE venta MODIFY garantias INT NOT NULL DEFAULT 0;
+
+ select * from venta;
+ select * from maquinaria;
+ select * from mantenimiento;
+ select * from producto;
+SELECT * FROM vw_pedidos_cobros;
+select * from cliente;
+select * from inventarioherramientas;
+select * from inventarioproductos;
+select * from usuario;
+select * from compra;
+select * from mantenimiento;
+select * from servicio;
+select * from devoluciones;
+select * from domicilio;
+select * from proveedor;
+select * from control_herramienta;
+select * from venta;
+select * from detalleventa;

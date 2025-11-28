@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Búsqueda y filtrado de material</title>
+  <link rel="stylesheet" href="../static/filtro.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+
+
+    <header>
+      <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+      <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <div class="titulo">
+            <i class="fa-solid fa-users"></i>
+            <h1>INVENTARIO</h1>
+    <div class="right">
+      <button  onclick="window.location.href='{{ url_for('exportar') }}'" class="btn-orden">Importar/Exportar</button>
+      <button  onclick="window.location.href='{{ url_for('material_form') }}'" class="btn-orden">Registrar Material</button><br>
+    
+    </div>
+        </div>
+    </header>
+
+
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Descripcion</th>
+          <th>Cantidad</th>
+          <th>Categoria_id</th>
+          <th>Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for material in materiales %}
+        <tr>
+          <td>{{ material.id_producto }}</td>
+          <td>{{ material.nombre }}</td>
+          <td>{{ material.descripcion }}</td>
+          <td>{{ material.cantidad }}</td>
+          <td>{{ material.categoria_id }}</td>
+          <td>{{ material.precio }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    feather.replace()
+  </script>
+</body>
+</html>

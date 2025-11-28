@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Tickets</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='Gestion_tickets.css') }}"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+
+
+<header>
+    <a class="salir" href="{{ url_for('volver') }}"><i data-feather="arrow-left"></i></a>
+    <h2 class="SERVIMAQ">SERVIMAQ</h2>
+    <div class="titulo">
+      <h1 class="titulo-header">Gestión de Tickets</h1>
+    </div>  
+   
+  </header>
+
+
+<body>
+  <div class="contenedor">
+    <form id="ticketForm" action="/gestion_tickets" method="POST">
+      
+
+      <label for="ticket_problema">Problema u error:</label><br>
+      <input type="text" id="ticket_problema" name="ticket_problema"
+            placeholder="No carga el módulo de agenda" required><br><br>
+
+      <label for="ticket_Descripcion">Descripción:</label><br>
+      <input type="text" class="ticket_Descripcion" id="ticket_Descripcion" name="ticket_Descripcion"
+            placeholder="Intento ingresar pero..." required ><br>
+
+      <button type="submit">Enviar Ticket</button>
+    </form>
+  </div>
+
+  {% if enviado %}
+  <script>
+    Swal.fire({
+      icon: 'success',
+      title: 'Ticket enviado correctamente',
+      text: 'Tu solicitud fue registrada con éxito.',
+      timer: 3000,
+      showConfirmButton: false
+    });
+  </script>
+  {% endif %}
+
+  <script>
+    feather.replace();
+  </script>
+
+
+</body>
+</html>

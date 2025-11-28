@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+@import url("./variables.css");
+
+
+>>>>>>> 8f4524cf1af715343c67c28340670e4c18aa869f
 * {
   margin: 0;
   padding: 0;
@@ -6,6 +12,41 @@
 }
 
 
+<<<<<<< HEAD
+=======
+.buscar {
+  width: 22px;
+  height: 22px;
+}
+
+
+.icono-usuario {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2;
+  padding: -5px;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  background-color: whitesmoke;
+  border-radius: 50%;
+}
+
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo img {
+  background-color: #f1f1f1;
+  width: 100PX;
+  height: 100PX;
+  border-radius: 50%;
+  margin-left: 20%;
+}
+
+>>>>>>> 8f4524cf1af715343c67c28340670e4c18aa869f
 body {
   background-color: #f0f0f0;
 }
@@ -121,7 +162,12 @@ body {
 
 .buscador {
   width: 250px;
+<<<<<<< HEAD
   padding: 8px 12px 8px 38px; /* espacio para la lupa */
+=======
+  padding: 8px 12px 8px 38px;
+  /* espacio para la lupa */
+>>>>>>> 8f4524cf1af715343c67c28340670e4c18aa869f
   border-radius: 24px;
   border: 1px solid #dcdcdc;
   outline: none;
@@ -138,6 +184,7 @@ body {
 }
 
 
+<<<<<<< HEAD
 .icono-busqueda {
   position: absolute;
   left: 12px;
@@ -158,6 +205,11 @@ body {
   color: white;
   cursor: pointer;
 }
+=======
+
+
+
+>>>>>>> 8f4524cf1af715343c67c28340670e4c18aa869f
 
 
 .mensaje {
@@ -214,3 +266,173 @@ body {
 .cerrar-sesion:hover {
   color: red;
 }
+<<<<<<< HEAD
+=======
+
+/* ====== Submenús ====== */
+.has-submenu>button {
+  justify-content: space-between;
+}
+
+.submenu {
+  display: none;
+  list-style: none;
+  padding-left: 15px;
+  margin-top: 5px;
+}
+
+.submenu li {
+  margin-bottom: 5px;
+}
+
+.submenu li a {
+  display: block;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  color: #ddd;
+  border-radius: 6px;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+
+.submenu li a:hover {
+  background-color: #2c2f36;
+  color: #fff;
+}
+
+.has-submenu.open .submenu {
+  display: block;
+}
+
+
+/* Dropdown de Reportes */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown .submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  /* 👈 aparece debajo */
+  left: 0;
+  /* alineado con el texto Reportes */
+  background: #fff;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  min-width: 160px;
+  z-index: 1000;
+}
+
+.dropdown:hover .submenu {
+  display: block;
+}
+
+.submenu li {
+  padding: 10px;
+}
+
+.submenu li a {
+  text-decoration: none;
+  color: #000;
+  display: block;
+}
+
+.submenu li:hover {
+  background: #f0f0f0;
+}
+
+/* Contenedor del usuario */
+.dropdown-usuario {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* Submenú del usuario */
+.submenu-usuario {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  min-width: 160px;
+  z-index: 1000;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
+  align-items: center;
+}
+
+/* Mostrar al pasar el mouse */
+.dropdown-usuario:hover .submenu-usuario {
+  display: block;
+}
+
+/* Estilos de las opciones */
+.submenu-usuario li {
+  padding: 10px;
+}
+
+.submenu-usuario li a {
+  text-decoration: none;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.submenu-usuario li:hover {
+  background: #f0f0f0;
+}
+
+
+.menu {
+  position: relative;
+  display: inline-block;
+}
+
+/* Botón que muestra el menú */
+.menu-button {
+
+  color: white;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Contenido del menú desplegable */
+.menu-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+}
+
+.menu-content span {
+  color: black;
+  padding: 12px 16px;
+  display: block;
+  cursor: pointer;
+}
+
+.menu-content span:hover {
+  background-color: #f1f1f1;
+}
+
+/* Mostrar el menú al hacer hover */
+.menu:hover .menu-content {
+  display: block;
+}
+>>>>>>> 8f4524cf1af715343c67c28340670e4c18aa869f

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Maquinaria</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='maquinaria.css') }}">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+
+    <header class="main-header">
+    <a class="header-back" href="{{ url_for('agenda') }}">
+        <i data-feather="arrow-left"></i>
+    </a>
+
+    <div class="header-center">
+        <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <h1 class="page-title">Maquinaria</h1>
+    </div>
+
+    <!-- <div class="header-actions">
+        Aquí puedes agregar botones o enlaces 
+        <a href="#" class="btn-header">+ Agregar</a>
+        <a href="#" class="btn-header">Configuración</a>
+    </div> -->
+    </header>
+
+
+    <main class="contenedor">
+        <!-- PANEL IZQUIERDO: LISTADO DE MAQUINARIA -->
+        <section class="panel-izquierdo">
+            <h2>Maquinarias Registradas</h2>
+
+            {% if maquinarias %}
+                <div class="cards-container">
+                    {% for m in maquinarias %}
+                        <div class="card">
+                            <h3>{{ m.nombre }}</h3>
+                            <p><strong>ID:</strong> {{ m.id_maquina }}</p>
+                            <p><strong>Descripción:</strong> {{ m.descripcion }}</p>
+                            <p><strong>Estado:</strong> {{ m.estado }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="vacio">No hay maquinarias registradas aún.</p>
+            {% endif %}
+        </section>
+
+        <!-- PANEL DERECHO: FORMULARIO DE REGISTRO -->
+        <section class="panel-derecho">
+            <h2>Registrar nueva maquinaria</h2>
+            <form method="POST" action="{{ url_for('registrar_maquinaria') }}">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" rows="3" required></textarea>
+
+                <label for="estado">Estado</label>
+                <select id="estado" name="estado" required>
+                    <option value="Operativa">Operativa</option>
+                    <option value="En mantenimiento">En mantenimiento</option>
+                    <option value="Fuera de servicio">Fuera de servicio</option>
+                </select>
+
+                <button type="submit">Registrar</button>
+            </form>
+        </section>
+    </main>
+<script>
+    feather.replace();
+</script>
+</body>
+</html>

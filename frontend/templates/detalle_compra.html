@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalle de Compra de Material</title>
+    <link rel="stylesheet" href="../static/detatalle_compra_style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <button class="back-btn">&#8592;</button>
+        <h1>Detalles de Pedidos</h1>
+        <button class="filter-btn">&#8693; Filtros</button>
+      </header>
+
+      <main>
+        <!-- Sección izquierda: listado de pedidos -->
+        <section class="orders-section">
+          <h2>Pedidos Registrados</h2>
+          <div class="orders-grid">
+            <!-- Pedido 1 -->
+            <div class="order-card">
+              <h3>Pedido #001</h3>
+              <p>Producto: <span>Llantas Michelin</span></p>
+              <p>Cantidad: <span>20</span></p>
+              <p>Monto: <span>$3.500.000</span></p>
+              <p>Estado: <span>Pendiente</span></p>
+              <p>Fecha: <span>01/09/2025</span></p>
+              <button class="edit-btn">Editar</button>
+            </div>
+
+            <!-- Pedido 2 -->
+            <div class="order-card">
+              <h3>Pedido #002</h3>
+              <p>Producto: <span>Aceite Mobil</span></p>
+              <p>Cantidad: <span>50</span></p>
+              <p>Monto: <span>$2.000.000</span></p>
+              <p>Estado: <span>En tránsito</span></p>
+              <p>Fecha: <span>05/09/2025</span></p>
+              <button class="edit-btn">Editar</button>
+            </div>
+
+            <!-- Pedido 3 -->
+            <div class="order-card">
+              <h3>Pedido #003</h3>
+              <p>Producto: <span>Baterías Bosch</span></p>
+              <p>Cantidad: <span>10</span></p>
+              <p>Monto: <span>$4.000.000</span></p>
+              <p>Estado: <span>Recibido</span></p>
+              <p>Fecha: <span>10/09/2025</span></p>
+              <button class="edit-btn" disabled>No editable</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Sección derecha: módulo de edición -->
+        <aside class="edit-section">
+          <h2>Edición de Pedido</h2>
+          <form>
+            <label for="producto">Producto:</label>
+            <input type="text" id="producto" placeholder="Nombre del producto" />
+
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" placeholder="Descripción del material"></textarea>
+
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" min="1" />
+
+            <label for="monto">Monto:</label>
+            <input type="text" id="monto" placeholder="$0.00" />
+
+            <label for="estado">Estado:</label>
+            <select id="estado">
+              <option>Pendiente</option>
+              <option>En tránsito</option>
+              <option>Recibido</option>
+            </select>
+
+            <label for="fecha">Fecha de entrega:</label>
+            <input type="date" id="fecha" />
+
+            <div class="form-actions">
+              <button type="submit" class="save-btn">Guardar cambios</button>
+              <button type="reset" class="cancel-btn">Cancelar</button>
+            </div>
+          </form>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

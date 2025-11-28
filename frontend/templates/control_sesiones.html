@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Sesiones Activas</title>
+    <!-- Enlace al CSS específico de esta vista -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='control_sesiones.css') }}">
+    <!-- Iconos de Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+<div class="header-control">
+    <div class="user-info">
+        <a href="{{ menu_url }}"><i class="fas fa-arrow-left"></i></a>
+        <i class="fas fa-user-circle"></i>
+    </div>
+    <div class="titulo-control">Control de Sesiones Activas</div>
+    <i class="fas fa-info-circle"></i>
+</div>
+
+<div class="control-container">
+
+    <!-- Alerta de Cierre Exitoso -->
+    <div id="alert-message" class="alert success hidden">
+        Alerta - Control S.A<br>Sesión Cerrada de manera exitosa
+    </div>
+    
+    <!-- Contenido principal: Tabla y Formulario de Acciones -->
+    <div class="main-content">
+        
+        <!-- Panel Izquierdo: Sesiones Activas -->
+        <div class="panel-sesiones">
+            
+            <div class="filters">
+                <!-- Filtro 'Trabajador' - Se puede dejar como simulación o implementar -->
+                <select id="trabajador-select">
+                    <option value="">Trabajador</option>
+                    <option value="1">Trabajador 1</option>
+                    <option value="2">Trabajador 2</option>
+                </select>
+                <!-- Fecha -->
+                <span id="current-date">{{ current_date.strftime('%d de %B') }}</span>
+
+            </div>
+            
+            <div class="tabla-sesiones-wrapper">
+                <table id="sesiones-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nombre/Usuario:</th>
+                            <th>Hora de Inicio</th>
+                            <th>IP/Detalle:</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Filas de sesiones se insertarán aquí por JavaScript (Polling) -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Panel Derecho: Acciones -->
+        <div class="panel-acciones">
+            <h2>Inactivar Sesión</h2>
+            <div class="action-box">
+                <label for="usuario-select">Selección de Usuario</label>
+                <select id="usuario-select">
+                    <option value="">Selección de Usuario</option>
+                    <!-- Opciones de usuarios activos se cargarán aquí por JS -->
+                </select>
+                
+                <button id="btn-cerrar-sesion" class="action-button primary">Cerrar Sesión</button>
+                <button id="btn-bloquear-usuario" class="action-button danger">Bloquear Usuario</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tablaBody = document.querySelector('#sesiones-table tbody');
+        const alertMessage = document.getElementById('alert-message');
+        const selectUsuario = document.getElementById('usuario-select');
+        const btnCerrarSesion = document.getElementById('btn-cerrar-sesion');
+        const btnBloquearUsuario = document.getElementById('btn-bloquear-usuario');
+
+
+        // ===================================
+        // 1. CARGA Y POLLING DE SESIONES
+        // ===================================
+
+        function cargarSesiones() {
+            fetch('/api/sesiones_activas')
+                .then(response => response.json())
+                .then(data => {
+                    tablaBody.innerHTML = ''; // Limpiar tabla
+                    data.forEach(sesion => {
+                        const row = tablaBody.insertRow();
+                        row.setAttribute('data-id-sesion', sesion.id_sesion); 
+
+                        // Mostrar 'Acceso no autorizado' o la IP/User-Agent
+                        const detalle = sesion.es_sospechosa ? 
+                            '<span style="font-weight: bold; color: red;">Acceso no autorizado</span>' : 
+                            `IP: ${sesion.ip}`;
+
+                        row.innerHTML = `
+                            <td><i class="fas fa-user-circle"></i></td>
+                            <td>${sesion.nombre_usuario}</td>
+                            <td>${sesion.hora_inicio}</td>
+                            <td>${detalle}</td>
+                            <td><button class="btn-cerrar-individual" data-id="${sesion.id_sesion}">Cerrar</button></td>
+                        `;
+                    });
+                    asignarEventosCierreIndividual(); 
+                })
+                .catch(error => console.error('Error cargando sesiones:', error));
+        }
+        
+        // Carga de usuarios para el dropdown de cierre masivo
+        function cargarUsuariosActivos() {
+            fetch('/api/usuarios_activos')
+                .then(response => response.json())
+                .then(data => {
+                    selectUsuario.innerHTML = '<option value="">Selección de Usuario</option>';
+                    data.forEach(user => {
+                        const option = document.createElement('option');
+                        option.value = user.usuario_id;
+                        option.textContent = user.nombre_usuario;
+                        selectUsuario.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error cargando usuarios:', error));
+        }
+
+        // Iniciar el Polling y carga inicial (Restricción 3)
+        setInterval(cargarSesiones, 10000); 
+        cargarSesiones();
+        cargarUsuariosActivos(); // Cargar el dropdown al inicio
+
+        // ===================================
+        // 2. LÓGICA DE ACCIONES (POST)
+        // ===================================
+        
+        // Función general para hacer la petición de cierre forzado o bloqueo
+        function realizarAccion(endpoint, payload, successMessage) {
+            fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alertMessage.innerHTML = successMessage;
+                    alertMessage.classList.remove('hidden'); 
+                    setTimeout(() => alertMessage.classList.add('hidden'), 3000);
+                    cargarSesiones(); // Recargar la tabla
+                    cargarUsuariosActivos(); // Recargar el dropdown
+                } else {
+                    alert('Error al realizar la acción. Revise la consola.');
+                }
+            })
+            .catch(error => console.error('Error en la petición:', error));
+        }
+
+        // Event listener para los botones de cierre individual (en la tabla)
+        function asignarEventosCierreIndividual() {
+            document.querySelectorAll('.btn-cerrar-individual').forEach(button => {
+                button.onclick = (e) => {
+                    const idSesion = e.target.getAttribute('data-id');
+                    const payload = { id_sesion: idSesion };
+                    realizarAccion('/admin/cerrar_sesion', payload, 'Alerta - Control S.A<br>Sesión Cerrada de manera exitosa');
+                };
+            });
+        }
+        
+        // Evento para el botón "Cerrar Sesión" del panel derecho (cierre por usuario_id)
+        btnCerrarSesion.onclick = () => {
+            const usuarioId = selectUsuario.value;
+            if (usuarioId) {
+                const payload = { usuario_id: parseInt(usuarioId) };
+                realizarAccion('/admin/cerrar_sesion', payload, 'Alerta - Control S.A<br>Todas las sesiones del usuario han sido cerradas.'); 
+            } else {
+                alert('Debe seleccionar un usuario para cerrar sus sesiones.');
+            }
+        };
+
+        // Evento para el botón "Bloquear Usuario"
+        btnBloquearUsuario.onclick = () => {
+            const usuarioId = selectUsuario.value;
+            if (usuarioId) {
+                const confirmacion = confirm(`¿Está seguro de bloquear al usuario ID ${usuarioId}? Esto podría requerir intervención manual para desbloquearlo.`);
+                if (confirmacion) {
+                    const payload = { usuario_id: parseInt(usuarioId) };
+                    realizarAccion('/admin/bloquear_usuario', payload, 'Alerta - Control S.A<br>Usuario bloqueado con éxito. Sesiones inactivadas.'); 
+                }
+            } else {
+                alert('Debe seleccionar un usuario para bloquear.');
+            }
+        };
+    });
+</script>
+
+</body>
+</html>

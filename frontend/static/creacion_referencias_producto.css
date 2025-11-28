@@ -1,0 +1,143 @@
+/* Estilos base */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
+  color: #222;
+}
+
+/* Ventana */
+.window {
+  max-width: 1000px;
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+header {
+  background: #164b8f;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 20px;
+  align-items: center;
+}
+
+.window-name {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+main {
+  padding: 20px;
+}
+
+h1 {
+  margin: 0;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Buscador y orden */
+.referencias-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.referencias-actions input,
+.referencias-actions select {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Grid de referencias */
+.grid-contenedor {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: #f9fafc;
+  border: 1px solid #e1e5eb;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.thumb {
+  max-width: 100%;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.codigo {
+  font-weight: bold;
+  color: #164b8f;
+}
+
+.cantidad,
+.fecha {
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* Formulario de nuevos productos */
+.form-nuevo {
+  background: #f1f5fb;
+  border: 1px solid #dce3ef;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.form-nuevo h2 {
+  margin-top: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+input, select, button {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button.btn {
+  background: #164b8f;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+button.btn:hover {
+  background: #123a70;
+}
+
+/* Footer */
+.cerrar-sesion {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.cerrar-sesion a {
+  text-decoration: none;
+  font-size: 1.5rem;
+}

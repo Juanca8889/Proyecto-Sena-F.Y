@@ -1,0 +1,42 @@
+body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background: #f4f4f4;
+        }
+
+        .centered-form {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            min-width: 300px;
+        }
+
+        .centered-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .centered-form input {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .centered-form button {
+            width: 100%;
+            padding: 0.5rem;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .centered-form button:hover {
+            background: #0056b3;
+        }

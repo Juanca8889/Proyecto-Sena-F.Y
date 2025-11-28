@@ -1,0 +1,177 @@
+@import url('variables.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================
+     Header
+     ========================= */
+
+.SERVIMAQ {
+    margin-left: 5px;
+    position: absolute;
+    left: 60px;
+    color: white;
+}
+
+
+header {
+    background: var(--color-azul);
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    height: 70px;
+
+}
+
+.salir {
+    font-size: 22px;
+    color: #000000;
+    text-decoration: none;
+    position: absolute;
+    left: 20px;
+    top: 10px;
+}
+
+header .salir {
+    font-size: 22px;
+    color: #fff;
+    text-decoration: none;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: color .2s ease, transform .1s ease;
+    border-radius: 6px;
+    /* para foco visible */
+}
+
+header .volver:hover {
+    color: var(--accent);
+}
+
+header .volver:focus-visible {
+    outline: 3px solid rgba(66, 66, 65, 0.5);
+    outline-offset: 2px;
+}
+
+header .titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header .titulo h1 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--accent);
+}
+
+header .acciones {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+
+
+body {
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+}
+
+h1,
+h2 {
+    color: #333;
+    text-align: center;
+}
+
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 300px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input,
+textarea {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: var(--color-verde);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--color-verde);
+}
+
+table {
+    width: 80%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px auto;
+
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #007bff;
+    color: white;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+
+.button {
+    background-color: var(--color-verde);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-right: 10px;
+    cursor: pointer;
+
+}
+
+.button:hover {
+    background-color: #0056b3;
+}

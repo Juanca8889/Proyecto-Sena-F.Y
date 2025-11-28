@@ -1,0 +1,136 @@
+@import url('variables.css');
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* =============== HEADER =============== */
+.SERVIMAQ {
+    margin-left: 5px;
+    position: absolute;
+    left: 50px;
+}
+
+header {
+    background: var(--color-azul);
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 70px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.salir {
+    position: absolute;
+    left: 10px;
+    color: white;
+}
+
+.add-btn {
+    position: absolute;
+    right: 30px;
+    background-color: var(--color-verde);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* =============== CONTENEDOR =============== */
+.container {
+    width: 90%;
+    margin: 30px auto;
+}
+
+/* =============== CARDS =============== */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--color-azul);
+}
+
+.card p {
+    margin: 6px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.no-data {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+}
+
+/* =============== PAGINACIÓN =============== */
+footer {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.pagination a {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 8px 14px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    background-color: var(--color-verde);
+    color: #fff;
+    transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.pagination .active {
+    background-color: var(--color-azul);
+}
+
+/* =============== RESPONSIVE =============== */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        height: auto;
+        padding: 12px;
+    }
+
+    header .titulo h1 {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .add-btn {
+        margin-top: 10px;
+        position: static;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+}

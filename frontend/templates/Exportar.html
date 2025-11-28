@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Inventario</title>
+  <link rel="stylesheet" href="../static/exportar.css">
+  <script src="https://unpkg.com/feather-icons"></script>
+ 
+</head>
+<body>
+
+  <header class="header" >
+      <a class="salir" href="filtro"><i data-feather="arrow-left"></i></a>
+      <h2 class="SERVIMAQ">SERVIMAQ</h2>
+        <div class="titulo">
+            <h1><i class="fa-regular fa-bell"></i> Exportar e Importar inventario</h1>
+        </div>
+      </header>
+
+  <div class="container">
+  
+
+    <h1>Montallantas F.Y</h1>
+
+  
+    <div class="card">
+      <h2>Importación de Inventario</h2>
+<form action="/importar/excel" method="post" enctype="multipart/form-data">
+    <input type="file" name="archivo" accept=".csv,.xlsx">
+    <button type="submit">Importar</button>
+</form>
+
+    </div>
+
+    <div class="card">
+      <h2>Exportación de Inventario</h2>
+      <div class="export-buttons">
+        <a href="/exportar/pdf" class="btn pdf">Descargar PDF</a>
+        <a href="/exportar/excel" class="btn excel">Descargar Excel</a>
+      </div>
+    </div>
+
+   
+  </div>
+    <script>
+      feather.replace();
+    </script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+@import url('./variables.css');
+
+/* tus estilos aquí */
+
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f6f6f6;
+  margin: 0;
+  padding: 0;
+}
+
+/* Contenedor principal */
+.window {
+  max-width: 900px;
+  margin: 30px auto;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px #aaa;
+  padding: 24px;
+}
+
+/* Header */
+/* =========================
+     Header
+     ========================= */
+
+.SERVIMAQ {
+    margin-left:5px;
+    position: absolute;
+    left:60px;
+    
+
+}
+
+
+header {
+    background: var(--color-azul) ;
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: center; /* centramos el título */
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    position: relative;
+    height: 70px;
+}
+
+header .salir {
+    font-size: 22px;
+    color: #fff;
+    text-decoration: none;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: color .2s ease, transform .1s ease;
+    border-radius: 6px; /* para foco visible */
+}
+
+header .volver:hover { color: var(--accent); }
+header .volver:focus-visible {
+    outline: 3px solid rgba(66, 66, 65, 0.5);
+    outline-offset: 2px;
+}
+
+header .titulo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header .titulo h1 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--accent);
+}
+
+header .acciones {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.window-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.window-controls span {
+  font-size: 22px;
+  margin: 0 4px;
+}
+
+/* Títulos */
+h1 {
+  text-align: center;
+  margin-top: 0;
+}
+
+.subtitle {
+  text-align: center;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+/* Filtros */
+.filtros {
+  margin-bottom: 16px;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.filtros input,
+.filtros select,
+.filtros button {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.filtros button {
+  background-color: var(--color-verde);
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.filtros button:hover {
+  background-color: #333945;
+}
+
+/* Tabla */
+.tabla-contenedor {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 12px;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 7px 10px;
+  text-align: left;
+}
+
+th {
+  background: #eee;
+  font-weight: bold;
+}
+
+/* Fijar encabezado */
+.tabla-contenedor table thead th {
+  position: sticky;
+  top: 0;
+  background: #f4f4f4;
+  z-index: 2;
+}
+
+/* Botones de acciones */
+.btn-ver,
+.btn-imprimir,
+.btn-exportar {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 13px;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-right: 6px;
+  transition: background-color 0.2s;
+}
+
+.btn-ver {
+  background-color: #4caf50;
+  color: white;
+}
+
+.btn-ver:hover {
+  background-color: #45a049;
+}
+
+.btn-imprimir {
+  background-color: #2196f3;
+  color: white;
+}
+
+.btn-imprimir:hover {
+  background-color: #1976d2;
+}
+
+.btn-exportar {
+  background-color: var(--color-verde);
+  color: white;
+}
+
+.btn-exportar:hover {
+  background-color: var(--color-azul);
+}
+
+/* Acciones exportar */
+.acciones-exportar {
+  text-align: right;
+  margin-top: 12px;
+}
+
+
+
+
+.btn-retroceso {
+  background-color: #ffffff;
+  color: black;
+  border: none;
+  font-size: larger;
+
+}
+
+
+.btn-retroceso:hover {
+  background-color: #000000;
+  color: rgb(255, 255, 255);
+
+}

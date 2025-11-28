@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Domicilios</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='cliente_domicilio.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    {% include "alertas_flash.html" %}
+    {% block content %}{% endblock %}
+
+    
+<header>
+  <a class="volver" href="{{ url_for('volver') }}"><i class="fa-solid fa-arrow-left"></i></a>
+  <h2 class="SERVIMAQ">SERVIMAQ</h2>
+  <div class="titulo">
+    <h1>REGISTRO DE DOMICILIOS</h1>
+  </div>
+</header>
+
+<section class="formulario">
+  <h3>Registrar nuevo domicilio</h3>
+  <form method="POST" action="{{ url_for('domicilios') }}">
+    <label>Cliente:</label>
+    <select name="cliente_id" required>
+      {% for c in clientes %}
+      <option value="{{ c.id_cliente }}">{{ c.nombre }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Servicio:</label>
+    <select name="servicio_id" required>
+      {% for s in servicios %}
+      <option value="{{ s.id_servicio }}">{{ s.descripcion }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Fecha:</label>
+    <input type="date" name="fecha" required>
+
+    <label>Monto:</label>
+    <input type="number" name="monto" step="0.01" required>
+
+    <button type="submit" class="btn-agregar">Registrar Domicilio</button>
+  </form>
+</section>
+
+<main>
+  <h3>Lista de Domicilios</h3>
+  {% if domicilios %}
+  <table>
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>Dirección</th>
+        <th>Servicio</th>
+        <th>Fecha</th>
+        <th>Monto</th>
+        <th>Registrado por</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for d in domicilios %}
+      <tr>
+        <td>{{ d.nombre_cliente }}</td>
+        <td>{{ d.direccion }}</td>
+        <td>{{ d.descripcion_servicio }}</td>
+        <td>{{ d.fecha }}</td>
+        <td>${{ "%.2f"|format(d.monto) }}</td>
+        <td>{{ d.usuario_registro }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No hay domicilios registrados aún.</p>
+  {% endif %}
+</main>
+
+</body>
+</html>

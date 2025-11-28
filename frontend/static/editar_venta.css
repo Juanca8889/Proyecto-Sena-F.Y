@@ -1,0 +1,142 @@
+/* ===========================
+   ESTILOS GENERALES
+=========================== */
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    background: white;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ===========================
+   TITULOS
+=========================== */
+h1 {
+    text-align: center;
+    color: #003b73;
+    margin-bottom: 25px;
+}
+
+h2 {
+    margin-top: 25px;
+    color: #003b73;
+    text-align: center;
+}
+
+/* ===========================
+   FORMULARIO BUSCAR
+=========================== */
+.buscar-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.buscar-form input {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 180px;
+}
+
+.buscar-form button {
+    padding: 8px 14px;
+    background: #00cc2c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+.btn-volver {
+    font-size: 24px;
+    color: #333;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+}
+
+.buscar-form button:hover {
+    background: #00a323;
+}
+
+/* ===========================
+   FORMULARIO DE EDICIÓN
+=========================== */
+.venta-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.fila {
+    display: flex;
+    flex-direction: column;
+}
+
+.fila label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.fila input,
+.fila textarea {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: none;
+    background: #fafafa;
+}
+
+textarea {
+    height: 80px;
+}
+
+input[readonly],
+textarea[readonly] {
+    background-color: #e9e9e9;
+    color: #666;
+}
+
+/* ===========================
+   BOTÓN GUARDAR
+=========================== */
+.guardar-btn {
+    grid-column: 1 / 3;
+    padding: 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.guardar-btn:hover {
+    background: #218838;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 700px) {
+    .venta-form {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,232 @@
+:root {
+  --color-verde: #28a745;
+  --color-azul: #003366;
+  --color-rojo: #ff0000;
+  --fuente-principal: sans-serif;
+}
+
+/* ======== ESTILOS GENERALES ======== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--fuente-principal);
+}
+
+body {
+  background-color: #f2f4f8;
+  color: #333;
+  min-height: 100vh;
+}
+
+/* ======== HEADER ======== */
+header {
+  background-color: var(--color-azul);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  height: 70px;
+}
+
+.SERVIMAQ {
+  position: absolute;
+  left: 60px;
+  padding:
+}
+
+header .volver {
+  color: white;
+  font-size: 22px;
+  text-decoration: none;
+  transition: transform 0.2s ease, color 0.3s ease;
+}
+
+header .volver:hover {
+  transform: scale(1.1);
+  color: var(--color-verde);
+}
+
+header .SERVIMAQ {
+  font-weight: bold;
+  font-size: 22px;
+  letter-spacing: 1px;
+  color: white;
+  margin: 0 20px;
+}
+
+header .titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+
+header .titulo h1 {
+  font-size: 22px;
+  color: white;
+  position: absolute;
+  left: 40%;
+ 
+}
+
+/* ======== FORMULARIO ======== */
+.formulario {
+  background: white;
+  margin: 40px auto;
+  padding: 25px;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.formulario h3 {
+  margin-bottom: 20px;
+  color: var(--color-azul);
+  font-size: 1.3rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.formulario form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formulario label {
+  font-weight: 600;
+  color: var(--color-azul);
+}
+
+.formulario select,
+.formulario input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  transition: border 0.3s;
+}
+
+.formulario select:focus,
+.formulario input:focus {
+  border-color: var(--color-verde);
+  outline: none;
+}
+
+.btn-agregar {
+  background-color: var(--color-verde);
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s;
+  font-weight: bold;
+}
+
+.btn-agregar:hover {
+  background-color: #218838;
+  transform: scale(1.02);
+}
+
+/* ======== TABLA ======== */
+main {
+  width: 90%;
+  margin: 0 auto 40px;
+}
+
+main h3 {
+  font-size: 1.3rem;
+  color: var(--color-azul);
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background-color: var(--color-azul);
+  color: white;
+}
+
+thead th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+tbody tr:hover {
+  background-color: #e8f5e9;
+}
+
+tbody td {
+  padding: 12px;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* ======== MENSAJE VACÍO ======== */
+main p {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin-top: 15px;
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .formulario,
+  main {
+    width: 95%;
+  }
+
+  table {
+    font-size: 0.9rem;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+
+  tbody td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  tbody td:last-child {
+    border-bottom: none;
+  }
+}

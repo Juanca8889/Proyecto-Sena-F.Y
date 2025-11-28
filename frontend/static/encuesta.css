@@ -1,0 +1,138 @@
+:root {
+    --star-size: 2.2rem;
+    --star-color: #ddd;
+    --star-color-filled: #ffcc00;
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    padding: 2rem;
+    background: #f7f7f8;
+    color: #111;
+}
+
+.card {
+    max-width: 520px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    padding: 1.4rem;
+}
+
+h1 {
+    font-size: 1.1rem;
+    margin: 0 0 0.8rem 0;
+}
+
+.rating {
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+#opinion {
+    margin: auto;
+    width: 90%;
+}
+
+/* Star rating: use radios visually hidden and style labels */
+.rating input[type="radio"] {
+    display: none;
+}
+
+.star-label {
+    cursor: pointer;
+    width: var(--star-size);
+    height: var(--star-size);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--star-size);
+    color: var(--star-color);
+    transition: transform 0.08s ease;
+    user-select: none;
+}
+
+.star-label:hover,
+.star-label:hover~.star-label {
+    transform: scale(1.06);
+}
+
+/* When a radio is checked, color current and previous labels */
+input#r5:checked~label[for="r5"],
+input#r4:checked~label[for="r4"],
+input#r3:checked~label[for="r3"],
+input#r2:checked~label[for="r2"],
+input#r1:checked~label[for="r1"] {
+    color: var(--star-color-filled);
+}
+
+/* To color preceding stars, rely on DOM order: put inputs before labels */
+/* We'll place radios before labels and use the general sibling combinator */
+input#r5:checked~label[for="r4"],
+input#r5:checked~label[for="r3"],
+input#r5:checked~label[for="r2"],
+input#r5:checked~label[for="r1"] {
+    color: var(--star-color-filled);
+}
+
+input#r4:checked~label[for="r3"],
+input#r4:checked~label[for="r2"],
+input#r4:checked~label[for="r1"] {
+    color: var(--star-color-filled);
+}
+
+input#r3:checked~label[for="r2"],
+input#r3:checked~label[for="r1"] {
+    color: var(--star-color-filled);
+}
+
+input#r2:checked~label[for="r1"] {
+    color: var(--star-color-filled);
+}
+
+textarea {
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    padding: 0.6rem;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font: inherit;
+    margin-bottom: 0.8rem;
+}
+
+.row {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.submit-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.note {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.6rem;
+}
+
+.selected-value {
+    font-weight: 700;
+    margin-left: auto;
+    color: #111;
+}

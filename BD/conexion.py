@@ -4,6 +4,7 @@ def conectar():
     return mysql.connector.connect(
         host="localhost",
         user="root",
+<<<<<<< HEAD
         database="montallantasfy",
         charset="utf8mb4"
     )
@@ -51,6 +52,12 @@ class ConexionUsuario:
     def cerrar(self):
         self.cursor.close()
         self.conexion.close()
+=======
+        database="montallantasfy1",
+        charset="utf8mb4"
+    )
+
+>>>>>>> 8f4524cf1af715343c67c28340670e4c18aa869f
 
 
 def verificar_usuario(username, password):

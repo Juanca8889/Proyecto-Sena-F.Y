@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login/Register Animación Afuera (mejorada)</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    .contenedor {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background: white;
+    }
+
+    /* --- Forma (manteniendo la animación original) --- */
+    .forma {
+      position: absolute;
+      top: -10vh;
+      left: -30vw;
+      /* la hacemos más grande para que nunca quede en blanco al rotar */
+      width: 160vw;
+      height: 120vh;
+      background: linear-gradient(135deg, #0b0a26, #262493);
+      clip-path: polygon(100% 0, 0 0, 0 100%);
+      transform-origin: center center;
+      transform: rotate(0deg);
+      transition: transform 1s ease-in-out;
+      z-index: 1;
+      box-shadow: inset -60px -20px 80px rgba(0,0,0,0.45);
+    }
+
+    .contenedor.cambiar .forma {
+      transform: rotate(180deg);
+    }
+
+    /* --- Formularios (ahora centrados vertical y horizontalmente en cada mitad) --- */
+    .formulario{
+      position: absolute;
+      top: 50%;
+      left: 50%;                 /* se reposicionará por clase (25%/75%) */
+      transform: translate(-50%, -50%);
+      width: 320px;
+      max-width: 86vw;
+      padding: 20px;
+      background: #262493;
+      color: #fff;
+      border-radius: 18px;
+      box-shadow: 0 18px 30px rgba(0,0,0,0.35);
+      text-align: left;
+      opacity: 0;
+      transition: opacity 240ms ease;
+      z-index: 3; /* por encima de la forma */
+    }
+
+    /* Login: centrado en la mitad derecha (cuando la forma está a la izquierda) */
+    .login { left: 75%; }
+    /* Register: centrado en la mitad izquierda (cuando la forma está a la derecha) */
+    .register { left: 25%; }
+
+    .formulario.activo { opacity: 1; }
+
+    .formulario h2{ text-align:center; margin:0 0 12px; font-size:24px; }
+    .formulario label{ display:block; margin-top:10px; font-size:14px; color:#f0f0f0; }
+    .formulario input{
+      width:100%; padding:10px; margin-top:6px; border-radius:8px; border:0;
+    }
+    .formulario a{ display:block; margin-top:12px; color:#f2f2f2; text-decoration:none; text-align:center; }
+    .formulario button{ display:block; margin:14px auto 0; background:#0b0a26; color:#fff; padding:10px 18px; border:0; border-radius:8px; cursor:pointer; }
+
+    @media (max-width:800px){
+      .login{ left: 66%; } .register{ left: 34%; }
+      .formulario{ width: 90%; left: 50%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor" id="contenedor">
+    <div class="forma" id="forma"></div>
+
+    <!-- Login -->
+    <div class="formulario login activo" id="login">
+      <h2>Login</h2>
+      <label>Usuario:</label>
+      <input type="text" />
+      <label>Contraseña:</label>
+      <input type="password" />
+      <a href="#" id="ir-register">¿No tienes usuario?</a>
+      <button>Ingresar</button>
+    </div>
+
+    <!-- Register -->
+    <div class="formulario register" id="register">
+      <h2>Register</h2>
+      <label>Nombre:</label><input type="text" />
+      <label>Apellido:</label><input type="text" />
+      <a href="#" id="ir-login">¿Ya tienes cuenta?</a>
+      <button>Registrarse</button>
+    </div>
+  </div>
+
+  <script>
+    const cont = document.getElementById('contenedor');
+    const forma = document.getElementById('forma');
+    const login = document.getElementById('login');
+    const register = document.getElementById('register');
+    const btnReg = document.getElementById('ir-register');
+    const btnLog = document.getElementById('ir-login');
+
+    let animando = false;
+
+    btnReg.addEventListener('click', (e)=>{
+      e.preventDefault();
+      if(animando) return;
+      animando = true;
+      // iniciamos la rotación
+      cont.classList.add('cambiar');
+      // ocultamos el login inmediatamente
+      login.classList.remove('activo');
+
+      // esperamos a que termine la transformación de la forma
+      const onEnd = function(ev){
+        if(ev.propertyName !== 'transform') return;
+        // activamos register una vez terminó la rotación
+        register.classList.add('activo');
+        animando = false;
+        forma.removeEventListener('transitionend', onEnd);
+      };
+      forma.addEventListener('transitionend', onEnd);
+    });
+
+    btnLog.addEventListener('click', (e)=>{
+      e.preventDefault();
+      if(animando) return;
+      animando = true;
+      // regresamos la rotación
+      cont.classList.remove('cambiar');
+      register.classList.remove('activo');
+
+      const onEnd = function(ev){
+        if(ev.propertyName !== 'transform') return;
+        login.classList.add('activo');
+        animando = false;
+        forma.removeEventListener('transitionend', onEnd);
+      };
+      forma.addEventListener('transitionend', onEnd);
+    });
+  </script>
+</body>
+</html>
