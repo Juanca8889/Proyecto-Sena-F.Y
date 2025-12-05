@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Fecha de Entrega de Pedido</title>
+    <!-- Incluye SweetAlert2 para mensajes de feedback -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet"  href="{{ url_for('static', filename='editar_compra.css') }}">
+    <script src="https://unpkg.com/feather-icons"></script>
+   
+</head>
+<header class="encabezado">
+    
+    <div class="titulo-con-flecha">
+        <a class="flecha" href="{{ url_for('volver') }}" title="Volver al menú">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+        <h1>Editar Pedido</h1>
+    </div>
+    
+
+</header>
+<body class="bg-gray-100 p-4">
+
+    <!-- Mensajes Flash de Flask -->
+    <script>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    Swal.fire({
+                        icon: '{{ "success" if category == "success" else "error" }}',
+                        title: '{{ "Éxito" if category == "success" else "Error" }}',
+                        text: '{{ message }}',
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </script>
+    
+    <div class="form-container">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Editar Fecha de Entrega de Pedido</h1>
+
+        <!-- PRIMERA PARTE: Formulario para buscar la compra por ID -->
+        <!-- CORRECCIÓN: Usa 'editar_pedido' para la acción del formulario GET -->
+        <form method="GET" action="{{ url_for('editar_pedido') }}" class="mb-8 p-4 bg-white rounded-lg shadow-md flex gap-4 items-end">
+            <div class="flex-grow">
+                <label for="id_compra_busqueda" class="block text-sm font-medium text-gray-700 mb-1">ID de la Compra a Buscar</label>
+                <input type="number" id="id_compra_busqueda" name="id_compra" 
+                       value="{{ id_compra_buscado|default('') }}" 
+                       required min="1" 
+                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+            <button type="submit" 
+                    class="px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-150">
+                Buscar
+            </button>
+        </form>
+
+        <!-- SEGUNDA PARTE: Muestra los detalles de la compra si fue encontrada -->
+        {% if compra %}
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">Detalles de la Compra #{{ compra.id_compra }}</h2>
+
+            <!-- TERCERA PARTE: Formulario para editar la fecha de entrega -->
+            <!-- CORRECCIÓN: Usa 'editar_pedido' para la acción del formulario POST -->
+            <form method="POST" action="{{ url_for('editar_pedido') }}" class="bg-white p-6 rounded-lg shadow-xl">
+                
+                <!-- Campo oculto para enviar el ID de la compra que se está editando -->
+                <input type="hidden" name="id_compra" value="{{ compra.id_compra }}">
+
+                <table class="min-w-full divide-y divide-gray-200">
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Campos de solo lectura (excepto fecha_entrega) -->
+                        <tr><td class="w-1/3 font-medium">ID Compra</td><td class="w-2/3">{{ compra.id_compra }}</td></tr>
+                        <tr><td class="w-1/3 font-medium">ID Proveedor</td><td class="w-2/3">{{ compra.proveedor_id }}</td></tr>
+                        <tr><td class="w-1/3 font-medium">ID Producto</td><td class="w-2/3">{{ compra.producto_id }}</td></tr>
+                        <tr><td class="w-1/3 font-medium">Descripción</td><td class="w-2/3">{{ compra.descripcion }}</td></tr>
+                        <tr><td class="w-1/3 font-medium">Cantidad</td><td class="w-2/3">{{ compra.cantidad }}</td></tr>
+                        <tr><td class="w-1/3 font-medium">Precio Unitario</td><td class="w-2/3 text-green-600 font-bold">${{ "{:,.2f}".format(compra.precio_unitario) }}</td></tr>
+                        <tr><td class="w-1/3 font-medium">Fecha de Pedido</td><td class="w-2/3">{{ compra.fecha_pedido }}</td></tr>
+                        
+                        <!-- Campo EDITABLE: Fecha de Entrega -->
+                        <tr class="bg-yellow-50">
+                            <td class="w-1/3 font-bold text-red-600">Fecha de Entrega</td>
+                            <td class="w-2/3">
+                                <input type="date" id="fecha_entrega" name="fecha_entrega" 
+                                       value="{{ compra.fecha_entrega|default('') }}" 
+                                       required 
+                                       class="px-3 py-2 border border-red-400 rounded-md shadow-inner focus:outline-none focus:ring-red-500 focus:border-red-500">
+                            </td>
+                        </tr>
+
+                        <!-- Campos de solo lectura -->
+                        <tr><td class="w-1/3 font-medium">Estado</td><td class="w-2/3">{{ compra.estado }}</td></tr>
+                        <tr><td class="w-1/3 font-medium">Monto Total</td><td class="w-2/3 text-green-700 font-extrabold">${{ "{:,.2f}".format(compra.monto) }}</td></tr>
+                    </tbody>
+                </table>
+                
+                <div class="mt-6 text-center">
+                    <button type="submit" 
+                            class="w-full sm:w-auto px-6 py-3 bg-red-600 text-white font-bold text-lg rounded-xl shadow-lg hover:bg-red-700 transition duration-200 transform hover:scale-105">
+                        Guardar Nueva Fecha de Entrega
+                    </button>
+                </div>
+            </form>
+        {% elif id_compra_buscado %}
+             <!-- Si se buscó un ID pero no se encontró, el mensaje flash ya lo maneja -->
+             <p class="text-center text-gray-500 mt-6 p-4 border rounded-lg bg-white">
+                Por favor, ingresa un ID de compra válido para buscar.
+             </p>
+        {% endif %}
+    </div>
+<script>
+    feather.replace();
+</script>
+</body>
+</html>

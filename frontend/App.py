@@ -20,7 +20,7 @@ from Backend.Clientes import ConexionClientes
 from Backend.Usuario import ConexionUsuario
 from Backend.pedido_compra import GestorCompras
 from Backend.stock_inicial import GestorStock
-from Backend.cliente_domicilio import Cliente
+from Backend.cliente_domicilio import Cliente 
 from Backend.dashboard import dashboard_bp
 from Backend.Recuperacion_contraseña import recuperacion_contraseña
 from Backend.Recuperacion_contraseña import  actualizar_contrasena_usuario 
@@ -38,6 +38,7 @@ from Backend.material import ConexionMaterial
 from Backend.Agenda_Mantenimiento import Agenda 
 from Backend.historial import Historial
 from Backend.maquinaria import ConexionMaquinaria
+from Backend.Compra import ConexionCompra 
 from Backend.importar_exportar import safe_int, safe_float
 
 from Backend.control_sesiones import (
@@ -222,9 +223,83 @@ def ver_pedidos():
         "pedido_compra.html",
         vista="ver_pedidos",
         pedidos=pedidos,
-        menu_url=_menu_url(),  # para la flecha Volver
+        menu_url=_menu_url(),
     )
+
+
+@app.route("/editar_pedido", methods=["GET", "POST"])
+@login_required
+def editar_pedido():
+    # POST: GUARDAR CAMBIOS DE FECHA DE ENTREGA
+    if request.method == "POST":
+        # Nota: El ID de la compra se envía como campo oculto en el formulario POST
+        id_compra = request.form.get("id_compra", type=int)
+        nueva_fecha_entrega = request.form.get("fecha_entrega")
+
+        if id_compra and nueva_fecha_entrega:
+            db = ConexionCompra()
+            success = db.actualizar_fecha_entrega(id_compra, nueva_fecha_entrega)
+            db.cerrar()
+            
+            if success:
+                # Muestra mensaje de éxito
+                flash("Fecha de entrega actualizada correctamente.", "success")
+            else:
+                # Muestra mensaje de error si falla la actualización en la DB
+                flash("Error al actualizar la fecha de entrega en la base de datos.", "error")
+            
+            # Redirigir de nuevo a la misma página para mostrar los detalles actualizados 
+            # (o forzar una nueva búsqueda si quieres)
+            return redirect(url_for('editar_pedido', id_compra=id_compra))
+        else:
+            flash("Error: Datos incompletos para actualizar.", "error")
+            return redirect(url_for('editar_pedido'))
+
+    # GET: BUSCAR Y MOSTRAR FORMULARIO DE EDICIÓN
+    # El ID se recibe de los parámetros de la URL (cuando el usuario hace clic en "Buscar")
+    id_compra_buscado = request.args.get("id_compra", type=int)
+    compra = None
     
+    if id_compra_buscado:
+        db = ConexionCompra()
+        compra_data = db.obtener_pedido_por_id(id_compra_buscado)
+        db.cerrar()
+
+        if compra_data:
+            # Mapear la tupla de datos a un diccionario para Jinja
+            columns = [
+                'id_compra', 'proveedor_id', 'producto_id', 'descripcion', 
+                'cantidad', 'precio_unitario', 'fecha_pedido', 'fecha_entrega', 
+                'estado', 'monto'
+            ]
+            
+            if len(compra_data) == len(columns):
+                compra = dict(zip(columns, compra_data))
+                
+                # Convertir objetos date de Python a string 'YYYY-MM-DD' para input HTML
+                compra['fecha_pedido'] = str(compra['fecha_pedido']) if compra['fecha_pedido'] else ''
+                # La fecha de entrega también debe estar en formato YYYY-MM-DD
+                compra['fecha_entrega'] = str(compra['fecha_entrega']) if compra['fecha_entrega'] else ''
+            else:
+                flash(f"Error: Estructura de datos incompleta para la compra #{id_compra_buscado}.", "error")
+        else:
+            flash(f"Error: Compra con ID #{id_compra_buscado} no encontrada.", "error")
+
+    # Renderiza la plantilla, pasando la compra (si fue encontrada) y el ID buscado.
+    return render_template(
+        "editar_pedido.html",
+        compra=compra,
+        id_compra_buscado=id_compra_buscado
+    )
+
+
+
+
+
+
+
+
+
 
 
 # ==========================================
@@ -638,11 +713,12 @@ def encuesta():
     opinion = request.form.get('opinion')
 
 
-    # Si viene vacía, espacios o None → poner "Sin respuesta"
     if not opinion or opinion.strip() == "":
         opinion = "Sin respuesta"
         if not puntuacion or puntuacion.strip() == "":
             puntuacion = "0"
+    else:
+        return render_template('encuesta.html')
 
     print(f"{puntuacion} y {opinion}")
 
@@ -1276,6 +1352,8 @@ def importar_excel():
                 """
 
                 cursor.execute(query, (nombre, descripcion, cantidad, categoria_id, precio))
+
+
 
             conn.commit()
             flash('✅ Datos importados correctamente desde Excel', 'success')

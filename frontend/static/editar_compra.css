@@ -1,0 +1,100 @@
+/* =========================================================
+   ESTILOS BASE
+   ========================================================= */
+body {
+ font-family: 'Segoe UI', sans-serif;
+ background-color: #ffffff;
+ color: #000000;
+ margin: 0; 
+ padding: 0; 
+ line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+ font-family: 'Merriweather', serif;
+ color: #003366;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+ font-size: 22px;
+}
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+.encabezado { 
+ background-color: #003366;
+ color: #ffffff;
+ padding: 15px;
+ text-align: center;
+ font-size: 22px;
+ width: 100%; 
+ 
+}
+
+.flecha {
+ color: white;
+ position: absolute;
+ left: 20px;
+ font-size: 1.5rem; 
+}
+
+/* =========================================================
+   TÍTULO CON FLECHA
+   ========================================================= */
+.titulo-con-flecha {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ position: relative;
+}
+
+.titulo-con-flecha h1 {
+ margin: 0;
+ font-family: 'Merriweather', serif;
+ font-size: 2em;
+  color: #ffffff;
+ background-color: #003366;
+ padding: 0;
+ border-radius: 4px;
+}
+
+/* =========================================================
+   CONTENEDOR DEL FORMULARIO (form-container)
+   ========================================================= */
+.form-container {
+    max-width: 800px;
+    margin: 40px auto; 
+    padding: 20px;
+    background-color: #f7fafc;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+th {
+    background-color: #edf2f7;
+    font-weight: 600;
+}
+td input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+}
