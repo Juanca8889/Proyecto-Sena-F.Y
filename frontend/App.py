@@ -827,20 +827,51 @@ def agregar():
 # ==========================================
 
 
-@app.route('/gestion_tickets', methods=['GET', 'POST'])
+@app.route('/gestion_tickets', methods=['GET','POST'])
 @login_required
 def gestion_tickets():
+
     if request.method == 'POST':
-        cuerpo = request.form.get('ticket_Descripcion', '')
-        header = request.form.get('ticket_problema', '')
-        
+        cuerpo = request.form['ticket_Descripcion']
+        header = request.form['ticket_problema']
+
         ticket = Tickets(cuerpo, header)
-        ticket.enviar_ticket()
-        
-        return render_template('Gestion_tickets.html', enviado=True)
+
+        ticket.guardar_ticket()   # BD
+        ticket.enviar_ticket()    # Email
+
+    tickets = Tickets.obtener_tickets()
+
+    return render_template(
+        'Gestion_tickets.html',
+        enviado=True if request.method == 'POST' else False,
+        tickets=tickets
+    )
+
+
+
+@app.route('/admin_tickets')
+@login_required
+def admin_tickets():
+
+    tickets = Tickets.obtener_tickets()
+
+    return render_template(
+        "Admin_tickets.html",
+        tickets=tickets
+    )
     
-    # Si es GET solo muestra el formulario
-    return render_template('Gestion_tickets.html')
+@app.route('/ticket_atender/<int:id_ticket>', methods=['POST'])
+@login_required
+def atender_ticket(id_ticket):
+
+    Tickets.cambiar_estado(id_ticket)
+
+    return redirect(
+        url_for('admin_tickets')
+    )
+
+
 
 
 

@@ -22,6 +22,56 @@ input {
   border-radius: 5px;
 }
 
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100vh;
+}
+
+.historial {
+  background: whitesmoke;
+  color: rgb(0, 0, 0);
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.ticket {
+  background: #222;
+  padding: 12px;
+  color: white;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.ticket h4 {
+  margin: 0;
+}
+
+.ticket p {
+  margin: 5px 0;
+}
+
+.ticket small {
+  display: block;
+  color: #aaa;
+}
+
+.estado {
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.estado.pendiente {
+  background: #ffc107;
+  color: black;
+}
+
+.estado.atendida {
+  background: #20c997;
+  color: white;
+}
 
 
 header {

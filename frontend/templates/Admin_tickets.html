@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+
+<title>Panel Tickets</title>
+
+<style>
+
+body{
+ background:#111;
+ color:white;
+ font-family:sans-serif;
+}
+
+table{
+ width:100%;
+ border-collapse:collapse;
+}
+
+th,td{
+ padding:8px;
+ border:1px solid #444;
+}
+
+.estado-pendiente{
+ color:#ffc107;
+}
+
+.estado-atendida{
+ color:#28c76f;
+}
+
+button{
+ padding:5px 8px;
+ border:none;
+ background:#007bff;
+ color:white;
+ border-radius:5px;
+ cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>Administración de Tickets</h2>
+
+<table>
+
+<tr>
+ <th>ID</th>
+ <th>Problema</th>
+ <th>Descripción</th>
+ <th>Estado</th>
+ <th>Fecha</th>
+ <th>Acción</th>
+</tr>
+
+{% for t in tickets %}
+<tr>
+
+ <td>{{ t.id_ticket }}</td>
+ <td>{{ t.problema }}</td>
+ <td>{{ t.descripcion }}</td>
+
+ <td class="
+   {{ 'estado-pendiente' if t.estado == 'Pendiente' else 'estado-atendida' }}
+ ">
+   {{ t.estado }}
+ </td>
+
+ <td>{{ t.fecha }}</td>
+
+ <td>
+   {% if t.estado == 'Pendiente' %}
+   <form method="POST" action="/ticket_atender/{{ t.id_ticket }}">
+       <button>Marcar atendido</button>
+   </form>
+   {% else %}
+   ✅
+   {% endif %}
+ </td>
+
+</tr>
+{% endfor %}
+
+</table>
+
+</body>
+</html>

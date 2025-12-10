@@ -22,38 +22,73 @@
 
 
 <body>
+
+<div class="layout">
+
+  <!------------ FORMULARIO (TU PARTE ORIGINAL) ------------>
   <div class="contenedor">
     <form id="ticketForm" action="/gestion_tickets" method="POST">
-      
 
       <label for="ticket_problema">Problema u error:</label><br>
       <input type="text" id="ticket_problema" name="ticket_problema"
-            placeholder="No carga el módulo de agenda" required><br><br>
+             placeholder="No carga el módulo de agenda" required><br><br>
 
       <label for="ticket_Descripcion">Descripción:</label><br>
-      <input type="text" class="ticket_Descripcion" id="ticket_Descripcion" name="ticket_Descripcion"
-            placeholder="Intento ingresar pero..." required ><br>
+      <input type="text" class="ticket_Descripcion"
+             id="ticket_Descripcion"
+             name="ticket_Descripcion"
+             placeholder="Intento ingresar pero..." required><br>
 
       <button type="submit">Enviar Ticket</button>
+
     </form>
   </div>
 
-  {% if enviado %}
-  <script>
-    Swal.fire({
-      icon: 'success',
-      title: 'Ticket enviado correctamente',
-      text: 'Se comunicaran por medio del correo en menos de 1 dia.',
-      timer: 3000,
-      showConfirmButton: false
-    });
-  </script>
-  {% endif %}
+  <!------------ PANEL DERECHO: HISTORIAL ------------>
+  <div class="historial">
 
-  <script>
-    feather.replace();
-  </script>
+    <h3>Mis Tickets</h3>
 
+    {% for t in tickets %}
+    <div class="ticket">
+
+        <h4>{{ t.problema }}</h4>
+
+        <p>{{ t.descripcion }}</p>
+
+        <small>{{ t.fecha }}</small>
+
+        <span class="estado 
+              {{ 'pendiente' if t.estado == 'Pendiente'
+                 else 'atendida' }}">
+            {{ t.estado }}
+        </span>
+
+    </div>
+    {% else %}
+        <p>No has enviado tickets aún.</p>
+    {% endfor %}
+
+  </div>
+
+</div>
+
+{% if enviado %}
+<script>
+Swal.fire({
+  icon: 'success',
+  title: 'Ticket enviado correctamente',
+  text: 'Se comunicaran por medio del correo en menos de 1 dia.',
+  timer:3000,
+  showConfirmButton:false
+});
+</script>
+{% endif %}
+
+<script>
+feather.replace();
+</script>
 
 </body>
+
 </html>
