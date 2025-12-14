@@ -209,4 +209,3 @@ class Venta:
         except mysql.connector.Error:
             return 0
 
-

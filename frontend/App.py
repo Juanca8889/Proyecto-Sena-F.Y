@@ -1049,6 +1049,7 @@ def editar_contacto():
 
 
 
+
 # ==========================================
 # SALIDA DE INVENTARIO 
 # ==========================================
@@ -1165,9 +1166,6 @@ def actualizar_venta():
         flash("Error al actualizar la venta", "danger")
 
     return redirect(url_for('editar_venta'))
-
-
-
 
 
 
