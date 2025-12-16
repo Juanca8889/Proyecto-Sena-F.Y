@@ -1,21 +1,23 @@
 import mysql.connector
-from dotenv import load_dotenv
+# from dotenv import load_dotenv # <--- COMENTADA/ELIMINADA
 import os
 
-load_dotenv()
+# load_dotenv() # <--- COMENTADA/ELIMINADA
 
 def conectar():
     try:
         conexion = mysql.connector.connect(
-            host=os.environ.get('DB_HOST', 'localhost'),
-            user=os.environ.get('DB_USER', 'root'),
-            password=os.environ.get('DB_PASSWORD', ''),
-            database=os.environ.get('DB_NAME', 'railway'),
-            port=int(os.environ.get('DB_PORT', 3306))
+            host=os.environ.get('DB_HOST'), 
+            user=os.environ.get('DB_USER'),
+            password=os.environ.get('DB_PASSWORD'),
+            database=os.environ.get('DB_NAME'),
+            port=int(os.environ.get('DB_PORT'))
         )
         return conexion
     except Exception as e:
-        print(f"Error de conexión: {e}")
+        # Aquí tienes un pequeño error de sintaxis, pero la lógica es buena:
+        # print(f"Error de conexión: {e}", file=sys.stderr) # "sys" no está definido
+        print(f"Error de conexión: {e}") # Usaremos un print simple por ahora
         return None
 
 
