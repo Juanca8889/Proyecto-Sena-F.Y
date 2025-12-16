@@ -81,6 +81,119 @@ class Venta:
         except mysql.connector.Error as err:
             print(f"❌ Error al registrar venta: {err}")
             return False
+        
+    def registrar_venta_multiple(self, cliente_id, encargado_id, garantia_global,
+                                descripcion_global, items_de_venta, estado="COMPLETA"):
+        try:
+            # ---------------- VALIDACIONES ----------------
+            if not cliente_id:
+                return False, "Falta ID del cliente"
+
+            if garantia_global is None:
+                return False, "Falta garantía"
+
+            if not items_de_venta:
+                return False, "La venta no tiene ítems"
+
+            self.conexion.autocommit = False
+            self.cursor = self.conexion.cursor()
+
+            # ---------------------------------------------------------
+            # PASO 0: CALCULAR MONTO TOTAL
+            # ---------------------------------------------------------
+            monto_total = sum(item['monto_final'] for item in items_de_venta)
+
+            # ---------------------------------------------------------
+            # PASO 1: INSERTAR CABECERA (venta)
+            # ---------------------------------------------------------
+            query_venta = """
+                INSERT INTO venta
+                (cliente_id, descripcion, fecha_venta, encargado_id, monto, garantias, estado)
+                VALUES (%s, %s, NOW(), %s, %s, %s, %s);
+            """
+            values_venta = (
+                cliente_id,
+                descripcion_global,
+                encargado_id,
+                monto_total,
+                garantia_global,
+                estado
+            )
+
+            self.cursor.execute(query_venta, values_venta)
+            id_venta = self.cursor.lastrowid
+
+            # ---------------------------------------------------------
+            # PASO 2: INSERTAR DETALLEVENTA
+            # ---------------------------------------------------------
+            query_detalle = """
+                INSERT INTO detalleventa
+                (venta_id, producto_id, cantidad, precio_unitario, descuento, monto_item)
+                VALUES (%s, %s, %s, %s, %s, %s);
+            """
+
+            for item in items_de_venta:
+                # A. Verificar stock
+                producto_bd = self.obtener_producto_por_id_transaccion(item['id_producto'])
+
+                if not producto_bd or producto_bd["cantidad"] < item['cantidad']:
+                    self.conexion.rollback()
+                    return False, f"Stock insuficiente para producto ID {item['id_producto']}"
+
+                # B. Insertar detalle
+                values_detalle = (
+                    id_venta,
+                    item['id_producto'],
+                    item['cantidad'],
+                    item['precio_unitario'],
+                    item['descuento'],
+                    item['monto_final']
+                )
+
+                self.cursor.execute(query_detalle, values_detalle)
+
+                # C. Actualizar stock
+                nueva_cantidad = producto_bd["cantidad"] - item['cantidad']
+                query_update = """
+                    UPDATE producto
+                    SET cantidad = %s
+                    WHERE id_producto = %s;
+                """
+                self.cursor.execute(query_update, (nueva_cantidad, item['id_producto']))
+
+            # ---------------------------------------------------------
+            # PASO 3: CONFIRMAR TRANSACCIÓN
+            # ---------------------------------------------------------
+            self.conexion.commit()
+            return True, "Venta registrada exitosamente"
+
+        except Exception as e:
+            if self.conexion:
+                self.conexion.rollback()
+            print(f"Error en transacción: {e}")
+            return False, str(e)
+
+        finally:
+            if self.conexion:
+                self.conexion.autocommit = True
+
+
+    def obtener_producto_por_id_transaccion(self, id_producto):
+        try:
+            query = "SELECT id_producto, cantidad FROM producto WHERE id_producto = %s;"
+            self.cursor.execute(query, (id_producto,))
+            resultado = self.cursor.fetchone()
+
+            if resultado:
+                return {
+                    "id_producto": resultado[0],
+                    "cantidad": resultado[1]
+                }
+            return None
+        except Exception as e:
+            print(f"Error al obtener producto: {e}")
+            return None
+
 
     def obtener_venta_detallada(self, id_venta):
         try:
