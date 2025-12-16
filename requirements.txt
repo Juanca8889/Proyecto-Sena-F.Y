@@ -1,44 +1,17 @@
-# ============================================
-# VERSIÓN MÍNIMA PARA PRODUCCIÓN EN RAILWAY
-# ============================================
-# Solo las dependencias que tu app.py realmente usa
-
-# Core Framework
 Flask==3.1.2
-Werkzeug==3.1.3
+flask-cors==6.0.1
+fastapi==0.104.1
+Flask-Login==0.6.3
 gunicorn==23.0.0
 
-# Database
+matplotlib==3.10.6
+numpy==2.3.3
+pandas==2.3.3
+pillow==11.3.0
+
+SQLAlchemy==2.0.23
+PyMySQL==1.1.0
 mysql-connector-python==9.4.0
 
-# Data Processing (para Excel/CSV)
-pandas==2.3.3
-openpyxl==3.1.5
-
-# PDF Generation
-fpdf==1.7.2
-
-# Flask Extensions
-flask-cors==6.0.1
-Flask-Login==0.6.3
-
-# Email & Validation
-email-validator==2.3.0
-dnspython==2.8.0
-
-# Utilities
-python-dateutil==2.9.0.post0
 python-dotenv==1.0.0
-
-# Dependencias automáticas (Flask las necesita)
-Jinja2==3.1.6
-itsdangerous==2.2.0
-click==8.2.1
-
-# NOTA: Se eliminaron:
-# - pywin32 (solo Windows)
-# - flet, flet-desktop, flet-web (interfaz gráfica, no necesaria en servidor)
-# - locust, locust-cloud (testing de carga, no necesario en producción)
-# - selenium, webdriver-manager (testing de navegador, no necesario en producción)
-# - matplotlib, numpy (si no los usas en tu app)
-# - fastapi, uvicorn (tienes Flask, no FastAPI)
+requests==2.32.4
