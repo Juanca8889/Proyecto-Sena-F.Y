@@ -22,8 +22,8 @@ from Backend.pedido_compra import GestorCompras
 from Backend.stock_inicial import GestorStock
 from Backend.cliente_domicilio import Cliente
 from Backend.dashboard import dashboard_bp
-from Backend.Recuperacion_contraseña import recuperacion_contraseña
-from Backend.Recuperacion_contraseña import  actualizar_contrasena_usuario 
+#from Backend.Recuperacion_contraseña import recuperacion_contraseña
+#from Backend.Recuperacion_contraseña import  actualizar_contrasena_usuario 
 from Backend.Encuestas import Encuestas
 from Backend.inventario_herramientas import Herramientas
 from Backend.salida_inventario import Venta

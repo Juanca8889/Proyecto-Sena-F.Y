@@ -1,0 +1,2 @@
+[phases.setup]
+nixPkgs = ["...", "cairo", "pkg-config", "pango", "linxml2", "libxslt"]
