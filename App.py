@@ -1973,4 +1973,4 @@ def pagina_no_encontrada(error):
 # INICIO DE APP
 # ==========================================
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
