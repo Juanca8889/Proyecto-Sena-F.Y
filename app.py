@@ -7,8 +7,8 @@ from functools import wraps
 from datetime import date, datetime,timedelta
 import json
 
-
-
+import os
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if BASE_DIR not in sys.path:
@@ -1825,4 +1825,9 @@ def pagina_no_encontrada(error):
 # INICIO DE APP
 # ==========================================
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    debug_mode = os.environ.get('FLASK_ENV') != 'production'
+    app.run(host='0.0.0.0', port=port, debug=debug_mode)
+
+app.secret_key = os.environ.get('SECRET_KEY', 'wjson')
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)

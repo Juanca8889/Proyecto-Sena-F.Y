@@ -5,14 +5,18 @@ import os
 load_dotenv()
 
 def conectar():
-    return mysql.connector.connect(
-        host=os.getenv("DB_HOST"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        port=int(os.getenv("DB_PORT", 3306)), 
-        database=os.getenv("DB_NAME"),
-        charset="utf8mb4"
-    )
+    try:
+        conexion = mysql.connector.connect(
+            host=os.environ.get('DB_HOST', 'localhost'),
+            user=os.environ.get('DB_USER', 'root'),
+            password=os.environ.get('DB_PASSWORD', ''),
+            database=os.environ.get('DB_NAME', 'railway'),
+            port=int(os.environ.get('DB_PORT', 3306))
+        )
+        return conexion
+    except Exception as e:
+        print(f"Error de conexión: {e}")
+        return None
 
 
 
