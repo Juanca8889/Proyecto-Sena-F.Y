@@ -1,97 +1,78 @@
-from flask import Flask, session, flash, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from functools import wraps
 import os
 import sys
 
 # ==========================================
-# 1. SETUP DE RUTAS Y PATHS
+# 1. SETUP DE PATHS (Para encontrar Backend/ y BD/)
 # ==========================================
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if BASE_DIR not in sys.path:
     sys.path.append(BASE_DIR)
 
 # ==========================================
-# 2. INICIALIZACIÓN DE LA APLICACIÓN
+# 2. INICIALIZACIÓN DE LA ÚNICA INSTANCIA DE FLASK
 # ==========================================
 app = Flask(__name__)
-# Usar variable de entorno para producción (Render)
+# ¡CRÍTICO!: Usar variable de entorno en producción
 app.secret_key = os.environ.get('SECRET_KEY', 'wjson') 
 
 # ==========================================
-# 3. DECORADORES Y HELPERS GLOBALES
+# 3. LÓGICA DE SEGURIDAD Y ROLES (MOVIDA DE routes.py AQUÍ)
 # ==========================================
-
-# Mantenemos los helpers aquí ya que usan 'session' y 'url_for'
+# Define TODAS las funciones y decoradores aquí.
+# ¡Asegúrate de cambiar TODOS los url_for() para usar el prefijo 'auth'!
 
 def is_admin():
-    """Verifica si el usuario logueado tiene el rol de administrador (rol_id = 1)."""
-    return session.get('rol') == 1 #
+    """Verifica si el usuario es administrador."""
+    return session.get('rol') == 1
 
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'id_usuario' not in session:
             flash("Debes iniciar sesión para acceder.", "danger")
-            # Redirige usando el prefijo 'auth' del Blueprint
+            # CRÍTICO: Usa 'auth.login'
             return redirect(url_for('auth.login')) 
         return f(*args, **kwargs)
     return decorated_function
 
-def admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not is_admin():
-            flash("Acceso denegado: Se requiere rol de Administrador.", "danger")
-            # Redirige usando el prefijo 'auth' para la ruta principal
-            return redirect(url_for('auth.root')) 
-        return f(*args, **kwargs)
-    return decorated_function
+# ... (Definir admin_required, get_current_admin_id, etc., aquí con el prefijo 'auth') ...
 
 def _menu_url() -> str:
-    """Helper global: URL del menú según la sesión"""
+    """Helper global: URL del menú según la sesión."""
     rol = session.get('rol')
-    # Usa el prefijo 'auth' para las rutas del Blueprint
-    if rol == 1:
-        return url_for('auth.admin')
-    elif rol:
-        return url_for('auth.empleado')
-    return url_for('auth.login')
+    # CRÍTICO: Usa el prefijo 'auth' para las rutas
+    destino = 'auth.admin' if rol == 1 else ('auth.empleado' if rol else 'auth.login')
+    return url_for(destino)
 
 @app.context_processor
 def inject_menu_url():
-    # Provee el helper a las plantillas
-    return {"menu_url": _menu_url()}
+    try:
+        return {"menu_url": _menu_url()}
+    except Exception:
+        return {}
+
 
 # ==========================================
 # 4. REGISTRO DE BLUEPRINTS
 # ==========================================
+# Importa y registra los Blueprints.
 
-# Importa el Blueprint del dashboard (siempre debe ser un Blueprint)
-from Backend.dashboard import dashboard_bp
-app.register_blueprint(dashboard_bp) 
-
-# Importa el Blueprint ÚNICO de rutas (que está en routes.py)
 from routes import routes_bp
-# Registra el Blueprint de rutas con el prefijo 'auth' para que las rutas internas
-# como login, admin, pedido_compra, se referencien como 'auth.login', 'auth.admin', etc.
-# Si no especificas el 'url_prefix', las rutas quedan en la raíz ('/').
+from Backend.dashboard import dashboard_bp 
+
+# Registra tu módulo de rutas, usando 'auth' como prefijo para url_for
 app.register_blueprint(routes_bp)
-
+app.register_blueprint(dashboard_bp)
 
 # ==========================================
-# 5. MANEJO DE ERRORES Y PRUEBA
+# 5. MANEJO DE ERRORES Y PRUEBA (MANTENER AQUÍ)
 # ==========================================
-@app.route('/check')
-def check():
-    return str(session)
-
 @app.errorhandler(404)
 def pagina_no_encontrada(error):
     return "Página no encontrada. Verifica la URL.", 404
 
-# ==========================================
-# 6. INICIO DE APP
-# ==========================================
-# Bloque de ejecución solo para desarrollo. Gunicorn lo ignora.
+# Bloque de ejecución solo para desarrollo.
 if __name__ == '__main__':
     app.run(debug=True)

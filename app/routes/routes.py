@@ -1,80 +1,40 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, jsonify
-import sys
-import os
-import pandas as pd
-from fpdf import FPDF
-from functools import wraps
-from datetime import date, datetime,timedelta
-import json
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash, send_file, jsonify
+# Ya no es necesario importar Flask, wraps, app, ni configurar sys/os.
+
+# ==========================================
+# 1. IMPORTS DE HELPERS DESDE app.py (¡CRÍTICO!)
+# ==========================================
+from app import login_required, admin_required, is_admin, _menu_url, get_current_admin_id 
 
 
-
-
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if BASE_DIR not in sys.path:
-    sys.path.append(BASE_DIR)
-
-# Imports de base de datos y backend
+# ==========================================
+# 2. IMPORTS DE MODELOS (MANTENER)
+# ==========================================
 from BD.conexion import verificar_usuario, conectar
 from Backend.Clientes import ConexionClientes 
 from Backend.Usuario import ConexionUsuario
 from Backend.pedido_compra import GestorCompras
 from Backend.stock_inicial import GestorStock
-from Backend.cliente_domicilio import Cliente 
-from Backend.dashboard import dashboard_bp
-from Backend.Recuperacion_contraseña import recuperacion_contraseña
-from Backend.Recuperacion_contraseña import  actualizar_contrasena_usuario 
-from Backend.Encuestas import Encuestas
-from Backend.inventario_herramientas import Herramientas
-from Backend.salida_inventario import Venta
-from Backend.Tickets import Tickets
-from Backend.ordenes import Servicio
-from Backend.domicilio import Domicilio
-from Backend.busqueda import BusquedaInventario
-from Backend.Guardar_material import Guardar_material
-from Backend.devoluciones import Devolucion
-from Backend.proveedores import ConexionProveedor 
-from Backend.material import ConexionMaterial
-from Backend.Agenda_Mantenimiento import Agenda 
-from Backend.historial import Historial
-from Backend.maquinaria import ConexionMaquinaria
+# ... (todos tus otros imports de Backend/ y BD/) ...
 from Backend.Compra import ConexionCompra 
-from Backend.importar_exportar import safe_int, safe_float
 
-from Backend.control_sesiones import (
-    obtener_todas_sesiones_activas, 
-    obtener_usuarios_con_sesiones,
-    cerrar_sesion_forzada_individual,
-    cerrar_todas_sesiones_usuario,
-    bloquear_usuario, 
-    registrar_nueva_sesion
-)
+# ==========================================
+# 3. CREACIÓN DEL BLUEPRINT (¡CRÍTICO!)
+# ==========================================
+# Define el Blueprint que será registrado en app.py
+# El nombre 'auth' se convierte en el prefijo para url_for
+routes_bp = Blueprint('auth', __name__) 
 
-app = Flask(__name__)
-app.secret_key = 'wjson'  
-
+# ==========================================
+# 4. INICIALIZACIÓN DE GESTORES DE MODELOS
+# ==========================================
 gestor_compras = GestorCompras()
 gestor_stock = GestorStock()
-app.register_blueprint(dashboard_bp)
-
-
-
-
+# Eliminar: app.register_blueprint(dashboard_bp) (¡Va en app.py!)
 # ==========================================
 # LÓGICA DE SEGURIDAD Y ROLES
 # ==========================================
 
-
-#@login_required
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        # Validación REAL del login
-        if 'id_usuario' not in session:
-            flash("Debes iniciar sesión para acceder.", "danger")
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
 
 @app.route('/check')
 def check():
@@ -96,15 +56,6 @@ def is_admin():
     """Verifica si el usuario logueado tiene el rol de administrador (rol_id = 1)."""
     return session.get('rol') == 1
 
-def admin_required(f):
-    """Decorador para restringir el acceso solo a administradores (Restricción 1)."""
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not is_admin():
-            flash("Acceso denegado: Se requiere rol de Administrador.", "danger")
-            return redirect(url_for('admin' if session.get('rol') else 'login')) 
-        return f(*args, **kwargs)
-    return decorated_function
 
 
 # ------------------------------------------
@@ -1967,10 +1918,3 @@ def mantenimientos():
 def pagina_no_encontrada(error):
     return "Página no encontrada. Verifica la URL.", 404
 
-
-
-# ==========================================
-# INICIO DE APP
-# ==========================================
-if __name__ == '__main__':
-    app.run()
