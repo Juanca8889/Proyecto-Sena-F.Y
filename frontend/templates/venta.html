@@ -7,19 +7,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        /* Estilos básicos para la tabla del carrito si no están en tu CSS */
         .cart-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .cart-table th, .cart-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         .cart-table th { background-color: #f2f2f2; }
     </style>
 </head>
 <body>
-    <a href="{{ url_for('salida_inventario') }}" class="volver" title="Volver">
-        <i class="fa-solid fa-arrow-left btn-volver"></i>
-    </a>
+<a href="{{ url_for('salida_inventario') }}"
+   class="volver"
+   title="Volver"
+   id="btn-volver">
+    <i class="fa-solid fa-arrow-left btn-volver"></i>
+</a>
+
 
     <div class="container">
-        <h1>Registrar Venta Múltiple</h1>
+        <h1>Registrar Venta </h1>
 
         <form id="itemForm">
             <div class="form-group">
@@ -247,6 +250,14 @@
             if (!localStorage.getItem(CLAVE_VENTAS_TEMP)) localStorage.setItem(CLAVE_VENTAS_TEMP, '[]');
             actualizarCarritoVisual();
         };
+
+
+
+   document.getElementById('btn-volver').addEventListener('click', function () {
+    localStorage.clear();   // 🔥 borra todo el localStorage
+});
+
+
     </script>
 </body>
 </html>  

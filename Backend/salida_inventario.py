@@ -253,10 +253,6 @@ class Venta:
             return False
 
 
-
-
-        
-        
         
     def ver_ventas(self, limit=None, offset=None, filtro='recientes'):
         try:
@@ -285,35 +281,89 @@ class Venta:
 
     def obtener_venta(self, id_venta):
         try:
-            query = "SELECT * FROM venta WHERE id_venta = %s LIMIT 1;"
+            query = "SELECT * FROM detalleventa WHERE id_venta = %s LIMIT 1;"
             self.cursor.execute(query, (id_venta,))
             return self.cursor.fetchone()
         except:
             return None
-
-
         
-    def actualizar_venta(self, id_venta, cliente_id, cantidad, garantia, monto_nuevo):
+    def obtener_venta_completa(self, id_venta):
+        query = """
+            SELECT 
+                v.id_venta,
+                v.cliente_id,
+                v.garantias,
+
+                dv.id_detalle,
+                dv.producto_id,
+                dv.cantidad,
+                dv.descuento,
+                dv.precio_unitario,
+                dv.monto_item
+            FROM venta v
+            JOIN detalleventa dv ON v.id_venta = dv.venta_id
+            WHERE v.id_venta = %s;
+        """
+        self.cursor.execute(query, (id_venta,))
+        return self.cursor.fetchall()
+
+    def actualizar_venta_completa(self, id_venta, cliente_id, garantia, detalles):
         try:
-            query = """
+            self.conexion.autocommit = False
+            self.cursor = self.conexion.cursor()
+
+            # 1️⃣ Actualizar cabecera de la venta
+            self.cursor.execute("""
                 UPDATE venta
                 SET cliente_id = %s,
-                    cantidad = %s,
-                    garantias = %s,
-                    monto = %s
+                    garantias = %s
                 WHERE id_venta = %s;
-            """
-            self.cursor.execute(query, (cliente_id, cantidad, garantia, monto_nuevo, id_venta))
+            """, (cliente_id, garantia, id_venta))
+
+            monto_total = 0
+
+            # 2️⃣ Actualizar cada detalle
+            for d in detalles:
+                nueva_cantidad = int(d['cantidad'])
+                id_detalle = int(d['id_detalle'])
+
+                # Obtener precio_unitario real desde BD
+                self.cursor.execute("""
+                    SELECT precio_unitario
+                    FROM detalleventa
+                    WHERE id_detalle = %s;
+                """, (id_detalle,))
+                row = self.cursor.fetchone()
+
+                if not row:
+                    raise Exception("Detalle no encontrado")
+
+                precio_unitario = float(row[0])
+
+                monto_item = precio_unitario * nueva_cantidad
+                monto_total += monto_item
+
+                self.cursor.execute("""
+                    UPDATE detalleventa
+                    SET cantidad = %s,
+                        monto_item = %s
+                    WHERE id_detalle = %s;
+                """, (nueva_cantidad, monto_item, id_detalle))
+
+            # 3️⃣ Actualizar monto total de la venta
+            self.cursor.execute("""
+                UPDATE venta
+                SET monto = %s
+                WHERE id_venta = %s;
+            """, (monto_total, id_venta))
+
             self.conexion.commit()
             return True
 
-        except mysql.connector.Error as err:
-            print("❌ Error al actualizar:", err)
+        except Exception as e:
+            self.conexion.rollback()
+            print("Error al actualizar venta:", e)
             return False
-
-
-
-
 
     def contar_ventas(self):
         try:

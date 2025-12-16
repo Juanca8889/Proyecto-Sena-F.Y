@@ -1156,19 +1156,19 @@ def registrar_venta():
 @login_required
 def editar_venta():
     venta_model = Venta()
-    venta = None
+    detalles = []
 
     if request.method == 'POST':
-        id_venta = request.form.get('id_buscar')  # ← COINCIDE con el HTML
+        id_venta = request.form.get('id_buscar')
 
         if id_venta:
-            venta = venta_model.obtener_venta(id_venta)
+            detalles = venta_model.obtener_venta_completa(id_venta)
 
-            if not venta:
+            if not detalles:
                 flash("No existe una venta con ese ID", "danger")
                 return redirect(url_for('editar_venta'))
 
-    return render_template('editar_venta.html', venta=venta)
+    return render_template('editar_venta.html', detalles=detalles)
 
 
 @app.route('/actualizar_venta', methods=['POST'])
@@ -1176,30 +1176,37 @@ def editar_venta():
 def actualizar_venta():
     id_venta = request.form.get('id_venta')
     cliente_id = request.form.get('cliente_id')
-    cantidad = int(request.form.get('cantidad'))
     garantia = request.form.get('garantia')
 
-    venta_model = Venta()
+    detalle_ids = request.form.getlist('detalle_id[]')
+    cantidades = request.form.getlist('cantidad[]')
 
-    # Obtener venta actual
-    venta_actual = venta_model.obtener_venta(id_venta)
-    if not venta_actual:
-        flash("Error: la venta no existe.", "danger")
+    # Seguridad básica
+    if not detalle_ids or not cantidades:
+        flash("Error al procesar los productos", "danger")
         return redirect(url_for('editar_venta'))
 
-    # El monto se recalcula solo si cambia la cantidad
-    precio_unitario = venta_actual["monto"] / venta_actual["cantidad"]
-    monto_nuevo = precio_unitario * cantidad
+    # 🔥 FORMA SEGURA: zip()
+    detalles = []
+    for id_detalle, cantidad in zip(detalle_ids, cantidades):
+        detalles.append({
+            'id_detalle': int(id_detalle),
+            'cantidad': int(cantidad)
+        })
 
-    exito = venta_model.actualizar_venta(id_venta, cliente_id, cantidad, garantia, monto_nuevo)
+    venta_model = Venta()
+    ok = venta_model.actualizar_venta_completa(
+        id_venta, cliente_id, garantia, detalles
+    )
     venta_model.cerrar()
 
-    if exito:
-        flash("Venta actualizada correctamente", "success")
-    else:
-        flash("Error al actualizar la venta", "danger")
+    flash(
+        "Venta actualizada correctamente" if ok else "Error al actualizar",
+        "success" if ok else "danger"
+    )
 
     return redirect(url_for('editar_venta'))
+
 
 
 
