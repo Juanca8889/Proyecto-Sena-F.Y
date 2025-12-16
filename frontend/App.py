@@ -1088,28 +1088,62 @@ def venta_form():
 # ==========================================
 # Registrar la venta en la base de datos
 # ==========================================
+
+    
+    
 @app.route('/registrar_venta', methods=['POST'])
 @login_required
 def registrar_venta():
-    id_producto = int(request.form['id_producto'])
-    cliente_id = int(request.form['cliente_id'])
-    cantidad = int(request.form['cantidad'])
-    encargado_id = session.get('id_usuario')
-    garantia = int(request.form['garantia'])
-    descripcion = request.form['descripcion']
+    # 1. Cambiar a request.get_json() para obtener el cuerpo JSON
+    datos = request.get_json()
 
-    # IMPORTANTE: evitar error si llega None
-    descuento = request.form.get('descuento', 0)
-    descuento = int(descuento)
+    if not datos:
+        return jsonify({"error": "No se recibieron datos en formato JSON."}), 400
 
+    # 2. Extraer los datos de la CABECERA y el ENCARGADO
+    try:
+        # Estos son los datos globales de la venta (Cabecera)
+        cliente_id = datos.get('cliente_id')
+        garantia_global = datos.get('garantia_global')
+        descripcion_global = datos.get('descripcion_global', '')
+        
+        # El encargado_id sigue viniendo de la sesión (lo más seguro)
+        encargado_id = session.get('id_usuario')
+        
+        # 3. Extraer la lista de DETALLES (el array de productos)
+        items_de_venta = datos.get('items') 
+
+        # Validación básica de datos
+        if not all([cliente_id, garantia_global, encargado_id, items_de_venta]):
+            return jsonify({"error": "Faltan datos esenciales (Cliente ID, Garantía o Ítems)."}), 400
+        
+        if not isinstance(items_de_venta, list) or len(items_de_venta) == 0:
+            return jsonify({"error": "La venta debe contener al menos un producto."}), 400
+
+    except Exception as e:
+        # Manejar errores de tipo o extracción de datos
+        return jsonify({"error": f"Error en la estructura de los datos: {e}"}), 400
+
+    # 4. Llamar al nuevo método que maneja toda la transacción
     venta = Venta()
     
-    if venta.registrar_venta(cliente_id, id_producto, cantidad, encargado_id, descripcion, garantia, descuento):
-        venta.cerrar()
-        return redirect(url_for('venta_form'))
+    # El método retorna éxito (True/False) y un mensaje de error si falla
+    exito, mensaje_error = venta.registrar_venta_multiple(
+        cliente_id, 
+        encargado_id, 
+        garantia_global, 
+        descripcion_global, 
+        items_de_venta
+    )
+    venta.cerrar()
+    
+    # 5. Respuesta para el frontend (JavaScript espera JSON)
+    if exito:
+        # Responde con éxito 200/201
+        return jsonify({"success": True, "message": "Venta múltiple registrada correctamente."}), 201
     else:
-        venta.cerrar()
-        return "Error al registrar la venta"
+        # Responde con error 500 y el mensaje de error de la DB/Stock
+        return jsonify({"success": False, "error": mensaje_error or "Error desconocido al registrar la venta."}), 500
 
 
 

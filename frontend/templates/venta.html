@@ -3,19 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Registrar Venta</title>
-    <link rel="stylesheet"  href="{{ url_for('static', filename='venta.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='venta.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* Estilos básicos para la tabla del carrito si no están en tu CSS */
+        .cart-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .cart-table th, .cart-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .cart-table th { background-color: #f2f2f2; }
+    </style>
 </head>
 <body>
     <a href="{{ url_for('salida_inventario') }}" class="volver" title="Volver">
-    <i class="fa-solid fa-arrow-left btn-volver"></i>
+        <i class="fa-solid fa-arrow-left btn-volver"></i>
     </a>
 
     <div class="container">
-        <h1>Registrar Venta</h1>
+        <h1>Registrar Venta Múltiple</h1>
 
-        <form id="ventaForm">
+        <form id="itemForm">
             <div class="form-group">
                 <label for="id_producto">Código del Producto</label>
                 <input type="number" id="id_producto" name="id_producto" required>
@@ -31,79 +37,216 @@
                 <label>Precio Unitario</label>
                 <input type="text" id="precio" name="precio" readonly>
             </div>
-
+            
             <div class="form-group">
-                <label>Descripción</label>
-                <textarea id="descripcion" name="descripcion" readonly></textarea>
+                <label>Descripción (Global de la Venta)</label>
+                <textarea id="descripcion_global" name="descripcion" placeholder="Notas para la factura general"></textarea>
             </div>
 
             <div class="form-group">
                 <label>Cantidad</label>
-                <input type="number" id="cantidad" name="cantidad" required min="1">
+                <input type="number" id="cantidad" name="cantidad" required min="1" value="1">
             </div>
 
             <div class="form-group">
-                <label>Garantía (días)</label>
-                <input type="number" id="garantia" name="garantia" required min="0">
+                <label>Garantía Global (días)</label>
+                <input type="number" id="garantia_global" name="garantia" required min="0">
             </div>
 
             <div class="form-group">
                 <label>ID Cliente</label>
                 <input type="number" id="cliente_id" name="cliente_id" required>
             </div>
+            
             <div class="form-group">
-                <label>Descuento</label>
-                <input type="number" id="descuento" name="descuento" min="0" max="15" required>
+                <label>Descuento por Ítem (%)</label>
+                <input type="number" id="descuento" name="descuento" min="0" max="15" value="0" required>
             </div>
 
-            <button type="submit" class="btn">Registrar Venta</button>
+            <button type="button" class="btn btn-primary" id="agregarItemBtn">
+                <i class="fa-solid fa-cart-plus"></i> Añadir Ítem
+            </button>
         </form>
+        
+        <hr>
+
+        <h2>🛒 Carrito de Compras (<span id="contador_items">0</span> Ítems)</h2>
+        
+        <div id="lista_ventas_temp" style="margin-bottom: 20px;">
+            <p>No hay ítems agregados. Usa el formulario de arriba para añadirlos.</p>
+        </div>
+
+        <button type="button" class="btn btn-success" id="finalizarVentaBtn" disabled>
+            <i class="fa-solid fa-check-double"></i> FINALIZAR Y REGISTRAR VENTA GLOBAL
+        </button>
     </div>
 
     <script>
-        // Buscar producto por ID
+        const CLAVE_VENTAS_TEMP = 'temp_items_venta';
+        const RUTA_REGISTRO = '/registrar_venta'; 
+
+        // --- Funciones Auxiliares ---
+        function getVentasArray() {
+            const data = localStorage.getItem(CLAVE_VENTAS_TEMP);
+            return JSON.parse(data || '[]');
+        }
+
+        function setVentasArray(arr) {
+            localStorage.setItem(CLAVE_VENTAS_TEMP, JSON.stringify(arr));
+        }
+
+        // --- Lógica 1: Búsqueda de Producto ---
         document.getElementById("buscarBtn").addEventListener("click", async () => {
             const id = document.getElementById("id_producto").value;
             if (!id) return;
 
-            const res = await fetch(`/buscar_producto/${id}`);
-            const data = await res.json();
+            try {
+                const res = await fetch(`/buscar_producto/${id}`);
+                const data = await res.json();
 
-            if (data.error) {
-                Swal.fire("Error", "Producto no encontrado", "error");
-                document.getElementById("nombre").value = "";
-                document.getElementById("precio").value = "";
-                document.getElementById("descripcion").value = "";
-            } else {
-                document.getElementById("nombre").value = data.nombre;
-                document.getElementById("precio").value = data.precio;
-                document.getElementById("descripcion").value = data.descripcion;
+                if (data.error) {
+                    Swal.fire("Error", "Producto no encontrado", "error");
+                    document.getElementById("nombre").value = "";
+                    document.getElementById("precio").value = "";
+                } else {
+                    document.getElementById("nombre").value = data.nombre;
+                    document.getElementById("precio").value = data.precio;
+                }
+            } catch (error) {
+                Swal.fire("Error", "Error de conexión al buscar.", "error");
             }
         });
 
-        // Registrar venta
-        document.getElementById("ventaForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
+        // --- Lógica 2: Agregar Ítem al Carrito ---
+        document.getElementById("agregarItemBtn").addEventListener("click", () => {
+            // Capturamos datos del producto
+            const id_producto = document.getElementById("id_producto").value;
+            const nombre = document.getElementById("nombre").value;
+            const cantidad = parseFloat(document.getElementById("cantidad").value);
+            const precio = parseFloat(document.getElementById("precio").value);
+            const descuento = parseFloat(document.getElementById("descuento").value) || 0;
 
-            const res = await fetch("/registrar_venta", {
-                method: "POST",
-                body: formData
+            // Validaciones básicas del ítem
+            if (!nombre || !id_producto || isNaN(cantidad) || cantidad <= 0 || isNaN(precio)) {
+                Swal.fire("Atención", "Busca un producto válido y verifica la cantidad.", "warning");
+                return;
+            }
+            
+            const monto_item = cantidad * precio * (1 - (descuento / 100));
+
+            const nuevoItem = {
+                id_producto: parseInt(id_producto),
+                nombre: nombre,
+                cantidad: cantidad,
+                precio_unitario: precio,
+                descuento: descuento,
+                monto_final: monto_item 
+            };
+
+            // Guardar en LocalStorage
+            let ventas = getVentasArray();
+            ventas.push(nuevoItem);
+            setVentasArray(ventas);
+
+            // Feedback visual rápido
+            const Toast = Swal.mixin({
+                toast: true, position: 'top-end', showConfirmButton: false, timer: 1500, timerProgressBar: true
             });
+            Toast.fire({ icon: 'success', title: 'Producto agregado al carrito' });
 
-            if (res.ok) {
-                Swal.fire({
-                    icon: "success",
-                    title: "Venta registrada",
-                    text: "La venta fue registrada correctamente",
-                    timer: 2000,
-                    showConfirmButton: false
+            // Limpiar campos del producto (pero NO los del cliente/garantía)
+            document.getElementById("id_producto").value = '';
+            document.getElementById("nombre").value = '';
+            document.getElementById("precio").value = '';
+            document.getElementById("cantidad").value = '1';
+            document.getElementById("descuento").value = '0';
+
+            // ACTUALIZAR LA VISTA
+            actualizarCarritoVisual();
+        });
+        
+        // --- Lógica 3: Finalizar Venta ---
+        document.getElementById("finalizarVentaBtn").addEventListener("click", async () => {
+            const ventas = getVentasArray();
+            const cliente_id = document.getElementById("cliente_id").value;
+            const garantia_global = document.getElementById("garantia_global").value;
+            const descripcion_global = document.getElementById("descripcion_global").value;
+
+            if (ventas.length === 0) return Swal.fire("Error", "El carrito está vacío.", "warning");
+            if (!cliente_id || !garantia_global) return Swal.fire("Error", "Falta ID Cliente o Garantía.", "warning");
+
+            const datosVentaGlobal = {
+                cliente_id: parseInt(cliente_id),
+                garantia_global: parseInt(garantia_global),
+                descripcion_global: descripcion_global,
+                items: ventas
+            };
+            
+            Swal.fire({ title: 'Procesando...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            try {
+                const res = await fetch(RUTA_REGISTRO, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datosVentaGlobal)
                 });
-                e.target.reset();
-            } else {
-                Swal.fire("Error", "Hubo un problema al registrar la venta", "error");
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    Swal.fire("¡Venta Exitosa!", data.message, "success");
+                    localStorage.removeItem(CLAVE_VENTAS_TEMP);
+                    
+                    // Limpiar todo el formulario
+                    document.getElementById("itemForm").reset();
+                    actualizarCarritoVisual(); 
+                } else {
+                    Swal.fire("Error", data.error || "Error al registrar.", "error");
+                }
+            } catch (error) {
+                Swal.fire("Error", "Fallo de conexión con el servidor.", "error");
             }
         });
+
+        // --- Lógica 4: Actualizar Vista del Carrito ---
+        function actualizarCarritoVisual() {
+            const ventas = getVentasArray();
+            const listaHtml = document.getElementById('lista_ventas_temp');
+            const contador = document.getElementById('contador_items');
+            const btnFinalizar = document.getElementById('finalizarVentaBtn');
+            
+            // 1. Actualizar el número del contador
+            contador.textContent = ventas.length;
+            
+            let html = '';
+            let totalGlobal = 0;
+
+            if (ventas.length === 0) {
+                html = '<p style="text-align:center; color:#666;">El carrito está vacío.</p>';
+                btnFinalizar.disabled = true;
+            } else {
+                html = '<table class="cart-table"><thead><tr><th>Prod</th><th>Cant</th><th>Precio</th><th>Desc</th><th>Total</th></tr></thead><tbody>';
+                ventas.forEach(item => {
+                    html += `<tr>
+                        <td>${item.nombre}</td>
+                        <td>${item.cantidad}</td>
+                        <td>$${item.precio_unitario}</td>
+                        <td>${item.descuento}%</td>
+                        <td>$${item.monto_final.toFixed(2)}</td>
+                    </tr>`;
+                    totalGlobal += item.monto_final;
+                });
+                html += '</tbody></table>';
+                html += `<h3 style="text-align:right; margin-top:10px;">Total a Pagar: $${totalGlobal.toFixed(2)}</h3>`;
+                btnFinalizar.disabled = false;
+            }
+            listaHtml.innerHTML = html;
+        }
+
+        // Inicializar al cargar
+        window.onload = () => {
+            if (!localStorage.getItem(CLAVE_VENTAS_TEMP)) localStorage.setItem(CLAVE_VENTAS_TEMP, '[]');
+            actualizarCarritoVisual();
+        };
     </script>
 </body>
-</html>
+</html>  
