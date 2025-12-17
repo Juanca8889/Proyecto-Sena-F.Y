@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portal Interno - Bienvenida</title>
+    <!-- CSS específico de la bienvenida -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bienvenida.css') }}" />
+    <script src="https://unpkg.com/feather-icons"></script>
+  </head>
+  <body class="home-body">
+    <!-- I. BARRA DE NAVEGACIÓN (HEADER) -->
+    <header class="home-header">
+      <div class="home-header__left">
+        <!-- Logo sin enlace/clic -->
+        <div class="home-header__logo">
+          <img src="../static/img/logo.png" alt="Logo Servimaq" />
+        </div>
+      </div>
+      <div class="home-header__right">
+        <!-- Botón INICIAR SESIÓN -->
+        <button
+          class="btn btn-primary btn-login"
+          onclick="window.location.href='{{ url_for('login') }}'"
+        >
+          Iniciar sesión
+        </button>
+
+        <!-- Botón REGISTRARSE -->
+        <button
+          class="btn btn-secondary btn-register"
+          onclick="window.location.href='{{ url_for('register') }}'"
+        >
+          Registrarse
+        </button>
+
+        <!-- Botón CONTÁCTANOS -->
+        <button
+          class="btn btn-contacto"
+          type="button"
+          onclick="document.querySelector('.contact-modal').classList.add('open')"
+        >
+          Contáctanos
+        </button>
+      </div>
+    </header>
+
+    <!-- II. SECCIÓN PRINCIPAL (FONDO + CARRUSEL) -->
+    <main class="home-main">
+      <section class="home-hero">
+        <div class="home-hero__overlay"></div>
+        <div class="home-hero__content">
+          <div class="home-hero__carousel" id="heroCarousel">
+            <!-- Diapositiva 1: taller montallantas -->
+            <div class="home-hero__slide active">
+              <div class="home-hero__image">
+                <img src="../static/img/llanta.jpg" alt="Técnico cambiando llanta" />
+              </div>
+              <div class="home-hero__text">
+                <p>“Tu llanta nunca será un problema en el camino.”</p>
+              </div>
+            </div>
+            <!-- Diapositiva 2: llantas y flota -->
+            <div class="home-hero__slide">
+              <div class="home-hero__image">
+                <img src="../static/img/llantas.webp" alt="Llantas alineadas en montallantas" />
+              </div>
+              <div class="home-hero__text">
+                <p>“Llantas listas, trabajo seguro para tu flota.”</p>
+              </div>
+            </div>
+            <!-- Diapositiva 3: logo y frase -->
+            <div class="home-hero__slide">
+              <div class="home-hero__image home-hero__image--logo">
+                <img src="../static/img/llantita.jpg" alt="Servicio en carretera Servimaq" />
+              </div>
+              <div class="home-hero__text">
+                <p>“Servimaq: donde cada kilómetro cuenta.”</p>
+              </div>
+            </div>
+
+            <!-- Controles del carrusel -->
+            <div class="home-hero__controls">
+              <button class="home-hero__dot active" data-slide="0"></button>
+              <button class="home-hero__dot" data-slide="1"></button>
+              <button class="home-hero__dot" data-slide="2"></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- III. BLOQUE DE INFORMACIÓN INTERNA -->
+      <section class="home-info">
+        <!-- Nosotros / Quiénes somos -->
+        <div class="home-info__block home-info__block--comunicados">
+          <h2>🛠️ Nosotros – Servimaq Montallantas</h2>
+          <p class="home-info__intro">
+            En Servimaq somos un montallantas especializado en asistencia en carretera, montaje
+            y balanceo de llantas, y mantenimiento básico para vehículos de trabajo y particulares.
+          </p>
+          <ul class="home-info__list">
+            <li>
+              <strong>Nuestra misión:</strong>
+              <span>Que ningún vehículo se detenga por una llanta. Brindamos soluciones rápidas y seguras.</span>
+            </li>
+            <li>
+              <strong>Qué hacemos:</strong>
+              <span>
+                Cambio y reparación de llantas, alineación y balanceo, revisión de frenos, rotación de llantas
+                y apoyo en carretera para carros y vehículos de carga.
+              </span>
+            </li>
+            <li>
+              <strong>Para quién trabajamos:</strong>
+              <span>
+                Flotas empresariales, transporte de carga, servicio particular y aliados comerciales
+                que confían en nuestro taller.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Portal interno Servimaq -->
+        <div class="home-info__block home-info__block--recursos">
+          <h2>🚗 Tu portal interno Servimaq</h2>
+          <p class="home-info__intro">
+            Este portal está diseñado para que el equipo de Servimaq gestione el día a día del taller.
+          </p>
+          <ul class="home-info__list">
+            <li>
+              <strong>Gestión de servicios:</strong>
+              <span>Registra órdenes de servicio, cambios de llantas, alineaciones y domicilios.</span>
+            </li>
+            <li>
+              <strong>Control de inventario:</strong>
+              <span>Llantas, válvulas, rines, herramientas y repuestos, todo en un solo lugar.</span>
+            </li>
+            <li>
+              <strong>Reportes y seguimiento:</strong>
+              <span>Consulta ventas, mantenimientos realizados y consumos de bodega por periodo.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <!-- IV. PIE DE PÁGINA (FOOTER) -->
+    <footer class="home-footer">
+      <div class="home-footer__left">
+        <small>
+          © {{ current_year if current_year is defined else '2024' }} Servimaq. Todos los derechos reservados.
+        </small>
+      </div>
+      <div class="home-footer__right">
+        <small>
+          Contacto interno RR. HH. · 
+          <a href="mailto:rrhh@tuempresa.com">rrhh@tuempresa.com</a>
+        </small>
+      </div>
+    </footer>
+
+    <!-- MODAL DE CONTACTO -->
+    <div class="contact-modal">
+      <div
+        class="contact-modal__backdrop"
+        onclick="document.querySelector('.contact-modal').classList.remove('open')"
+      ></div>
+      <div class="contact-modal__content">
+        <button
+          type="button"
+          class="contact-modal__close"
+          onclick="document.querySelector('.contact-modal').classList.remove('open')"
+        >
+          ×
+        </button>
+
+        <div class="contact-modal__icon">
+          <i data-feather="clock"></i>
+        </div>
+
+        <h3 class="contact-modal__title">Horario de atención</h3>
+
+        <p class="contact-modal__text">
+          Lunes a Viernes 8:00 am – 6:00 pm<br />
+          Sábado 8:00 am – 3:00 pm<br />
+          Domingo y festivos no hay servicio<br />
+          <strong>Bogotá, Colombia</strong>
+        </p>
+
+        <div class="contact-modal__actions">
+          <a
+            class="btn contact-modal__btn contact-modal__btn--whatsapp"
+            href="https://wa.me/573223853437"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Escríbenos por WhatsApp →
+          </a>
+          <a
+            class="btn contact-modal__btn contact-modal__btn--call"
+            href="tel:3223853437"
+          >
+            Llámanos 322 385 34 37 →
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      feather.replace();
+
+      // Carrusel básico
+      const slides = document.querySelectorAll('.home-hero__slide');
+      const dots = document.querySelectorAll('.home-hero__dot');
+      let currentSlide = 0;
+
+      function showSlide(index) {
+        slides.forEach((slide, i) => {
+          slide.classList.toggle('active', i === index);
+        });
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === index);
+        });
+        currentSlide = index;
+      }
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => showSlide(index));
+      });
+
+      // Cambio automático cada 7 segundos
+      setInterval(() => {
+        const next = (currentSlide + 1) % slides.length;
+        showSlide(next);
+      }, 7000);
+    </script>
+  </body>
+</html>

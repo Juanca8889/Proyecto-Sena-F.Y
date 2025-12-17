@@ -58,6 +58,20 @@ gestor_stock = GestorStock()
 app.register_blueprint(dashboard_bp)
 
 
+# ==========================================
+# HOME DE BIENVENIDA (PÚBLICO)
+# ==========================================
+@app.route('/bienvenida')
+def bienvenida():
+    """
+    Pantalla de bienvenida accesible para cualquier rol
+    (con sesión o sin sesión).
+    Solo muestra la página de bienvenida.
+    """
+    return render_template(
+        'home_bienvenida.html',
+        current_year=datetime.now().year
+    )
 
 
 # ==========================================

@@ -1,0 +1,490 @@
+/* ================================
+   ESTILOS HOME DE BIENVENIDA SERVIMAQ
+   ================================ */
+
+/* Fondo general y tipografía */
+.home-body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #757c83 0, #1b254e 45%, #e6d8d8 100%);
+  color: #e5e7eb;
+}
+
+/* HEADER SUPERIOR */
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 2.25rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid rgba(202, 202, 202, 0.8);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* Logo Servimaq más grande */
+.home-header__left {
+  display: flex;
+  align-items: center;
+}
+
+.home-header__logo img {
+  height: 78px;              /* más grande */
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(176, 188, 255, 0.5));
+}
+
+/* Zona de botones a la derecha */
+
+.home-header__right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* BOTONES GENERALES */
+
+.btn {
+  border-radius: 999px;
+  padding: 0.5rem 1.35rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.12s ease,
+    color 0.12s ease;
+  white-space: nowrap;
+}
+
+/* Color principal: verde tipo taller/neón */
+.btn-primary {
+  background: linear-gradient(135deg, #141b38, #474d88);
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(153, 146, 255, 0.6);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #69726c, #9a9e9c);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(103, 104, 103, 0.7);
+}
+
+/* Secundario: gris metálico */
+.btn-secondary {
+  background: linear-gradient(135deg, #4b5563, #9ca3af);
+  color: #f9fafb;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.7);
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #374151, #6b7280);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(15, 23, 42, 0.9);
+}
+
+/* LINK SOPORTE / AYUDA */
+
+.home-header__support {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #e5e7eb;
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid rgba(75, 85, 99, 0.7);
+}
+
+.home-header__support:hover {
+  color: #f97316;
+}
+
+.home-header__support-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1px solid #9ca3af;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+/* CONTENEDOR PRINCIPAL */
+
+.home-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.75rem 1.25rem 2.5rem;
+}
+
+/* HERO / CARRUSEL – Estilo “carretera / taller” */
+
+.home-hero {
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  min-height: 280px;
+  background: url("../img/fnd.png") center/cover no-repeat;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
+  margin-bottom: 2.2rem;
+}
+
+.home-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg, rgba(2, 6, 23, 0.94), rgba(15, 23, 42, 0.88)),
+    radial-gradient(circle at top, rgba(249, 115, 22, 0.35), transparent 55%);
+  mix-blend-mode: multiply;
+}
+
+.home-hero__content {
+  position: relative;
+  z-index: 1;
+  padding: 2.7rem 2.4rem 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-hero__carousel {
+  width: 100%;
+  max-width: 680px;
+}
+
+/* Diapositivas */
+
+.home-hero__slide {
+  display: none;
+  text-align: center;
+  color: #f9fafb;
+}
+
+.home-hero__slide.active {
+  display: block;
+}
+
+.home-hero__image--logo img {
+  max-height: 90px;
+  margin-bottom: 1.35rem;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.75));
+}
+
+.home-hero__text p {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.7);
+}
+
+/* PUNTOS DEL CARRUSEL */
+
+.home-hero__controls {
+  margin-top: 1.6rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.home-hero__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(148, 163, 184, 0.7);
+  cursor: pointer;
+  transition:
+    width 0.12s ease,
+    background-color 0.12s ease,
+    transform 0.12s ease;
+}
+
+.home-hero__dot.active {
+  width: 24px;
+  background: #f97316; /* naranja como luz de taller */
+  transform: translateY(-1px);
+}
+
+/* BLOQUE INFORMACIÓN INTERNA */
+
+.home-info {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 1.7rem;
+}
+
+/* Tarjetas con estética metálica */
+
+.home-info__block {
+  background: radial-gradient(circle at top left, #111827, #020617 65%);
+  border-radius: 1.25rem;
+  padding: 1.7rem 1.5rem 1.4rem;
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(55, 65, 81, 0.7);
+  border: 1px solid rgba(31, 41, 55, 0.8);
+}
+
+.home-info__block h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #f9fafb;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.home-info__intro {
+  margin: 0.5rem 0 0.55rem;
+  font-size: 0.92rem;
+  color: #9ca3af;
+}
+
+.home-info__list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0.85rem;
+}
+
+.home-info__list li {
+  padding: 0.5rem 0;
+  font-size: 0.94rem;
+  border-top: 1px dashed rgba(55, 65, 81, 0.9);
+}
+
+.home-info__list li:first-child {
+  border-top: none;
+}
+
+.home-info__list li strong {
+  display: block;
+  color: #e5e7eb;
+  margin-bottom: 0.15rem;
+}
+
+.home-info__list li span {
+  color: #9ca3af;
+}
+
+/* FOOTER */
+
+.home-footer {
+  border-top: 1px solid rgba(31, 41, 55, 0.9);
+  margin-top: 1.8rem;
+  padding: 0.85rem 2.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  color: #9ca3af;
+  background: radial-gradient(circle at top left, #020617, #000000 70%);
+}
+
+.home-footer a {
+  color: #22c55e;
+  text-decoration: none;
+}
+
+.home-footer a:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .home-info {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .home-header {
+    padding: 0.6rem 1.25rem;
+  }
+
+  .home-main {
+    padding: 1.25rem 0.9rem 2rem;
+  }
+
+  .home-hero__content {
+    padding: 2.1rem 1.4rem 2rem;
+  }
+
+  .home-hero__text p {
+    font-size: 1.35rem;
+  }
+
+  .home-header__right {
+    gap: 0.5rem;
+  }
+
+  .btn {
+    padding-inline: 1.05rem;
+    font-size: 0.9rem;
+  }
+
+  .home-footer {
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: flex-start;
+    padding-inline: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-header__logo img {
+    height: 64px;
+  }
+
+  .home-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .home-header__right {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+/* Botón de contacto en header */
+.btn-contacto {
+  background: linear-gradient(135deg, #f97316, #facc15); /* naranja/amarillo tipo señalización */
+  color: #111827;
+  box-shadow: 0 3px 10px rgba(249, 115, 22, 0.6);
+}
+
+.btn-contacto:hover {
+  background: linear-gradient(135deg, #ea580c, #f59e0b);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(249, 115, 22, 0.75);
+}
+
+/* MODAL DE CONTACTO */
+
+.contact-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 80;
+}
+
+.contact-modal.open {
+  display: flex;
+}
+
+.contact-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.75);
+}
+
+.contact-modal__content {
+  position: relative;
+  z-index: 1;
+  width: min(520px, 90%);
+  background: #facc15; /* amarillo fuerte tipo aviso */
+  border-radius: 1.25rem;
+  padding: 1.8rem 1.6rem 1.6rem;
+  text-align: center;
+  color: #111827;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+/* Botón de cerrar */
+.contact-modal__close {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.9rem;
+  border: none;
+  background: transparent;
+  font-size: 1.35rem;
+  cursor: pointer;
+  color: #111827;
+}
+
+/* Icono de reloj */
+.contact-modal__icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  background: #fef9c3;
+  margin: 0 auto 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-modal__icon svg {
+  width: 34px;
+  height: 34px;
+  color: #ea580c;
+}
+
+.contact-modal__title {
+  margin: 0.4rem 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.contact-modal__text {
+  margin: 0.4rem 0 1.4rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Acciones del modal */
+.contact-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.contact-modal__btn {
+  min-width: 200px;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+/* WhatsApp y llamada */
+.contact-modal__btn--whatsapp {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.contact-modal__btn--whatsapp:hover {
+  background: #d1d5db;
+}
+
+.contact-modal__btn--call {
+  background: #111827;
+  color: #f9fafb;
+}
+
+.contact-modal__btn--call:hover {
+  background: #020617;
+}
+
+/* Responsive modal */
+@media (max-width: 480px) {
+  .contact-modal__content {
+    padding-inline: 1.2rem;
+  }
+
+  .contact-modal__btn {
+    min-width: 100%;
+  }
+}
