@@ -4,6 +4,8 @@ from fpdf import FPDF
 from functools import wraps
 from datetime import date, datetime,timedelta
 import json
+from dotenv import load_dotenv
+import os
 
 
 # Imports de base de datos y backend
@@ -39,11 +41,12 @@ from Backend.control_sesiones import (
     cerrar_sesion_forzada_individual,
     cerrar_todas_sesiones_usuario,
     bloquear_usuario, 
-    registrar_nueva_sesion
 )
 
+load_dotenv()
+
 app = Flask(__name__)
-app.secret_key = 'wjson'  
+app.secret_key = os.getenv("SECRET_KEY")
 
 gestor_compras = GestorCompras()
 gestor_stock = GestorStock()
