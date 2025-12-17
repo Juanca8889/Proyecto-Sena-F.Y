@@ -1,18 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, jsonify
-import sys
-import os
 import pandas as pd
 from fpdf import FPDF
 from functools import wraps
 from datetime import date, datetime,timedelta
 import json
 
-
-
-
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if BASE_DIR not in sys.path:
-    sys.path.append(BASE_DIR)
 
 # Imports de base de datos y backend
 from BD.conexion import verificar_usuario, conectar

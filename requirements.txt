@@ -1,0 +1,23 @@
+Flask==3.1.2
+gunicorn==21.2.0
+
+# Base de datos
+mysql-connector-python==9.4.0
+
+# Variables de entorno
+python-dotenv==1.1.0
+
+# Datos / Excel / Reportes
+pandas==2.3.3
+openpyxl==3.1.5
+
+# PDFs
+fpdf==1.7.2
+
+# Gráficos (usado en Backend/control_sesiones.py)
+matplotlib==3.10.6
+
+# Requests externos (si los usas en otros módulos)
+requests==2.32.5
+urllib3==2.1.0
+

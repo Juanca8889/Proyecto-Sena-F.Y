@@ -1,5 +1,5 @@
 # reporte.py
-from BD.BDa import conectar
+from BD.conexion import conectar
 
 class Reporte:
     def __init__(self, id_venta=None, cantidad=None, producto=None, fecha=None, hora=None, responsable=None, descripcion=None):
