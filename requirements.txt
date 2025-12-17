@@ -19,4 +19,4 @@ matplotlib==3.10.6
 
 # Requests externos (si los usas en otros módulos)
 requests==2.32.5
-urllib3==2.1.0
+urllib3==2.1.0  
