@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<<<<<<< HEAD
   <meta charset="UTF-8">
   <title>Domicilios</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='cliente_domicilio.css') }}">
@@ -77,6 +78,64 @@
   <p>No hay domicilios registrados aún.</p>
   {% endif %}
 </main>
+=======
+    <meta charset="UTF-8">
+    <title>Clientes Domicilio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='cliente_domicilio.css') }}" />
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <a href="{{ url_for('index') }}" class="volver">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+
+        <div class="titulo">
+            <i class="fa-solid fa-users"></i>
+            <h1>Clientes Domicilio</h1>
+        </div>
+
+        <div class="acciones">
+            <a href="{{ url_for('form_cliente') }}">
+                <button><i class="fa-solid fa-plus"></i> Agregar Cliente</button>
+            </a>
+        </div>
+    </header>
+
+    <!-- CONTENIDO -->
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Celular</th>
+                    <th>Correo</th>
+                    <th>Dirección</th>
+                    <th>Placa</th>
+                    <th>Modelo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in clientes %}
+                <tr>
+                    <td>{{ c.id_cliente }}</td>
+                    <td>{{ c.nombre }}</td>
+                    <td>{{ c.apellido }}</td>
+                    <td>{{ c.celular }}</td>
+                    <td>{{ c.correo }}</td>
+                    <td>{{ c.direccion }}</td>
+                    <td>{{ c.placa }}</td>
+                    <td>{{ c.modelo }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
 
 </body>
 </html>

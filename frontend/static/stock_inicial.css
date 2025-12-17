@@ -18,7 +18,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+<<<<<<< HEAD
     background-color: #000000;
+=======
+    background-color: #0D1B2A;
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
     color: white;
     padding: 15px 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -51,7 +55,11 @@ body {
 }
 
 .crear-btn {
+<<<<<<< HEAD
     background-color: #6b6b6b;
+=======
+    background-color: #0D1B2A;
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
     padding: 8px 14px;
     border-radius: 5px;
     font-weight: 600;
@@ -59,7 +67,11 @@ body {
 }
 
 .crear-btn:hover {
+<<<<<<< HEAD
     background-color: #6b6b6b;
+=======
+    background-color: #0D1B2A;
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
 }
 
 /* BARRA DE BÚSQUEDA */
@@ -76,7 +88,11 @@ body {
 }
 
 .btn-buscar {
+<<<<<<< HEAD
     background-color: #6b6b6b;
+=======
+    background-color: #0D1B2A;
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
     border: none;
     padding: 6px 12px;
     border-radius: 0 4px 4px 0;
@@ -86,7 +102,11 @@ body {
 }
 
 .btn-buscar:hover {
+<<<<<<< HEAD
     background-color: #6b6b6b;
+=======
+    background-color: #0D1B2A;
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
 }
 
 .btn-buscar i {
@@ -127,8 +147,13 @@ table {
 }
 
 thead {
+<<<<<<< HEAD
     background-color: #6b6b6b; /* Azul oscuro */
     color: #6b6b6b;            /* Amarillo dorado */
+=======
+    background-color: #0D1B2A; /* Azul oscuro */
+    color: #FFD700;            /* Amarillo dorado */
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
 }
 
 thead tr th {
@@ -139,7 +164,11 @@ thead tr th {
 }
 
 thead tr th a {
+<<<<<<< HEAD
     color: #000000;            /* Amarillo dorado */
+=======
+    color: #FFD700;            /* Amarillo dorado */
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -148,7 +177,11 @@ thead tr th a {
 
 thead tr th i {
     font-size: 0.75rem;
+<<<<<<< HEAD
     color: #000000;            /* Amarillo dorado */
+=======
+    color: #FFD700;            /* Amarillo dorado */
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
 }
 
 tbody tr {
@@ -339,6 +372,7 @@ input[type="number"]:focus {
         justify-content: center;
     }
 }
+<<<<<<< HEAD
 
 .btn-volver {
     color: #333;
@@ -351,3 +385,5 @@ input[type="number"]:focus {
 .btn-volver:hover {
     color: #838383;
 }
+=======
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee

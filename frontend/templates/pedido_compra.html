@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Compra de material</title>
+<<<<<<< HEAD
     <link rel="stylesheet" href="{{ url_for('static', filename='pedido_compra.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://unpkg.com/feather-icons"></script>
@@ -32,6 +33,18 @@
     </div>
 
 </header>
+=======
+    <!-- Vinculamos la hoja de estilos CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='pedido_compra.css') }}" />
+    <!-- Librería de íconos Font Awesome (sirve para mostrar íconos como cajas, carritos, camiones, etc.) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- Encabezado de la página -->
+    <header>
+        <h1>Compra de material</h1>
+    </header>
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
 
     {# 
       BLOQUE DE MENSAJES FLASH 
@@ -54,7 +67,11 @@
             
             <!-- FILTROS para ordenar productos según criterio -->
             <div class="filtros">
+<<<<<<< HEAD
                 <form method="get" action="{{ url_for('pedido_compra') }}">
+=======
+                <form method="get" action="{{ url_for('index') }}">
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
                     <label for="filtro-select"><i class="fas fa-filter"></i> <b>FILTRO</b></label>
                     <select id="filtro-select" name="filtro">
                         {# 
@@ -146,6 +163,17 @@
     </main>
 
     <!-- BOTONES PRINCIPALES de navegación -->
+<<<<<<< HEAD
+=======
+    <div class="botones-principales">
+        <a href="{{ url_for('realizar_pedido') }}">
+            <button><i class="fas fa-plus-circle"></i> Realizar un pedido</button>
+        </a>
+        <a href="{{ url_for('ver_pedidos') }}">
+            <button><i class="fas fa-clipboard-list"></i> Ver pedidos</button>
+        </a>
+    </div>
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
 
     {# VISTA 2: FORMULARIO MANUAL DE PEDIDO (se muestra si vista == 'form_pedido') #}
     {% elif vista == 'form_pedido' %}
@@ -190,12 +218,18 @@
         </form>
         
         <!-- Botón para volver al inicio -->
+<<<<<<< HEAD
         <a href="{{ url_for('pedido_compra') }}" class="btn-volver">
             <i class="fas fa-arrow-left"></i> Volver
         </a>
         <a href="{{ url_for('editar_pedido') }}" class="btn-volver">
             <i class="fas fa-arrow-left"></i> editar pedido
         </a>
+=======
+        <a href="{{ url_for('index') }}" class="btn-volver">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
     </section>
 
     {# VISTA 3: LISTADO DE PEDIDOS (se muestra si vista == 'ver_pedidos') #}
@@ -220,13 +254,21 @@
         </ul>
         
         <!-- Botón volver -->
+<<<<<<< HEAD
         <a href="{{ url_for('pedido_compra') }}" class="btn-volver">
+=======
+        <a href="{{ url_for('index') }}" class="btn-volver">
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
             <i class="fas fa-arrow-left"></i> Volver
         </a>
     </section>
     {% endif %}
 </body>
+<<<<<<< HEAD
 <script>
     feather.replace();
 </script>
 </html>
+=======
+</html>
+>>>>>>> c1a2592110f3487c6fcdd4bfc5fde5f5f19a1eee
