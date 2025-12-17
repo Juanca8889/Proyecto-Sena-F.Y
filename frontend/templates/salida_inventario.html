@@ -36,9 +36,8 @@
           <h3>Venta #{{ v.id_venta }}</h3>
           <p><strong>Fecha:</strong> {{ v.fecha_venta }}</p>
           <p><strong>Garantia:</strong> {{ v.garantias }}</p>
-          <p><strong>Cantidad:</strong> {{ v.cantidad }}</p>
           <p><strong>Descripción:</strong> {{ v.descripcion }}</p>
-          <p><strong>Monto:</strong> ${{ v.monto }}</p>
+          <p><strong>Monto:</strong> ${{ "{:,.0f}".format(v.monto).replace(",", ".") }}</p>
         </div>
         {% endfor %}
       {% else %}

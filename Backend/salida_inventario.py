@@ -287,9 +287,121 @@ class Venta:
         except:
             return None
         
+    def actualizar_stock_producto(self, producto_id, diferencia):
+        if diferencia == 0:
+            return
+
+        # Obtener stock actual
+        self.cursor.execute("""
+            SELECT cantidad
+            FROM producto
+            WHERE id_producto = %s;
+        """, (producto_id,))
+        producto = self.cursor.fetchone()
+
+        if not producto:
+            raise Exception("Producto no encontrado")
+
+        stock_actual = producto["cantidad"]
+        nuevo_stock = stock_actual - diferencia
+
+        if nuevo_stock < 0:
+            raise Exception("Stock insuficiente")
+
+        self.cursor.execute("""
+            UPDATE producto
+            SET cantidad = %s,
+                updated_at = NOW()
+            WHERE id_producto = %s;
+        """, (nuevo_stock, producto_id))
+
+    def actualizar_detalle_venta(self, id_detalle, nueva_cantidad):
+        # Obtener info actual
+        self.cursor.execute("""
+            SELECT producto_id, cantidad, precio_unitario
+            FROM detalleventa
+            WHERE id_detalle = %s;
+        """, (id_detalle,))
+        detalle = self.cursor.fetchone()
+
+        if not detalle:
+            raise Exception("Detalle no encontrado")
+
+        producto_id = detalle["producto_id"]
+        cantidad_anterior = detalle["cantidad"]
+        precio_unitario = detalle["precio_unitario"]
+
+        diferencia = nueva_cantidad - cantidad_anterior
+        nuevo_monto = nueva_cantidad * precio_unitario
+
+        # Actualizar detalle
+        self.cursor.execute("""
+            UPDATE detalleventa
+            SET cantidad = %s,
+                monto_item = %s
+            WHERE id_detalle = %s;
+        """, (nueva_cantidad, nuevo_monto, id_detalle))
+
+        return producto_id, diferencia, nuevo_monto
+
+    def actualizar_venta_cabecera(self, id_venta, cliente_id, garantias):
+        self.cursor.execute("""
+            UPDATE venta
+            SET cliente_id = %s,
+                garantias = %s
+            WHERE id_venta = %s;
+        """, (cliente_id, garantias, id_venta))
+
+        if not self.venta_existe(id_venta):
+            raise Exception("Venta no encontrada")
+
+    def venta_existe(self, id_venta):
+        self.cursor.execute(
+            "SELECT 1 FROM venta WHERE id_venta = %s LIMIT 1;",
+            (id_venta,)
+        )
+        return self.cursor.fetchone() is not None
+
+        
+        
+    def actualizar_venta_completa(self, id_venta, cliente_id, garantias, detalles):
+        try:
+            self.conexion.autocommit = False
+            self.cursor = self.conexion.cursor(dictionary=True)
+
+            # 1️⃣ Venta
+            self.actualizar_venta_cabecera(id_venta, cliente_id, garantias)
+
+            monto_total = 0
+
+            # 2️⃣ Detalles + stock
+            for d in detalles:
+                producto_id, diferencia, monto_item = self.actualizar_detalle_venta(
+                    int(d['id_detalle']),
+                    int(d['cantidad'])
+                )
+
+                self.actualizar_stock_producto(producto_id, diferencia)
+                monto_total += monto_item
+
+            # 3️⃣ Actualizar monto total
+            self.cursor.execute("""
+                UPDATE venta
+                SET monto = %s
+                WHERE id_venta = %s;
+            """, (monto_total, id_venta))
+
+            self.conexion.commit()
+            return True
+
+        except Exception as e:
+            self.conexion.rollback()
+            print("❌ Error:", e)
+            return False
+
     def obtener_venta_completa(self, id_venta):
         query = """
-            SELECT 
+            SELECT
                 v.id_venta,
                 v.cliente_id,
                 v.garantias,
@@ -307,64 +419,7 @@ class Venta:
         self.cursor.execute(query, (id_venta,))
         return self.cursor.fetchall()
 
-    def actualizar_venta_completa(self, id_venta, cliente_id, garantia, detalles):
-        try:
-            self.conexion.autocommit = False
-            self.cursor = self.conexion.cursor()
-
-            # 1️⃣ Actualizar cabecera de la venta
-            self.cursor.execute("""
-                UPDATE venta
-                SET cliente_id = %s,
-                    garantias = %s
-                WHERE id_venta = %s;
-            """, (cliente_id, garantia, id_venta))
-
-            monto_total = 0
-
-            # 2️⃣ Actualizar cada detalle
-            for d in detalles:
-                nueva_cantidad = int(d['cantidad'])
-                id_detalle = int(d['id_detalle'])
-
-                # Obtener precio_unitario real desde BD
-                self.cursor.execute("""
-                    SELECT precio_unitario
-                    FROM detalleventa
-                    WHERE id_detalle = %s;
-                """, (id_detalle,))
-                row = self.cursor.fetchone()
-
-                if not row:
-                    raise Exception("Detalle no encontrado")
-
-                precio_unitario = float(row[0])
-
-                monto_item = precio_unitario * nueva_cantidad
-                monto_total += monto_item
-
-                self.cursor.execute("""
-                    UPDATE detalleventa
-                    SET cantidad = %s,
-                        monto_item = %s
-                    WHERE id_detalle = %s;
-                """, (nueva_cantidad, monto_item, id_detalle))
-
-            # 3️⃣ Actualizar monto total de la venta
-            self.cursor.execute("""
-                UPDATE venta
-                SET monto = %s
-                WHERE id_venta = %s;
-            """, (monto_total, id_venta))
-
-            self.conexion.commit()
-            return True
-
-        except Exception as e:
-            self.conexion.rollback()
-            print("Error al actualizar venta:", e)
-            return False
-
+    
     def contar_ventas(self):
         try:
             self.cursor.execute("SELECT COUNT(*) AS total FROM venta;")

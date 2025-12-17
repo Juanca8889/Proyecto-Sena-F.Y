@@ -45,7 +45,14 @@ from Backend.control_sesiones import (
 
 load_dotenv()
 
-app = Flask(__name__)
+
+app = Flask(
+    __name__,
+    template_folder='../frontend/templates',
+    static_folder='../frontend/static'
+)
+
+
 app.secret_key = os.getenv("SECRET_KEY")
 
 gestor_compras = GestorCompras()
@@ -1273,7 +1280,7 @@ def reporte_ventas():
     cursor = conexion.cursor(dictionary=True)
 
     query = """
-        SELECT  id_venta, cliente_id, cantidad, descripcion, fecha_venta, encargado_id, monto
+        SELECT  id_venta, cliente_id,  descripcion, fecha_venta, encargado_id, monto
         FROM venta where 1=1
         
     """
